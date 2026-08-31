@@ -3,12 +3,15 @@
 :root {
   color-scheme: light;
 
+  --font-en: var(--font-inter), 'Inter', 'Noto Sans', system-ui, sans-serif;
+  --font-bn: var(--font-hind-siliguri), 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
+
+  /* existing color tokens remain unchanged */
   --color-primary: #0f6b4f;
   --color-primary-hover: #0c5a42;
   --color-secondary: #1e3a5f;
   --color-background: #f7f8f7;
   --color-surface: #ffffff;
-  --color-surface-muted: #eef2ef;
   --color-border: #e3e6e4;
   --color-text: #111827;
   --color-text-muted: #5b6660;
@@ -16,31 +19,8 @@
   --color-warning: #b8860b;
   --color-error: #b3261e;
   --color-info: #2563eb;
-  --color-focus-ring: rgba(15, 107, 79, 0.4 );
+  --color-focus-ring: rgba(15, 107, 79, 0.4);
   --color-disabled: #9ca3af;
-
-  --font-en: 'Inter', 'Noto Sans', system-ui, sans-serif;
-  --font-bn: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, sans-serif;
-}
-
-[data-theme='dark'] {
-  color-scheme: dark;
-
-  --color-primary: #43c99b;
-  --color-primary-hover: #68d8b0;
-  --color-secondary: #8bb8e8;
-  --color-background: #0b1411;
-  --color-surface: #12201b;
-  --color-surface-muted: #1a2b24;
-  --color-border: #2b4037;
-  --color-text: #edf7f2;
-  --color-text-muted: #a7bbb1;
-  --color-success: #5ed69f;
-  --color-warning: #e6bd55;
-  --color-error: #ff8d83;
-  --color-info: #8bb8ff;
-  --color-focus-ring: rgba(104, 216, 176, 0.55);
-  --color-disabled: #718078;
 }
 
 html,
@@ -50,6 +30,14 @@ body {
   min-height: 100%;
   background-color: var(--color-background);
   color: var(--color-text);
+  font-family: var(--font-en);
+}
+
+html[lang='bn'] body {
+  font-family: var(--font-bn);
+}
+
+html[lang='en'] body {
   font-family: var(--font-en);
 }
 

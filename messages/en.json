@@ -1,0 +1,99 @@
+{
+  "HomePage": {
+    "site": {
+      "name": "SomitiKhata",
+      "tagline": "Digital savings, loans, and shared assets for cooperative communities."
+    },
+    "nav": {
+      "howItWorks": "How it works",
+      "features": "Features",
+      "faq": "FAQ",
+      "login": "Login",
+      "register": "Create account",
+      "language": "বাংলা"
+    },
+    "hero": {
+      "eyebrow": "Digital ledger for your cooperative",
+      "title": "A clearer way to manage savings, loans, and shared assets.",
+      "description": "SomitiKhata helps committees track deposits, view member balances, and keep shared asset records organized with clarity and trust.",
+      "primaryCta": "Create account",
+      "secondaryCta": "Member login",
+      "statLabel": "Total savings",
+      "statValue": "৳1,25,000",
+      "savings": "Savings",
+      "loans": "Loans",
+      "assetShare": "Asset share"
+    },
+    "sections": {
+      "howItWorksLabel": "How it works",
+      "howItWorksTitle": "A simple workflow designed for real committees",
+      "steps": [
+        "Committee members verify each account before access is approved.",
+        "Members register with a trusted phone or email identity.",
+        "Committee staff log deposits and repayments in a single ledger.",
+        "Members can view balances, shares, and loan status without confusion."
+      ],
+      "featuresLabel": "Features",
+      "featuresTitle": "Everything a cooperative needs to stay organized",
+      "features": [
+        {
+          "title": "Savings tracking",
+          "description": "Monitor every deposit, current balance, and monthly history with less paperwork and fewer errors.",
+          "icon": "💰"
+        },
+        {
+          "title": "Loan overview",
+          "description": "Keep applications, approvals, repayment schedules, and outstanding balances in one clear place.",
+          "icon": "📄"
+        },
+        {
+          "title": "Shared asset share",
+          "description": "See each member’s contribution to shared property and understand asset value without manual calculations.",
+          "icon": "🏠"
+        },
+        {
+          "title": "Bilingual access",
+          "description": "Switch between English and Bangla without losing context, route flow, or important navigation.",
+          "icon": "🌐"
+        }
+      ],
+      "trustLabel": "Why it matters",
+      "trustTitle": "Built for transparency and accountability",
+      "trustPoints": [
+        "Access is controlled for authorized members and committee staff only.",
+        "Important events are recorded in a structured way so nothing is left ambiguous.",
+        "The platform keeps records clear enough for a committee to review them with confidence."
+      ],
+      "faqLabel": "FAQ",
+      "faqTitle": "Common questions from committees and members",
+      "faq": [
+        {
+          "question": "Do members need internet access?",
+          "answer": "Yes, members can check balances and savings activity from a phone with internet access. Committee-side deposit and review work is designed for the online administration flow."
+        },
+        {
+          "question": "Can paper records still be kept?",
+          "answer": "Yes. The system is designed to support the committee’s day-to-day recordkeeping rather than replace it entirely."
+        },
+        {
+          "question": "Can members self-register?",
+          "answer": "The intended flow is approval-based. New members are added through a committee-controlled pre-approval setup before full access is granted."
+        },
+        {
+          "question": "Is this secure?",
+          "answer": "This phase focuses on a reviewable, trustworthy UI and route structure. Security hardening and real backend logic are planned for the later implementation stages."
+        }
+      ],
+      "ctaTitle": "Bring your cooperative into a cleaner digital workflow.",
+      "ctaDescription": "Use SomitiKhata to simplify savings tracking, reduce manual confusion, and provide members with a more transparent view of shared finances.",
+      "ctaButton": "Create account"
+    },
+    "footer": {
+      "brand": "SomitiKhata",
+      "tagline": "Digital savings ledger for cooperative communities",
+      "login": "Login",
+      "register": "Register",
+      "language": "বাংলা"
+    }
+  }
+}

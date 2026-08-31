@@ -1,46 +1,36 @@
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { messages, resolveLocale } from '@/lib/i18n/messages';
+import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 
-export function generateStaticParams() {
-  return [{ locale: 'en' }, { locale: 'bn' }];
-}
+export default async function PublicPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
 
-export default async function PublicPage({ params }: { params: Promise<{ locale?: string }> }) {
-  const { locale: routeLocale } = await params;
-  const locale = resolveLocale(routeLocale);
-  const content = messages[locale];
-
-  if (!content) {
-    notFound();
-  }
-
-  const features = content.sections.features;
-  const faqs = content.sections.faq;
-  const steps = content.sections.steps;
-  const trustPoints = content.sections.trustPoints;
+  const features = t.raw('sections.features') as Array<{ title: string; description: string; icon: string }>;
+  const faqs = t.raw('sections.faq') as Array<{ question: string; answer: string }>;
+  const steps = t.raw('sections.steps') as string[];
+  const trustPoints = t.raw('sections.trustPoints') as string[];
 
   return (
     <div className="min-h-screen bg-[#F7F8F7] text-[#111827]">
       <header className="sticky top-0 z-30 border-b border-[#E3E6E4] bg-[rgba(247,248,247,0.92)] backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-4 md:px-6">
-          <Link href={`/${locale}`} className="flex items-center gap-3 text-lg font-bold text-[#0F6B4F]">
+          <Link href="/" className="flex items-center gap-3 text-lg font-bold text-[#0F6B4F]">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0F6B4F] text-sm text-white">SK</span>
-            <span>{content.site.name}</span>
+            <span>{t('site.name')}</span>
           </Link>
 
           <nav className="hidden items-center gap-6 text-sm font-medium text-[#5B6660] md:flex">
-            <Link href={`/${locale}#how-it-works`}>{content.nav.howItWorks}</Link>
-            <Link href={`/${locale}#features`}>{content.nav.features}</Link>
-            <Link href={`/${locale}#faq`}>{content.nav.faq}</Link>
+            <Link href="#how-it-works">{t('nav.howItWorks')}</Link>
+            <Link href="#features">{t('nav.features')}</Link>
+            <Link href="#faq">{t('nav.faq')}</Link>
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link href={locale === 'en' ? '/bn' : '/en'} className="rounded-full border border-[#E3E6E4] bg-white px-3 py-1.5 text-xs font-semibold text-[#5B6660] transition hover:text-[#0F6B4F]">
-              {content.nav.language}
+            <Link locale={locale === 'en' ? 'bn' : 'en'} href="/" className="rounded-full border border-[#E3E6E4] bg-white px-3 py-1.5 text-xs font-semibold text-[#5B6660] transition hover:text-[#0F6B4F]">
+              {t('nav.language')}
             </Link>
-            <Link href={`/${locale}/login`} className="rounded-xl bg-[#0F6B4F] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0C5A42]">
-              {content.nav.login}
+            <Link href="/login" className="rounded-xl bg-[#0F6B4F] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0C5A42]">
+              {t('nav.login')}
             </Link>
           </div>
         </div>
@@ -51,21 +41,21 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
           <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr]">
             <div>
               <span className="inline-flex rounded-full border border-[#E3E6E4] bg-[rgba(15,107,79,0.08)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">
-                {content.hero.eyebrow}
+                {t('hero.eyebrow')}
               </span>
               <h1 className="mt-6 text-4xl font-bold tracking-tight text-[#111827] md:text-6xl">
-                {content.hero.title}
+                {t('hero.title')}
               </h1>
               <p className="mt-6 max-w-xl text-lg text-[#5B6660]">
-                {content.hero.description}
+                {t('hero.description')}
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link href={`/${locale}/register`} className="rounded-xl bg-[#0F6B4F] px-5 py-3 text-center font-semibold text-white hover:bg-[#0C5A42]">
-                  {content.hero.primaryCta}
+                <Link href="/register" className="rounded-xl bg-[#0F6B4F] px-5 py-3 text-center font-semibold text-white hover:bg-[#0C5A42]">
+                  {t('hero.primaryCta')}
                 </Link>
-                <Link href={`/${locale}/login`} className="rounded-xl border border-[#E3E6E4] bg-white px-5 py-3 text-center font-semibold text-[#111827] hover:border-[#0F6B4F] hover:text-[#0F6B4F]">
-                  {content.hero.secondaryCta}
+                <Link href="/login" className="rounded-xl border border-[#E3E6E4] bg-white px-5 py-3 text-center font-semibold text-[#111827] hover:border-[#0F6B4F] hover:text-[#0F6B4F]">
+                  {t('hero.secondaryCta')}
                 </Link>
               </div>
             </div>
@@ -74,17 +64,17 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
               <div className="rounded-2xl bg-[#F7F8F7] p-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm text-[#5B6660]">{content.hero.statLabel}</p>
-                    <p className="mt-1 text-3xl font-bold text-[#111827]">{content.hero.statValue}</p>
+                    <p className="text-sm text-[#5B6660]">{t('hero.statLabel')}</p>
+                    <p className="mt-1 text-3xl font-bold text-[#111827]">{t('hero.statValue')}</p>
                   </div>
                   <div className="rounded-xl bg-[rgba(15,107,79,0.12)] p-3 text-2xl">💸</div>
                 </div>
 
                 <div className="mt-6 space-y-4">
                   {[
-                    [content.hero.savings, '৳৯৫,০০০'],
-                    [content.hero.loans, '৳৪২,০০০'],
-                    [content.hero.assetShare, '৳১৮,৫০০'],
+                    [t('hero.savings'), '৳৯৫,০০০'],
+                    [t('hero.loans'), '৳৪২,০০০'],
+                    [t('hero.assetShare'), '৳১৮,৫০০'],
                   ].map(([label, value]) => (
                     <div key={String(label)} className="rounded-xl border border-[#E3E6E4] bg-white p-3">
                       <div className="flex items-center justify-between text-sm text-[#5B6660]">
@@ -102,8 +92,8 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
         <section id="how-it-works" className="border-t border-[#E3E6E4] bg-white py-16">
           <div className="mx-auto max-w-[1200px] px-4 md:px-6">
             <div className="mb-10 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{content.sections.howItWorksLabel}</p>
-              <h2 className="mt-3 text-3xl font-bold text-[#111827]">{content.sections.howItWorksTitle}</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{t('sections.howItWorksLabel')}</p>
+              <h2 className="mt-3 text-3xl font-bold text-[#111827]">{t('sections.howItWorksTitle')}</h2>
             </div>
 
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -121,8 +111,8 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
 
         <section id="features" className="mx-auto max-w-[1200px] px-4 py-16 md:px-6">
           <div className="mb-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{content.sections.featuresLabel}</p>
-            <h2 className="mt-3 text-3xl font-bold text-[#111827]">{content.sections.featuresTitle}</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{t('sections.featuresLabel')}</p>
+            <h2 className="mt-3 text-3xl font-bold text-[#111827]">{t('sections.featuresTitle')}</h2>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -139,8 +129,8 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
         <section className="border-y border-[#E3E6E4] bg-[#F7F8F7] py-16">
           <div className="mx-auto max-w-[1200px] px-4 md:px-6">
             <div className="mb-10 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{content.sections.trustLabel}</p>
-              <h2 className="mt-3 text-3xl font-bold text-[#111827]">{content.sections.trustTitle}</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{t('sections.trustLabel')}</p>
+              <h2 className="mt-3 text-3xl font-bold text-[#111827]">{t('sections.trustTitle')}</h2>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
@@ -155,8 +145,8 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
 
         <section id="faq" className="mx-auto max-w-[1200px] px-4 py-16 md:px-6">
           <div className="mb-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{content.sections.faqLabel}</p>
-            <h2 className="mt-3 text-3xl font-bold text-[#111827]">{content.sections.faqTitle}</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#0F6B4F]">{t('sections.faqLabel')}</p>
+            <h2 className="mt-3 text-3xl font-bold text-[#111827]">{t('sections.faqTitle')}</h2>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
@@ -171,13 +161,13 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
 
         <section className="bg-[#1E3A5F] py-16 text-white">
           <div className="mx-auto max-w-[1200px] px-4 text-center md:px-6">
-            <h2 className="text-3xl font-bold">{content.sections.ctaTitle}</h2>
+            <h2 className="text-3xl font-bold">{t('sections.ctaTitle')}</h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-200">
-              {content.sections.ctaDescription}
+              {t('sections.ctaDescription')}
             </p>
             <div className="mt-8 flex justify-center">
-              <Link href={`/${locale}/register`} className="rounded-xl bg-white px-6 py-3 font-semibold text-[#1E3A5F] hover:bg-slate-100">
-                {content.sections.ctaButton}
+              <Link href="/register" className="rounded-xl bg-white px-6 py-3 font-semibold text-[#1E3A5F] hover:bg-slate-100">
+                {t('sections.ctaButton')}
               </Link>
             </div>
           </div>
@@ -186,13 +176,13 @@ export default async function PublicPage({ params }: { params: Promise<{ locale?
         <footer className="border-t border-[#E3E6E4] bg-white">
           <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-4 py-8 text-sm text-[#5B6660] md:flex-row md:items-center md:justify-between md:px-6">
             <div>
-              <div className="font-semibold text-[#111827]">{content.footer.brand}</div>
-              <div>{content.footer.tagline}</div>
+              <div className="font-semibold text-[#111827]">{t('footer.brand')}</div>
+              <div>{t('footer.tagline')}</div>
             </div>
             <div className="flex items-center gap-4">
-              <Link href={`/${locale}/login`} className="hover:text-[#0F6B4F]">{content.footer.login}</Link>
-              <Link href={`/${locale}/register`} className="hover:text-[#0F6B4F]">{content.footer.register}</Link>
-              <Link href={locale === 'en' ? '/bn' : '/en'} className="hover:text-[#0F6B4F]">{content.footer.language}</Link>
+              <Link href="/login" className="hover:text-[#0F6B4F]">{t('footer.login')}</Link>
+              <Link href="/register" className="hover:text-[#0F6B4F]">{t('footer.register')}</Link>
+              <Link locale={locale === 'en' ? 'bn' : 'en'} href="/" className="hover:text-[#0F6B4F]">{t('footer.language')}</Link>
             </div>
           </div>
         </footer>

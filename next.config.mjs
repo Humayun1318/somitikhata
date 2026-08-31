@@ -1,12 +1,17 @@
-import withSerwistInit from "@serwist/next";
+import withSerwistInit from '@serwist/next';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const withSerwist = withSerwistInit({
-  swSrc: "src/app/sw.ts",
-  swDest: "public/sw.js",
+  swSrc: 'src/app/sw.ts',
+  swDest: 'public/sw.js',
   disable: true,
 });
 
-export default withSerwist({
-  reactStrictMode: true,
-  turbopack: {},
-});
+const withNextIntl = createNextIntlPlugin();
+
+export default withNextIntl(
+  withSerwist({
+    reactStrictMode: true,
+    turbopack: {},
+  })
+);

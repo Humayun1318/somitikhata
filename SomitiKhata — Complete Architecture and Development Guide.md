@@ -1,9 +1,9 @@
-# SomitiKhata — Complete Architecture and Development Guide
+# SomitiKhata — Complete Architecture and Development Guide (Current Baseline)
 
 **Document status:** Reviewed baseline for manual addition to the project  
 **Repository reviewed:** `Humayun1318/somitikhata`  
 **Review mode:** Read-only; no source file, dependency, commit, branch, or remote repository was changed.  
-**Purpose:** Give a future AI agent, developer, or maintainer enough context to work inside the existing project without guessing, breaking the route tree, or introducing a second architecture.
+**Purpose:** Give a future AI agent, developer, or maintainer enough context to work inside the current implementation without guessing, breaking the route tree, or introducing a second architecture. The current `src/i18n` setup and the public-home implementation are the verified active baseline; older admin/member/auth/shared-shell files are legacy scaffold until they are individually reimplemented and verified.
 
 > This document describes two things separately: **the verified repository as it exists today** and the **rules that future page/feature work must follow**. A planned file is never treated as an existing file. If a section says “planned,” that file or capability must not be imported until it has actually been created and verified.
 
@@ -53,7 +53,7 @@ The default locale is `bn`, and `localePrefix: 'always'` is part of the current 
 
 ## 3. Verified repository state
 
-The reviewed repository contains the following tracked root-level files and directories:
+The latest reviewed repository snapshot contains the following tracked root-level files and directories. The list is an inventory, not a statement that every listed legacy scaffold file is active or production-ready:
 
 ```text
 .env.example
@@ -127,7 +127,11 @@ docs/
 └── seo.md
 ```
 
-### Important distinction: documented plan versus actual code
+### Important distinction: current implementation, legacy scaffold, and documented plan
+
+The current verified implementation is the root `src/i18n/` setup, the localized `[locale]` route layout, and the public-home page under `src/app/[locale]/(public)/page.tsx`. The public-home page is the first implemented/tested page in the current build.
+
+The remaining admin, member, auth, shared-shell, mock-data, and utility files in the repository are legacy scaffold/reference code unless a later implementation task explicitly verifies and adopts them. They must not be treated as completed production architecture merely because they exist in the tree.
 
 The existing `docs/architecture.md` describes a future feature-based structure containing `features/`, `services/*-service.ts`, `lib/auth/`, and route groups such as `(member)` and `(admin)`. Those folders and files are **not present in the reviewed repository**. The actual pages currently live directly under `src/app/[locale]/admin/` and `src/app/[locale]/member/`, and they mostly import one shared mock-data file.
 
@@ -366,7 +370,7 @@ The helper should produce the active locale route. A language switch should use 
 
 ### `src/i18n/request.ts`
 
-The reviewed repository currently uses the explicit-locale pattern:
+This is part of the current implemented i18n baseline. It uses the explicit-locale pattern:
 
 ```ts
 import { getRequestConfig } from 'next-intl/server';
@@ -401,7 +405,7 @@ Do not add `next/root-params` to this file under the current layout hierarchy. T
 
 ### `src/app/[locale]/layout.tsx`
 
-The current file validates the route segment, explicitly passes it to `getMessages`, and provides messages to client components:
+This is part of the current implemented i18n baseline. The file validates the route segment, explicitly passes it to `getMessages`, and provides messages to client components:
 
 ```tsx
 import type { ReactNode } from 'react';
@@ -890,7 +894,7 @@ All current pages are thin presentational wrappers. They import `AppShell`, read
 
 ### Public page: `src/app/[locale]/(public)/page.tsx`
 
-This is the only current page that uses `getTranslations` and the locale-aware `Link` helper. It reads `params.locale`, loads the `HomePage` namespace explicitly, extracts structured arrays with `t.raw`, and renders:
+This is the first current public-home implementation and the primary verified page pattern. It uses `getTranslations` and the locale-aware `Link` helper. It reads `params.locale`, loads the `HomePage` namespace explicitly, extracts structured arrays with `t.raw`, and renders:
 
 ```text
 public header
@@ -1220,7 +1224,7 @@ These are verified observations from the current repository, not invitations to 
 
 | Issue | Current evidence | Safe treatment |
 |---|---|---|
-| Missing `@/lib/i18n/locales` module | `app-shell.tsx` imports it, but no matching tracked file exists | Resolve as a focused shared-shell/build issue before relying on the shell broadly |
+| Legacy `@/lib/i18n/locales` import in `app-shell.tsx` | The old shared shell imports `@/lib/i18n/locales`, while the current implemented i18n source is under `src/i18n/` | Treat `app-shell.tsx` as legacy scaffold. Do not change the current root i18n setup to satisfy the old shell. When the shell is reimplemented, align it deliberately with `src/i18n/navigation.ts` and `src/i18n/routing.ts`. |
 | Existing pages are not fully localized | Most admin/member/auth pages contain literal English or Bangla strings | Migrate page by page; add matching translation keys; do not rewrite the whole tree at once |
 | Existing pages use direct mock-data imports | Pages import `@/lib/mock-data` directly | Keep for current demo; introduce service boundary in a separate approved phase |
 | Service layer is incomplete | Only generic `api-client.ts` exists | Do not invent missing `deposit-service.ts` etc. inside a page task |
@@ -1365,6 +1369,6 @@ External technical references:
 
 ## Final baseline statement
 
-SomitiKhata is currently a **Next.js 16.3.3 / React 19.2.8 / TypeScript 6.0.3 / Tailwind CSS 4.3.3 / next-intl 4.14.1 demo scaffold** with a localized route tree, a global light/dark token foundation, a shared client shell, static pages, and in-repository mock data. It is not yet the planned production Express/MongoDB financial platform.
+SomitiKhata is currently a **Next.js 16.3.3 / React 19.2.8 / TypeScript 6.0.3 / Tailwind CSS 4.3.3 / next-intl 4.14.1 demo scaffold**. The verified active work is the root `src/i18n` implementation and the first public-home page/component test. The other pages and shared UI files in the repository are legacy scaffold awaiting gradual implementation. The project is not yet the planned production Express/MongoDB financial platform.
 
-The safest path from this baseline is to resolve only the explicitly approved current issues—especially the missing shared locale helper and any build blockers—then freeze the root structure. After that, new work should focus on **individual localized pages, feature components, content, states, and mobile-first design**, while preserving the existing route hierarchy, i18n contract, semantic CSS tokens, and future service-layer boundary.
+The safest path from this baseline is to preserve the verified `src/i18n` and public-home implementation, resolve only explicitly approved build or integration issues, and treat legacy scaffold files as non-authoritative until they are reimplemented. After that, new work should focus on **individual localized pages, feature components, content, states, and mobile-first design**, while preserving the existing route hierarchy, i18n contract, semantic CSS tokens, and future service-layer boundary.

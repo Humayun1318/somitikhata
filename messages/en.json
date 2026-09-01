@@ -1,8 +1,8 @@
 {
   "HomePage": {
     "site": {
-      "name": "SomitiKhata",
-      "tagline": "Digital savings, loans, and shared assets for cooperative communities."
+      "name": "Bottoli Cooperative",
+      "tagline": "Digital savings, loans, and member management for Bottoli Business Welfare Cooperative Society, Lohagara."
     },
     "nav": {
       "howItWorks": "How it works",
@@ -10,7 +10,15 @@
       "faq": "FAQ",
       "login": "Login",
       "register": "Create account",
-      "language": "বাংলা"
+      "language": "বাংলা",
+      "navigationLabel": "Primary navigation",
+      "mobileNavigationLabel": "Mobile primary navigation",
+      "openMenuLabel": "Open navigation menu",
+      "closeMenuLabel": "Close navigation menu",
+      "shortName": "Bottoli Cooperative",
+      "registration": "Reg. No. 7646/99",
+      "legalName": "Lohagara Bottoli Business Welfare Cooperative Society Ltd.",
+      "location": "Lohagara, Chattogram"
     },
     "hero": {
       "eyebrow": "Digital ledger for your cooperative",

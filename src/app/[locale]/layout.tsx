@@ -20,16 +20,16 @@ export async function generateMetadata({
 
   if (locale === "bn") {
     return {
-      title: "সমিতিখাতা",
+      title: "বটতলী সমবায় — লোহাগাড়া",
       description:
-        "বাংলাদেশের সমবায় সমিতির সঞ্চয়, ঋণ ও যৌথ সম্পদের হিসাব ব্যবস্থাপনা প্ল্যাটফর্ম।",
+        "লোহাগাড়া বটতলী ব্যবসায়ী কল্যাণ সমবায় সমিতির সদস্য, সঞ্চয়, ঋণ ও যৌথ সম্পদ ব্যবস্থাপনার ডিজিটাল প্ল্যাটফর্ম।",
     };
   }
 
   return {
-    title: "SomitiKhata",
+    title: "Bottoli Cooperative — Lohagara",
     description:
-      "Digital savings, loan, and shared-asset ledger for Bangladeshi cooperative societies.",
+      "Digital savings, loan, and shared-asset management platform for Bottoli Business Welfare Cooperative Society, Lohagara.",
   };
 }
 

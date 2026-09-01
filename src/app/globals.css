@@ -1,5 +1,19 @@
 @import 'tailwindcss';
 
+@theme inline {
+  --color-app-primary: var(--color-primary);
+  --color-app-primary-hover: var(--color-primary-hover);
+  --color-app-secondary: var(--color-secondary);
+  --color-app-background: var(--color-background);
+  --color-app-surface: var(--color-surface);
+  --color-app-surface-muted: var(--color-surface-muted);
+  --color-app-border: var(--color-border);
+  --color-app-text: var(--color-text);
+  --color-app-text-muted: var(--color-text-muted);
+  --color-app-focus: var(--color-focus-ring);
+  --max-width-app-wide: 75rem;
+}
+
 :root {
   color-scheme: light;
 
@@ -12,6 +26,7 @@
   --color-secondary: #1e3a5f;
   --color-background: #f7f8f7;
   --color-surface: #ffffff;
+  --color-surface-muted: #eef2ef;
   --color-border: #e3e6e4;
   --color-text: #111827;
   --color-text-muted: #5b6660;

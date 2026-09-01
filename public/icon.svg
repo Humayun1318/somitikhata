@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
-  <title id="title">SomitiKhata</title>
-  <desc id="desc">Green logo for the SomitiKhata cooperative savings app.</desc>
-  <rect width="256" height="256" rx="52" fill="#0F6B4F"/>
-  <path d="M62 176V84.5C62 74.3 70.3 66 80.5 66h55.5c32.8 0 58 18.2 58 48.2 0 28.8-21 43.6-44.9 47.5l-22.1 4.7V176H62Zm23-70.8h32.7c17.3 0 27.5-7.3 27.5-20.5 0-12.7-10.7-19.7-28.6-19.7H85v40.2Zm59.1 21.4L165.7 176h-24.5l-17.8-44.3h22.7Z" fill="#FFFFFF"/>
-  <path d="M144 176h22.7l25.5-67.5H170l-10.7 30.1-9.9-30.1h-22.7L144 176Z" fill="#C7F0D4" opacity="0.9"/>
-</svg>

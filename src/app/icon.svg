@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
-  <title id="title">SomitiKhata</title>
-  <desc id="desc">Fallback icon for SomitiKhata.</desc>
-  <rect width="256" height="256" rx="56" fill="#0F6B4F"/>
-  <path d="M70 178V78h32.5l28.4 46.9L159.5 78H192v100h-28V125l-27.2 42.5h-17.5L98 125v53H70Z" fill="#FFFFFF"/>
-  <circle cx="183" cy="74" r="20" fill="#C7F0D4"/>
-</svg>

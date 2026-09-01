@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 
+
 export default async function PublicPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'HomePage' });
@@ -12,6 +13,7 @@ export default async function PublicPage({ params }: { params: Promise<{ locale:
 
   return (
     <div className="min-h-screen bg-[#F7F8F7] text-[#111827]">
+
       <header className="sticky top-0 z-30 border-b border-[#E3E6E4] bg-[rgba(247,248,247,0.92)] backdrop-blur-sm">
         <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-3 px-4 py-4 md:px-6">
           <Link href="/" className="flex items-center gap-3 text-lg font-bold text-[#0F6B4F]">
@@ -35,6 +37,7 @@ export default async function PublicPage({ params }: { params: Promise<{ locale:
           </div>
         </div>
       </header>
+    
 
       <main>
         <section className="mx-auto max-w-[1200px] px-4 pb-12 pt-12 md:px-6 md:pt-20">

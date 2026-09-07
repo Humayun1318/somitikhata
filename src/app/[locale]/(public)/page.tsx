@@ -250,36 +250,7 @@ export default async function PublicPage({
 
         <footer className="border-t border-[#E3E6E4] bg-white">
           <PageContainer className="flex flex-col gap-4 py-8 text-sm text-[#5B6660] md:flex-row md:items-center md:justify-between">
-            {/* <div>
-              <div className="font-semibold text-[#111827]">{t('footer.brand')}</div>
-              <BrandLogo
-                showLegalName={true}
-                // shortName={t("nav.shortName")}
-                className="font-semibold text-[#111827]"
-                legalName={t("nav.legalName")}
-                location={t("nav.location")}
-                // registration={t("nav.registration")}
-              />
-              <div>{t("footer.tagline")}</div>
-
-            </div> */}
-            {/* <div className="flex items-center gap-4">
-              <Link href="/login" className="hover:text-[#0F6B4F]">
-                {t("footer.login")}
-              </Link>
-              <Link href="/register" className="hover:text-[#0F6B4F]">
-                {t("footer.register")}
-              </Link>
-              <Link
-                locale={locale === "en" ? "bn" : "en"}
-                href="/"
-                className="hover:text-[#0F6B4F]"
-              >
-                {t("footer.language")}
-              </Link>
-            </div> */}
             <Footer />
-
           </PageContainer>
         </footer>
       </main>

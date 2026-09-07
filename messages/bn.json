@@ -104,7 +104,22 @@
       "language": "English"
     }
   },
-  "Footer": {
+   "Auth": {
+      "welcome": "স্বাগতম",
+      "description": "আপনার সমিতির ড্যাশবোর্ডে লগইন করুন",
+      "identityLabel": "ফোন বা ইমেইল",
+      "identityPlaceholder": "01XXXXXXXXX বা name@email.com",
+      "passwordLabel": "পাসওয়ার্ড",
+      "passwordPlaceholder": "পাসওয়ার্ড লিখুন",
+      "rememberMe": "মনে রাখুন",
+      "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
+      "login": "লগইন",
+      "loggingIn": "লগইন হচ্ছে...",
+      "loginFailed": "লগইন করা যায়নি। তথ্য যাচাই করে আবার চেষ্টা করুন।",
+      "needAccess": "অ্যাক্সেস দরকার?",
+      "registrationRequest": "রেজিস্ট্রেশন অনুরোধ"
+    },
+    "Footer": {
     "orgName": "লোহাগাড়া বটতলী ব্যবসায়ী কল্যাণ সমবায় সমিতি লিঃ",
     "orgLocation": "লোহাগাড়া, চট্টগ্রাম",
     "registrationNo": "রেজিঃ নং- ৭৬৪৬/৯৯",

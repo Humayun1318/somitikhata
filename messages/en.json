@@ -104,7 +104,22 @@
       "language": "বাংলা"
     }
   },
- "Footer": {
+ "Auth": {
+    "welcome": "Welcome",
+    "description": "Log in to your cooperative dashboard",
+    "identityLabel": "Phone or email",
+    "identityPlaceholder": "01XXXXXXXXX or name@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "login": "Log in",
+    "loggingIn": "Logging in...",
+    "loginFailed": "We could not sign you in. Check your details and try again.",
+    "needAccess": "Need access?",
+    "registrationRequest": "Request registration"
+  },
+  "Footer": {
     "orgName": "Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
     "orgLocation": "Lohagara, Chattogram",
     "registrationNo": "Reg. No: 7646/99",

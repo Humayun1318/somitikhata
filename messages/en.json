@@ -103,5 +103,23 @@
       "register": "Register",
       "language": "বাংলা"
     }
+  },
+ "Footer": {
+    "orgName": "Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
+    "orgLocation": "Lohagara, Chattogram",
+    "registrationNo": "Reg. No: 7646/99",
+    "tagline": "A secure digital ledger system for savings, loan management, and shared assets.",
+    "quickLinks": "Quick Links",
+    "portal": "Portal Links",
+    "contact": "Contact & Location",
+    "home": "Home",
+    "login": "Login",
+    "register": "Member Registration",
+    "memberDashboard": "Member Dashboard",
+    "adminDashboard": "Admin Portal",
+    "address": "Bottoli Station Road, Lohagara, Chattogram, Bangladesh",
+    "rights": "All rights reserved.",
+    "developedBy": "Developed by",
+    "developerName": "Your Name / Brand"
   }
 }

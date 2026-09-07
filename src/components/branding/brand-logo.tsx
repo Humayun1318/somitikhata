@@ -6,11 +6,12 @@ type BrandLogoProps = {
   className?: string;
   imageClassName?: string;
   showLegalName?: boolean;
-  shortName: string;
-  registration: string;
+  shortName?: string;
+  registration?: string;
   legalName: string;
   location: string;
 };
+
 
 export function BrandLogo({
   variant = 'compact',

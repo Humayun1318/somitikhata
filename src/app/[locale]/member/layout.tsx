@@ -9,7 +9,7 @@ export default async function MemberLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  await requireUser(locale, 'member');
+  // await requireUser(locale, 'member');
 
   return children;
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import './globals.css';
 
 type GlobalErrorProps = {
   error: Error & {
@@ -44,7 +45,7 @@ export default function GlobalError({
             </div>
 
             <h1 className="mt-5 text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
-              Application error
+              Application errorkkkkkkkkkkkkkkkkkkkk
             </h1>
 
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-slate-600">

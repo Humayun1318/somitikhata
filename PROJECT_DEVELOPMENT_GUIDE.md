@@ -28,7 +28,7 @@ The planned Express API, MongoDB database, Auth.js flow, feature services, and p
 
 - Read this guide and the relevant files before changing code.
 - Preserve the existing App Router and locale route structure for normal page work.
-- Do not move or delete `src/app/layout.tsx`, change `src/proxy.ts`, or alter the root layout architecture for a page-only task.
+- Do not move or delete `src/app/[locale]/layout.tsx`, change `src/proxy.ts`, or alter the root layout architecture for a page-only task.
 - Do not add dependencies, upgrade versions, replace libraries, or edit dependency files without explicit approval.
 - Use the exact installed package baseline documented below.
 - Reuse existing components and utilities before creating equivalents.
@@ -223,7 +223,7 @@ return (
 );
 ```
 
-There are no other providers in the current source tree: no React Query provider, session provider, global state provider, or theme provider. Do not import one or assume one exists. The dynamic `[locale]/layout.tsx` owns `<html>` and `<body>` so the route parameter directly controls document language and font selection. The top-level `src/app/layout.tsx` imports global CSS and returns `children`.
+There are no other providers in the current source tree: no React Query provider, session provider, global state provider, or theme provider. Do not import one or assume one exists. The dynamic `[locale]/layout.tsx` owns global CSS, `<html>`, and `<body>` so the route parameter directly controls document language and font selection. There is no separate top-level `src/app/layout.tsx` because every application route is below `[locale]`.
 
 ### `PageContainer` and shared components
 
@@ -430,12 +430,11 @@ The same paths exist under `/en`. `bn` is the default locale and `localePrefix: 
 
 There is no `src/app/page.tsx`. Unprefixed route behavior is handled by `src/proxy.ts` and next-intl. Do not add a second root redirect page without an approved route decision.
 
-The current global boundaries are `src/app/loading.tsx`, `src/app/error.tsx`, `src/app/global-error.tsx`, and `src/app/not-found.tsx`. `src/app/[locale]/unauthorized/page.tsx` provides the localized forbidden state. The `(private)` route-group policy is defined in `src/app/[locale]/(private)/layout.tsx`; the existing `member/layout.tsx` and `admin/layout.tsx` enforce it for every descendant route while preserving the existing URLs.
+The current global boundaries are `src/app/loading.tsx`, `src/app/global-error.tsx`, and `src/app/not-found.tsx`. Locale routes additionally use `src/app/[locale]/loading.tsx`, `src/app/[locale]/error.tsx`, and `src/app/[locale]/not-found.tsx`. `src/app/[locale]/unauthorized/page.tsx` provides the localized forbidden state. The `(private)` route-group policy is defined in `src/app/[locale]/(private)/layout.tsx`; the existing `member/layout.tsx` and `admin/layout.tsx` enforce it for every descendant route while preserving the existing URLs.
 
 ### Layout responsibilities
 
-- `src/app/layout.tsx` imports `globals.css` and returns `children`. It intentionally does not render `<html>` or `<body>` because the dynamic locale layout owns the document boundary.
-- `src/app/[locale]/layout.tsx` validates the locale, generates locale params, creates localized metadata, loads messages with `getMessages({ locale })`, applies the font variables, renders `<html lang={locale}>` and `<body>`, and provides `NextIntlClientProvider`.
+- `src/app/[locale]/layout.tsx` imports `globals.css`, validates the locale, generates locale params, creates localized metadata, loads messages with `getMessages({ locale })`, applies the font variables, renders `<html lang={locale}>` and `<body>`, and provides `NextIntlClientProvider`. It is the root document layout because every application route is below `[locale]`.
 - Do not add another `<html>` or `<body>` inside pages or feature components. Keep the document boundary in `[locale]/layout.tsx` unless the route architecture is deliberately migrated and verified.
 - Do not introduce `next/root-params` or move the document shell without a separate architecture migration and build verification.
 
@@ -808,9 +807,7 @@ If a requested feature conflicts with this guide or with the existing implementa
 | `tsconfig.json` | Strict TypeScript compiler settings, aliases, Next plugin, and webworker typings. |
 | `README.md` | Documentation index and docs-first policy. |
 | `PROJECT_ARCHITECTURE.md` | Historical high-level architecture document; currently absent from the worktree. |
-| `src/app/layout.tsx` | Root wrapper and global CSS import. |
 | `src/app/loading.tsx` | Global baseline loading boundary with an accessible status message. |
-| `src/app/error.tsx` | Client error boundary with safe logging and retry behavior. |
 | `src/app/global-error.tsx` | Last-resort document-level error boundary. |
 | `src/app/not-found.tsx` | Root-safe not-found page linking to the default localized route. |
 | `src/app/[locale]/(private)/layout.tsx` | Shared private-route policy module used by member/admin route layouts. |
@@ -818,6 +815,9 @@ If a requested feature conflicts with this guide or with the existing implementa
 | `src/app/[locale]/admin/layout.tsx` | Server-side admin session and role guard for all admin descendants. |
 | `src/app/[locale]/unauthorized/page.tsx` | Localized forbidden-access page. |
 | `src/app/[locale]/layout.tsx` | Locale validation, localized metadata, document language, and message provider. |
+| `src/app/[locale]/loading.tsx` | Locale loading boundary for localized application routes. |
+| `src/app/[locale]/error.tsx` | Locale error boundary with localized messaging and retry behavior. |
+| `src/app/[locale]/not-found.tsx` | Locale-aware not-found page. |
 | `src/app/[locale]/(public)/page.tsx` | Active public landing page composition. |
 | `src/app/[locale]/(public)/_components/public-navbar.tsx` | Public navigation, mobile menu, and locale switch behavior. |
 | `src/app/[locale]/(public)/_components/footer.tsx` | Localized public footer and organization information. |

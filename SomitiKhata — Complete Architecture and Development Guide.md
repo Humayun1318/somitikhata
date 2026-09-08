@@ -17,7 +17,7 @@ The repository is currently a **Next.js-only frontend/demo scaffold**. It is not
 
 The following rules apply to every future task:
 
-1. **Do not change the root route or layout architecture while building normal pages.** Do not delete or move `src/app/layout.tsx`, do not move the document shell into `[locale]/layout.tsx`, and do not introduce `next/root-params` unless the user explicitly approves a separate architecture migration.
+1. **Do not change the root route or layout architecture while building normal pages.** Do not delete or move `src/app/[locale]/layout.tsx`, do not introduce a separate `src/app/layout.tsx`, and do not introduce `next/root-params` unless the user explicitly approves a separate architecture migration.
 2. **Do not change `proxy.ts`, i18n routing, the root layout, `package.json`, global CSS, or the folder hierarchy for a page-only task.** If a task genuinely needs one of those files, explain the reason, affected files, risk, and rollback plan before changing it.
 3. **Do not add a new library because it appears convenient.** Check `package.json` first. If a missing package is necessary, ask for explicit approval before installing or editing dependency files.
 4. **Do not push to GitHub, create a commit, reset a branch, or modify the remote unless the user explicitly asks for that action.** A normal review or implementation request is not permission to push.
@@ -401,7 +401,7 @@ getRequestConfig({ locale }) resolves activeLocale
 messages/en.json or messages/bn.json loads
 ```
 
-Do not add `next/root-params` to this file under the current layout hierarchy. The current root layout remains above `[locale]`, and a previous attempt to import `next/root-params` produced an “Export locale doesn't exist in target module” build error. A root-parameter migration is a separate structure-level project, not normal page work.
+Do not add `next/root-params` to this file under the current layout hierarchy. The current document root is `[locale]/layout.tsx`, and a previous attempt to import `next/root-params` produced an “Export locale doesn't exist in target module” build error. A root-parameter migration is a separate structure-level project, not normal page work.
 
 ### `src/app/[locale]/layout.tsx`
 
@@ -558,33 +558,15 @@ Do not make the API return `"৳৫,০০০ টাকা"` or `"অপেক�
 
 ## 8. Root layout and document language boundary
 
-### `src/app/layout.tsx`
+### `src/app/[locale]/layout.tsx`
 
-The reviewed file currently imports `getLocale` and renders:
+This file owns the document shell for the application. It validates the locale, loads messages, applies font variables, and renders `<html lang={locale}>` and `<body>` around the localized provider. It must not be moved or duplicated as part of page development.
 
-```tsx
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const local = await getLocale();
-
-  return (
-    <html lang={local}>
-      <body>{children}</body>
-    </html>
-  );
-}
-```
-
-This file owns the document shell. It must not be moved or deleted as part of page development. It is also the area that previously caused a Turbopack panic in the local development environment when changed. Any future `html lang` or root-layout change requires a separate approved migration with a backup and build verification.
-
-The project’s current architecture is intentionally conservative: keep the root layout in place, keep `[locale]/layout.tsx` as its child, and pass locale explicitly to `getMessages` and `getTranslations` where needed.
+There is no separate `src/app/layout.tsx` because every application route is below `[locale]`. Any future document-language or root-layout change requires a separate approved migration with build verification.
 
 ### Font rule
 
-`globals.css` currently defaults the body to `var(--font-en)`. The intended design system has separate English and Bangla font stacks. A future font-switching change must be handled deliberately without destabilizing the root layout. Do not add nested `<html>` or `<body>` elements inside `[locale]/layout.tsx`.
+`globals.css` currently defaults the body to `var(--font-en)`. The intended design system has separate English and Bangla font stacks. A future font-switching change must be handled deliberately without destabilizing the root layout. Do not add another `<html>` or `<body>` element outside `[locale]/layout.tsx`.
 
 ---
 
@@ -1231,7 +1213,7 @@ These are verified observations from the current repository, not invitations to 
 | `api-client.ts` lacks base URL/auth/error envelope | It fetches the passed URL directly and throws a generic error | Improve only when API integration phase begins |
 | PWA is disabled | `next.config.mjs` has `disable: true` | Do not enable until caching and financial-data safety rules are tested |
 | Service worker uses `@ts-nocheck` | `src/app/sw.ts` begins with it | Review separately; do not copy this pattern |
-| Root layout has recently changing locale behavior | `src/app/layout.tsx` calls `getLocale` | Keep root structure frozen; test before any root-layout changes |
+| Locale root layout has recently changing locale behavior | `src/app/[locale]/layout.tsx` controls the document shell | Keep root structure frozen; test before any root-layout changes |
 | Hardcoded display values | Several pages contain literal dates, money, and labels | Replace during page-level localization/data work, not through a global blind search-and-replace |
 | `t.raw` type assertions | Public page casts structured translation arrays manually | Keep until a typed translation/data strategy is approved; do not claim runtime validation exists |
 | Current mock data mixes formatted strings and raw values | `adminStats`, `reportsSummary`, and notifications contain display strings | Treat as demo-only and normalize at the future service boundary |
@@ -1299,11 +1281,11 @@ Before changing code, the worker must answer:
 
 ### Required task-opening statement
 
-A future worker should begin a task with a statement equivalent to:
+A future worker should begin a page-level task with a statement equivalent to:
 
 ```text
 This task is page-level. I will change only <listed files>.
-I will not change src/app/layout.tsx, src/app/[locale]/layout.tsx,
+I will not change src/app/[locale]/layout.tsx,
 proxy.ts, src/i18n/routing.ts, src/i18n/request.ts, package.json,
 next.config.mjs, or globals.css unless you explicitly approve it.
 I will use the existing route structure, explicit locale translation calls,

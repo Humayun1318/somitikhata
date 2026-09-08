@@ -2,7 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/branding/brand-logo";
 
 type PublicNavbarProps = {
@@ -40,6 +40,7 @@ export function PublicNavbar({
 }: PublicNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const nextLocale = locale === "en" ? "bn" : "en";
+  const pathname = usePathname();
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
@@ -90,8 +91,8 @@ export function PublicNavbar({
         {/* language and login action */}
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
+            href={pathname}
             locale={nextLocale}
-            href="/"
             onClick={closeMenu}
             className="rounded-full border border-app-border bg-app-surface px-2.5 py-1.5 text-xs font-semibold text-app-text-muted transition hover:border-app-primary hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus sm:px-3"
           >

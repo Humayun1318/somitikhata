@@ -10,7 +10,7 @@
       "faq": "প্রশ্ন",
       "login": "লগইন",
       "register": "একাউন্ট তৈরি",
-      "language": "English",
+      "language": "EN",
       "navigationLabel": "প্রধান নেভিগেশন",
       "mobileNavigationLabel": "মোবাইল প্রধান নেভিগেশন",
       "openMenuLabel": "নেভিগেশন মেনু খুলুন",
@@ -104,21 +104,6 @@
       "language": "English"
     }
   },
-   "Auth": {
-      "welcome": "স্বাগতম",
-      "description": "আপনার সমিতির ড্যাশবোর্ডে লগইন করুন",
-      "identityLabel": "ফোন বা ইমেইল",
-      "identityPlaceholder": "01XXXXXXXXX বা name@email.com",
-      "passwordLabel": "পাসওয়ার্ড",
-      "passwordPlaceholder": "পাসওয়ার্ড লিখুন",
-      "rememberMe": "মনে রাখুন",
-      "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
-      "login": "লগইন",
-      "loggingIn": "লগইন হচ্ছে...",
-      "loginFailed": "লগইন করা যায়নি। তথ্য যাচাই করে আবার চেষ্টা করুন।",
-      "needAccess": "অ্যাক্সেস দরকার?",
-      "registrationRequest": "রেজিস্ট্রেশন অনুরোধ"
-    },
     "Footer": {
     "orgName": "লোহাগাড়া বটতলী ব্যবসায়ী কল্যাণ সমবায় সমিতি লিঃ",
     "orgLocation": "লোহাগাড়া, চট্টগ্রাম",
@@ -146,5 +131,40 @@
     "title": "কিছু পাওয়া যায়নি",
     "description": "আপনি যে জিনিসটি খুঁজছেন সেটি পাওয়া যায়নি। এটি সরিয়ে নেওয়া, পরিবর্তন করা হয়ে থাকতে পারে, অথবা এটি আর বিদ্যমান নেই।",
     "home": "হোমে ফিরে যান"
+  },
+  "Auth": {
+    "loginTitle": "স্বাগতম!",
+    "loginSubtitle": "আপনার বটতলী সমবায় একাউন্টে লগইন করুন",
+    "registerTitle": "নতুন একাউন্ট তৈরি করুন",
+    "registerSubtitle": "সমিতির সদস্য হতে প্রয়োজনীয় তথ্য পূরণ করুন",
+    "phone": "মোবাইল নম্বর",
+    "phonePlaceholder": "017XXXXXXXX",
+    "password": "পাসওয়ার্ড",
+    "passwordPlaceholder": "••••••••",
+    "fullName": "পূর্ণ নাম",
+    "fullNamePlaceholder": "মো: রহিম উদ্দিন",
+    "nidNumber": "এনআইডি / জাতীয় পরিচয়পত্র নম্বর",
+    "nidPlaceholder": "1234567890",
+    "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
+    "loginSubmit": "লগইন করুন",
+    "registerSubmit": "একাউন্ট তৈরি করুন",
+    "submitting": "প্রসেস করা হচ্ছে...",
+    "noAccount": "একাউন্ট নেই?",
+    "haveAccount": "ইতিমধ্যে একাউন্ট আছে?",
+    "registerLink": "একাউন্ট তৈরি করুন",
+    "loginLink": "লগইন করুন",
+    "serverErrorLogin": "লগইন ব্যর্থ হয়েছে। তথ্য যাচাই করে আবার চেষ্টা করুন।",
+    "serverErrorRegister": "রেজিস্ট্রেশন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+    "metaTitleSuffix": "বটতলী সমবায়",
+    "validation": {
+      "phoneRequired": "মোবাইল নম্বর দেওয়া আবশ্যক",
+      "phoneInvalid": "সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (যেমন: 017XXXXXXXX)",
+      "passwordRequired": "পাসওয়ার্ড দেওয়া আবশ্যক",
+      "passwordMin": "পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে",
+      "nameRequired": "আপনার পূর্ণ নাম দিন",
+      "nidRequired": "এনআইডি নম্বর দেওয়া আবশ্যক",
+      "nidInvalid": "এনআইডি ১০, ১৩ অথবা ১৭ ডিজিটের হতে হবে",
+      "passwordsMatch": "পাসওয়ার্ড দুটি মিলছে না"
+    }
   }
 }

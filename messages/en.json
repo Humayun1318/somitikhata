@@ -10,7 +10,7 @@
       "faq": "FAQ",
       "login": "Login",
       "register": "Create account",
-      "language": "বাংলা",
+      "language": "বাং",
       "navigationLabel": "Primary navigation",
       "mobileNavigationLabel": "Mobile primary navigation",
       "openMenuLabel": "Open navigation menu",
@@ -104,21 +104,6 @@
       "language": "বাংলা"
     }
   },
- "Auth": {
-    "welcome": "Welcome",
-    "description": "Log in to your cooperative dashboard",
-    "identityLabel": "Phone or email",
-    "identityPlaceholder": "01XXXXXXXXX or name@email.com",
-    "passwordLabel": "Password",
-    "passwordPlaceholder": "Enter your password",
-    "rememberMe": "Remember me",
-    "forgotPassword": "Forgot password?",
-    "login": "Log in",
-    "loggingIn": "Logging in...",
-    "loginFailed": "We could not sign you in. Check your details and try again.",
-    "needAccess": "Need access?",
-    "registrationRequest": "Request registration"
-  },
   "Footer": {
     "orgName": "Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
     "orgLocation": "Lohagara, Chattogram",
@@ -146,5 +131,40 @@
     "title": "Nothing found",
     "description": "We couldn't find what you're looking for. It may have been moved, removed, or doesn't exist.",
     "home": "Go home"
+  }, 
+  "Auth": {
+    "loginTitle": "Welcome Back!",
+    "loginSubtitle": "Sign in to your Bottoli Cooperative account",
+    "registerTitle": "Create an Account",
+    "registerSubtitle": "Fill in the required information to join as a member",
+    "phone": "Mobile Number",
+    "phonePlaceholder": "017XXXXXXXX",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "e.g. Rahim Uddin",
+    "nidNumber": "NID / National ID Number",
+    "nidPlaceholder": "1234567890",
+    "confirmPassword": "Confirm Password",
+    "loginSubmit": "Sign In",
+    "registerSubmit": "Create Account",
+    "submitting": "Processing...",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "registerLink": "Register here",
+    "loginLink": "Log in here",
+    "serverErrorLogin": "Login failed. Please verify your details and try again.",
+    "serverErrorRegister": "Registration failed. Please try again.",
+    "metaTitleSuffix": "Bottoli Cooperative",
+    "validation": {
+      "phoneRequired": "Mobile number is required",
+      "phoneInvalid": "Enter a valid 11-digit mobile number (e.g., 017XXXXXXXX)",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 6 characters",
+      "nameRequired": "Full name is required",
+      "nidRequired": "NID number is required",
+      "nidInvalid": "NID must be 10, 13, or 17 digits long",
+      "passwordsMatch": "Passwords do not match"
+    }
   }
 }

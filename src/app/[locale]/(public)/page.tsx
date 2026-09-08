@@ -2,14 +2,16 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageContainer } from "@/components/shared/page-container";
 import { PublicNavbar } from "./_components/public-navbar";
-import { BrandLogo } from "@/components/branding/brand-logo";
 import { Footer } from "./_components/footer";
+
+
 
 export default async function PublicPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
+
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "HomePage" });
 

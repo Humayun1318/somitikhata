@@ -136,5 +136,15 @@
     "rights": "All rights reserved.",
     "developedBy": "Developed by",
     "developerName": "Humayun Kabir"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "description": "The page could not be loaded. Please try again.",
+    "retry": "Try again"
+  },
+   "NotFound": {
+    "title": "Nothing found",
+    "description": "We couldn't find what you're looking for. It may have been moved, removed, or doesn't exist.",
+    "home": "Go home"
   }
 }

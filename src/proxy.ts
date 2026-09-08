@@ -6,13 +6,13 @@ import { sessionCookieName } from '@/lib/auth/constants';
 
 export function proxy(request: NextRequest) {
   const response = createMiddleware(routing)(request);
-  const pathname = request.nextUrl.pathname;
-  const privateRoute = /^\/(?:en|bn)\/(?:member|admin)(?:\/|$)/.test(pathname);
+  // const pathname = request.nextUrl.pathname;
+  // const privateRoute = /^\/(?:en|bn)\/(?:member|admin)(?:\/|$)/.test(pathname);
 
-  if (privateRoute && !request.cookies.has(sessionCookieName)) {
-    const locale = pathname.split('/')[1];
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
-  }
+  // if (privateRoute && !request.cookies.has(sessionCookieName)) {
+  //   const locale = pathname.split('/')[1];
+  //   return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+  // }
 
   return response;
 }

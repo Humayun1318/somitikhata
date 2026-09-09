@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 type HeaderProps = {
   userName?: string;
   memberNumber?: string;
-  userRole?: "ADMIN" | "MEMBER"; // Add userRole prop
+  userRole?: string; 
 };
 
 export function Header({

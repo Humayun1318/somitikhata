@@ -1,7 +1,7 @@
-import type { NavItem, UserRole, Permission } from '@/types/dashboard-sidbar';
+import type {DashboardSidebarItem, UserRole, Permission } from '@/types/dashboard-sidbar';
 
 type FilterParams = {
-  items: NavItem[];
+  items: DashboardSidebarItem[];
   userRole: UserRole;
   userPermissions?: Permission[];
 };
@@ -10,8 +10,8 @@ export function filterSidebarItemsByRole({
   items,
   userRole,
   userPermissions,
-}: FilterParams): NavItem[] {
-  return items.reduce<NavItem[]>((acc, item) => {
+}: FilterParams): DashboardSidebarItem[] {
+  return items.reduce<DashboardSidebarItem[]>((acc, item) => {
     // ১. চেক করুন ইউজার রোল এই মেনুর সাথে মিলে কিনা
     const hasRole = item.roles.includes(userRole);
 

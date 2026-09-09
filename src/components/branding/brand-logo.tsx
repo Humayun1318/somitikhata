@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 type BrandLogoProps = {
   variant?: 'compact' | 'full';

@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@/utils/cn";
 
 type InputProps = ComponentPropsWithoutRef<"input"> & {
   error?: boolean;

@@ -1,6 +1,6 @@
 import { AppShell } from '@/components/shared/app-shell';
 import { memberLoanSummary } from '@/lib/mock-data';
-import { formatCurrency } from '@/lib/utils/currency';
+import { formatCurrency } from '@/utils/currency';
 
 export default function MemberLoansPage() {
   return (

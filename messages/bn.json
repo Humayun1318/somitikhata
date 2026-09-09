@@ -166,5 +166,17 @@
       "nidInvalid": "এনআইডি ১০, ১৩ অথবা ১৭ ডিজিটের হতে হবে",
       "passwordsMatch": "পাসওয়ার্ড দুটি মিলছে না"
     }
+  },
+  "DashboardSidebar": {
+    "dashboard": "ড্যাশবোর্ড",
+    "savings": "সঞ্চয় হিসাব",
+    "loans": "ঋণ হিসাব",
+    "profile": "প্রোফাইল",
+    "adminDashboard": "অ্যাডমিন ওভারভিউ",
+    "members": "সদস্যবৃন্দ",
+    "collections": "ডেইলি কালেকশন",
+    "loansManagement": "ঋণ ব্যবস্থাপনা",
+    "reports": "রিপোর্ট ও হিসেব",
+    "settings": "সেটিংস"
   }
 }

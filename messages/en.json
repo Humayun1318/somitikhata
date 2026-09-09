@@ -166,5 +166,17 @@
       "nidInvalid": "NID must be 10, 13, or 17 digits long",
       "passwordsMatch": "Passwords do not match"
     }
+  },
+  "DashboardSidebar": {
+    "dashboard": "Dashboard",
+    "savings": "Savings",
+    "loans": "Loans",
+    "profile": "Profile",
+    "adminDashboard": "Admin Overview",
+    "members": "Members",
+    "collections": "Daily Collections",
+    "loansManagement": "Loan Management",
+    "reports": "Reports & Accounts",
+    "settings": "Settings"
   }
 }

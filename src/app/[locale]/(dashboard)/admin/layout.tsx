@@ -1,20 +1,37 @@
-import type { ReactNode } from 'react';
-import { redirect } from 'next/navigation';
-// import { getAuthUser } from '@/lib/auth'; // আপনার সেশন হেল্পার
+import type { ReactNode } from "react";
+import { DashboardSidebarConfig } from "@/config/dashboard-sidebar";
+import { requireUser } from "@/lib/auth/session";
+import { filterSidebarItemsByRole } from "@/utils/dashboard-sidebar-filter";
+import { DashboardClientWrapper } from "../_components/dashboard-client-wrapper";
 
 type AdminLayoutProps = {
   children: ReactNode;
   params: Promise<{ locale: string }>;
 };
 
-export default async function AdminLayout({ children, params }: AdminLayoutProps) {
+export default async function AdminLayout({
+  children,
+  params,
+}: AdminLayoutProps) {
   const { locale } = await params;
-//   const auth = await getAuthUser();
+  //   const user = await requireUser(locale, 'admin');
 
-  // যদি লগইন না থাকে অথবা ইউজার অ্যাডমিন না হয়
-//   if (!auth || auth.user.role !== 'ADMIN') {
-//     redirect(`/${locale}/dashboard`); // মেম্বারকে সাধারণ ড্যাশবোর্ডে ফেরত পাঠানো হবে
-//   }
+  const filteredItems = filterSidebarItemsByRole({
+    items: DashboardSidebarConfig.items,
+    userRole: "ADMIN",
+  });
 
-  return <>{children}</>;
+  console.log("Filtered Sidebar Items for Admin:", filteredItems);
+
+  return (
+    <DashboardClientWrapper
+      userRole="ADMIN"
+      filteredItems={filteredItems}
+      //   userName={user.name}
+      userName="Admin User" // Placeholder name for admin user
+      memberNumber="123456" // Placeholder member number for admin user
+    >
+      {children}
+    </DashboardClientWrapper>
+  );
 }

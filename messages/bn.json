@@ -174,9 +174,16 @@
     "profile": "প্রোফাইল",
     "adminDashboard": "অ্যাডমিন ওভারভিউ",
     "members": "সদস্যবৃন্দ",
-    "collections": "ডেইলি কালেকশন",
+    "collections": "কালেকশন",
     "loansManagement": "ঋণ ব্যবস্থাপনা",
     "reports": "রিপোর্ট ও হিসেব",
-    "settings": "সেটিংস"
+    "settings": "সেটিংস",
+    "pendingMembers": "পেন্ডিং সদস্য",
+    "allMembers": "সকল সদস্য",
+    "mySavings": "আমার সঞ্চয়",
+    "myLoans": "আমার ঋণ",
+    "depositRequest": "ডিপোজিট রিকোয়েস্ট",
+    "applyLoan": "ঋণ আবেদন"
+
   }
 }

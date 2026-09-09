@@ -10,15 +10,16 @@ import { useTranslations } from "next-intl";
 type HeaderProps = {
   userName?: string;
   memberNumber?: string;
-  profileHref?: string;
+  userRole?: "ADMIN" | "MEMBER"; // Add userRole prop
 };
 
 export function Header({
   userName = "User",
   memberNumber,
-  profileHref = "/profile",
+  userRole = "MEMBER", // Default to MEMBER if not provided
 }: HeaderProps) {
   const t = useTranslations();
+  const profileHref = userRole === 'ADMIN' ? '/admin/profile' : '/member/profile';
 
   return (
     <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-app-border bg-app-surface px-4 sm:px-6">

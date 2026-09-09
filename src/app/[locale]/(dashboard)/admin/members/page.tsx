@@ -1,17 +1,9 @@
 import { StatusBadge } from "@/components/shared/status-badge";
-// import { adminMembers } from "@/lib/mock-data";
+import { adminMembers } from "@/lib/mock-data";
 
 export default function AdminMembersPage() {
   return (
-    <div className="space-y-6">
-      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg border border-app-border bg-app-surface p-4">
-          <h3 className="text-sm font-semibold text-app-text">Members</h3>
-          <p className="mt-2 text-2xl font-bold text-app-text">
-            {/* {adminMembers.length} */}
-          </p>
-        </div>
-      </section>
+    <div className="space-y-6"><header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-sm font-medium text-app-primary">People directory</p><h1 className="mt-1 text-2xl font-semibold text-app-text">Members</h1><p className="mt-1 text-sm text-app-text-muted">Manage member records and savings participation.</p></div><button className="w-fit rounded-lg bg-app-primary px-4 py-2.5 text-sm font-semibold text-white">Add member</button></header><section className="grid gap-4 sm:grid-cols-3">{[['Total members', '482'], ['Active this month', '412'], ['Pending review', '12']].map(([label, value]) => <article key={label} className="rounded-2xl border border-app-border bg-app-surface p-5"><p className="text-sm text-app-text-muted">{label}</p><p className="mt-2 text-2xl font-bold text-app-text">{value}</p></article>)}</section><section className="overflow-hidden rounded-2xl border border-app-border bg-app-surface"><div className="flex flex-col justify-between gap-3 border-b border-app-border p-5 sm:flex-row sm:items-center"><h2 className="font-semibold text-app-text">Member directory</h2><input className="h-10 rounded-lg border border-app-border bg-white px-3 text-sm" placeholder="Search by name or ID" /></div><div className="divide-y divide-app-border">{adminMembers.map((member) => <div key={member.id} className="grid gap-3 p-4 sm:grid-cols-[0.7fr_1.4fr_1fr_0.7fr] sm:items-center"><span className="font-mono text-xs text-app-text-muted">{member.id}</span><div><p className="font-medium text-app-text">{member.name}</p><p className="text-xs text-app-text-muted">{member.phone}</p></div><span className="text-sm text-app-text">৳{member.totalSavings.toLocaleString()} saved</span><StatusBadge label={member.status} /></div>)}</div></section>
     </div>
   );
 }

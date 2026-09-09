@@ -3,11 +3,6 @@ import { formatCurrency } from "@/utils/currency";
 
 export default function MemberLoansPage() {
   return (
-    <section className="rounded-2xl border border-app-border bg-app-surface p-5">
-      <h1 className="text-xl font-semibold text-app-text">Loans</h1>
-      <p className="mt-2 text-sm text-app-text-muted">
-        View your loan summary and details.
-      </p>
-    </section>
+    <div className="space-y-6"><header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><p className="text-sm font-medium text-app-primary">Financial support</p><h1 className="mt-1 text-2xl font-semibold text-app-text">My loans</h1><p className="mt-1 text-sm text-app-text-muted">Track your active loan and repayment schedule.</p></div><a href="/member/loans/apply" className="w-fit rounded-lg bg-app-primary px-4 py-2.5 text-sm font-semibold text-white">Apply for a loan</a></header><section className="grid gap-4 sm:grid-cols-3">{[['Original amount', '৳60,000'], ['Remaining', formatCurrency(memberLoanSummary.remaining)], ['Next installment', formatCurrency(memberLoanSummary.nextInstallment)]].map(([label, value]) => <article key={label} className="rounded-2xl border border-app-border bg-app-surface p-5"><p className="text-sm text-app-text-muted">{label}</p><p className="mt-3 text-2xl font-bold text-app-text">{value}</p></article>)}</section><section className="rounded-2xl border border-app-border bg-app-surface p-5"><div className="flex items-center justify-between"><div><h2 className="font-semibold text-app-text">Repayment schedule</h2><p className="mt-1 text-sm text-app-text-muted">Upcoming installment details</p></div><span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">On track</span></div><div className="mt-6 grid gap-3 sm:grid-cols-3"><div className="rounded-xl border border-app-border bg-app-background p-4"><p className="text-xs text-app-text-muted">Next due date</p><p className="mt-2 font-semibold text-app-text">{memberLoanSummary.dueDate}</p></div><div className="rounded-xl border border-app-border bg-app-background p-4"><p className="text-xs text-app-text-muted">Installment amount</p><p className="mt-2 font-semibold text-app-text">{formatCurrency(memberLoanSummary.nextInstallment)}</p></div><div className="rounded-xl border border-app-border bg-app-background p-4"><p className="text-xs text-app-text-muted">Paid installments</p><p className="mt-2 font-semibold text-app-text">8 of 15</p></div></div></section></div>
   );
 }

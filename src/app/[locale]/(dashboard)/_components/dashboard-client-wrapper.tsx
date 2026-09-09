@@ -32,7 +32,7 @@ export function DashboardClientWrapper({
 
       {/* Main Container */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
-        <Header userName={userName} memberNumber={memberNumber} />
+        <Header userName={userName} memberNumber={memberNumber} userRole={userRole} />
 
         <main className="flex-1 overflow-y-auto p-4 pb-20 sm:p-6 md:pb-6">
           {children}

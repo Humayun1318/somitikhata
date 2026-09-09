@@ -1,4 +1,4 @@
-export default function MemberProfilePage() {
+export default function AdminProfilePage() {
   return (
     <div className="max-w-4xl space-y-6">
       <header>

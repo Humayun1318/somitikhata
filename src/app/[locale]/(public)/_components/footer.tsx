@@ -52,9 +52,9 @@ export function Footer() {
             </div>
 
             {/* Description / Tagline */}
-            <p className="max-w-xl text-xs leading-relaxed text-app-text-muted sm:text-sm">
+            {/* <p className="max-w-xl text-xs leading-relaxed text-app-text-muted sm:text-sm">
               {t("tagline")}
-            </p>
+            </p> */}
           </div>
 
           {/* 2. Navigation Links */}
@@ -81,14 +81,14 @@ export function Footer() {
                     {t("login")}
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
                     href="/register"
                     className="inline-flex min-h-10 w-full items-center text-app-text transition-all duration-200 hover:translate-x-0.5 hover:text-app-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-focus sm:min-h-0"
                   >
                     {t("register")}
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 

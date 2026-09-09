@@ -1,8 +1,7 @@
+import { StatusBadge } from '@/components/shared/status-badge';
+
 export default function PendingMembersPage() {
   return (
-    <section className="rounded-2xl border border-app-border bg-app-surface p-5">
-      <h1 className="text-xl font-semibold text-app-text">Pending members</h1>
-      <p className="mt-2 text-sm text-app-text-muted">Review membership requests waiting for approval.</p>
-    </section>
+    <div className="space-y-6"><header><p className="text-sm font-medium text-app-primary">Member approvals</p><h1 className="mt-1 text-2xl font-semibold text-app-text">Pending members</h1><p className="mt-1 text-sm text-app-text-muted">Review requests and confirm new cooperative members.</p></header><section className="rounded-2xl border border-app-border bg-app-surface p-5"><div className="mb-5 flex items-center justify-between"><div><h2 className="font-semibold text-app-text">3 requests awaiting review</h2><p className="mt-1 text-sm text-app-text-muted">Submitted in the last 7 days</p></div><StatusBadge label="Pending" /></div><div className="space-y-3">{['Farzana Yasmin', 'Abdul Karim', 'Mita Rani'].map((name, index) => <div key={name} className="flex flex-col gap-3 rounded-xl border border-app-border bg-app-background p-4 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-medium text-app-text">{name}</p><p className="mt-1 text-xs text-app-text-muted">Application SK-00{71 + index} · Submitted 2 days ago</p></div><div className="flex gap-2"><button className="rounded-lg border border-app-border bg-app-surface px-3 py-2 text-xs font-semibold text-app-text">View</button><button className="rounded-lg bg-app-primary px-3 py-2 text-xs font-semibold text-white">Approve</button></div></div>)}</div></section></div>
   );
 }

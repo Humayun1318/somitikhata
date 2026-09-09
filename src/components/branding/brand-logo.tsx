@@ -25,8 +25,12 @@ export function BrandLogo({
 }: BrandLogoProps) {
   const isFull = variant === 'full';
 
+  const redirectToHome = () => {
+    window.location.href = '/';
+  }
+
   return (
-    <span className={cn('inline-flex min-w-0 items-center gap-2.5', className)}>
+    <span className={cn('inline-flex min-w-0 items-center gap-2.5 cursor-pointer', className)} onClick={redirectToHome}>
       <Image
         src="/branding/logo-mark-removebg-preview.png"
         alt="BKS logo"

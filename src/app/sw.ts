@@ -5,6 +5,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting());
 });
 
+// to check serwist files
 self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });

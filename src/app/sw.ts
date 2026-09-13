@@ -10,6 +10,8 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim());
 });
 
+
+// to fetch the method
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') {
     return;

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import './globals.css';
 
+
+// This is the 404 page for the application. It is displayed when a user navigates to a route that does not exist. The page includes a message indicating that the page was not found and a link to return to the home page.
 export default function NotFound() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-app-background px-4 py-8 sm:px-6">

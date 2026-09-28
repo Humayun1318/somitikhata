@@ -3,8 +3,8 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageContainer } from "@/components/shared/page-container";
-import { PublicNavbar } from "../(public)/_components/public-navbar";
-import { Footer } from "../(public)/_components/footer";
+import { PublicNavbar } from "@/components/layout/public-navbar";
+import { Footer } from "@/components/layout/footer";
 
 type AuthLayoutProps = {
   children: ReactNode;

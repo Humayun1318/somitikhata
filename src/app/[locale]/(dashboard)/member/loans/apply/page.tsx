@@ -1,5 +1,5 @@
-export default function ApplyLoanPage() {
-  return (
-    <div className="max-w-3xl space-y-6"><header><p className="text-sm font-medium text-app-primary">Loan application</p><h1 className="mt-1 text-2xl font-semibold text-app-text">Apply for a loan</h1><p className="mt-1 text-sm text-app-text-muted">Share a few details and the committee will review your request.</p></header><form className="rounded-2xl border border-app-border bg-app-surface p-5"><div className="grid gap-5 sm:grid-cols-2"><label className="text-sm font-medium text-app-text">Requested amount<input type="number" min="1" className="mt-2 h-11 w-full rounded-lg border border-app-border bg-app-background px-3 font-normal" placeholder="e.g. 50000" /></label><label className="text-sm font-medium text-app-text">Preferred term<select className="mt-2 h-11 w-full rounded-lg border border-app-border bg-app-background px-3 font-normal"><option>12 months</option><option>18 months</option><option>24 months</option></select></label><label className="text-sm font-medium text-app-text sm:col-span-2">Purpose<textarea rows={4} className="mt-2 w-full rounded-lg border border-app-border bg-app-background p-3 font-normal" placeholder="Tell us briefly how you plan to use the loan" /></label></div><div className="mt-6 flex flex-col justify-between gap-3 border-t border-app-border pt-5 sm:flex-row sm:items-center"><p className="text-xs text-app-text-muted">Applications are reviewed within 3 working days.</p><button type="submit" className="rounded-lg bg-app-primary px-4 py-2.5 text-sm font-semibold text-white">Submit application</button></div></form></div>
-  );
+import { PageHeader } from '@/components/shared/page-header';
+
+export default function MemberLoanApplyPage() {
+  return <PageHeader titleKey="applyLoan" />;
 }

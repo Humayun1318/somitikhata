@@ -1,8 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { PageContainer } from "@/components/shared/page-container";
-import { PublicNavbar } from "./_components/public-navbar";
-import { Footer } from "./_components/footer";
+import { PublicNavbar } from "@/components/layout/public-navbar";
+import { Footer } from "@/components/layout/footer";
 
 
 

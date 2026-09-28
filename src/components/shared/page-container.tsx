@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/cn';
 
 type PageContainerProps = ComponentPropsWithoutRef<'div'> & {
   size?: 'content' | 'wide' | 'full';

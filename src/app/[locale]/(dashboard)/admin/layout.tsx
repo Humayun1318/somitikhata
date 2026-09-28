@@ -1,21 +1,11 @@
 import type { ReactNode } from "react";
-import { DashboardSidebarConfig } from "@/config/dashboard-sidebar";
-import { filterSidebarItemsByRole } from "@/utils/dashboard-sidebar-filter";
-import { DashboardClientWrapper } from "../_components/dashboard-client-wrapper";
-import { AuthGate } from "../../(auth)/_components/auth-gate";
 
-type AdminLayoutProps = {
-  children: ReactNode;
-  params: Promise<{ locale: string }>;
-};
+import { AuthGate } from "@/features/auth/components/auth-gate";
+import { DashboardShell } from "@/features/dashboard/components/dashboard-shell";
+import { DashboardSidebarConfig } from "@/features/dashboard/config/sidebar";
+import { filterSidebarItemsByRole } from "@/features/dashboard/filter-sidebar-items";
 
-export default async function AdminLayout({
-  children,
-  params,
-}: AdminLayoutProps) {
-  const { locale } = await params;
-  //   const user = await requireUser(locale, 'admin');
-
+export default function AdminLayout({ children }: { children: ReactNode }) {
   const filteredItems = filterSidebarItemsByRole({
     items: DashboardSidebarConfig.items,
     userRole: "ADMIN",
@@ -23,15 +13,15 @@ export default async function AdminLayout({
 
   return (
     <AuthGate>
-      <DashboardClientWrapper
+      <DashboardShell
         userRole="ADMIN"
         filteredItems={filteredItems}
-        //   userName={user.name}
-        userName="Admin User" // Placeholder name for admin user
-        memberNumber="123456" // Placeholder member number for admin user
+        // TODO: replace placeholders with the logged-in user (useMe)
+        userName="Admin User"
+        memberNumber="123456"
       >
         {children}
-      </DashboardClientWrapper>
+      </DashboardShell>
     </AuthGate>
   );
 }

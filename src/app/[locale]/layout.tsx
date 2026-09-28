@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 import { hindSiliguri, inter } from "../fonts";
-import Provider from "@/components/providers/Provider";
+import AppProviders from "@/providers/app-providers";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -49,7 +49,6 @@ export default async function LocaleLayout({
   }
 
   const messages = await getMessages({ locale });
-  // throw new Error("hello")
 
   return (
     <html
@@ -58,10 +57,10 @@ export default async function LocaleLayout({
     >
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Provider>
+          <AppProviders>
             <main>{children}</main>
 
-          </Provider>
+          </AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -74,9 +74,16 @@ export function AuthGate({ children }: { children: ReactNode }) {
   // error boundary handle it instead of sending the user to login.
   if (isError && error.status !== 401) throw error;
 
-  if (user && forbidden) return <AccessDenied homeHref={getPostLoginRoute(user)} />;
+  const showAccessDenied = !!user && forbidden;
+  const showLoading = !showAccessDenied && (!user || !!redirectTo);
+  const showContent = !showAccessDenied && !showLoading;
+  const homeHref = user ? getPostLoginRoute(user) : LOGIN_ROUTE;
 
-  if (!user || redirectTo) return <AuthLoading />;
-
-  return <>{children}</>;
+  return (
+    <>
+      {showAccessDenied && <AccessDenied homeHref={homeHref} />}
+      {showLoading && <AuthLoading />}
+      {showContent && children}
+    </>
+  );
 }

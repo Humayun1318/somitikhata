@@ -19,7 +19,7 @@ export function GuestGate({ children }: { children: ReactNode }) {
     if (user) router.replace(getPostLoginRoute(user));
   }, [user, router]);
 
-  if (isLoading || user) return <AuthLoading />;
+  const showLoading = isLoading || !!user;
 
-  return <>{children}</>;
+  return <>{showLoading ? <AuthLoading /> : children}</>;
 }

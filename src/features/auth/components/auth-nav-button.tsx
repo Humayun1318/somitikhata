@@ -37,27 +37,39 @@ export function AuthNavButton({
   const styles = STYLES[variant];
 
   // Wait for the first check so a signed-in user never sees a Login flash.
-  if (isLoading) return <span aria-hidden="true" className={styles.placeholder} />;
+  const showPlaceholder = isLoading;
+  const showLogout = !isLoading && !!user;
+  const showLogin = !isLoading && !user;
 
-  if (user) {
-    return (
-      <button
-        type="button"
-        disabled={logout.isPending}
-        onClick={() => {
-          onNavigate?.();
-          logout.mutate();
-        }}
-        className={styles.button}
-      >
-        {logoutLabel}
-      </button>
-    );
-  }
+  const handleLogout = () => {
+    onNavigate?.();
+    logout.mutate();
+  };
 
   return (
-    <Link href="/login" onClick={onNavigate} className={`${styles.button} inline-flex`}>
-      {loginLabel}
-    </Link>
+    <>
+      {showPlaceholder && (
+        <span aria-hidden="true" className={styles.placeholder} />
+      )}
+      {showLogout && (
+        <button
+          type="button"
+          disabled={logout.isPending}
+          onClick={handleLogout}
+          className={styles.button}
+        >
+          {logoutLabel}
+        </button>
+      )}
+      {showLogin && (
+        <Link
+          href="/login"
+          onClick={onNavigate}
+          className={`${styles.button} inline-flex`}
+        >
+          {loginLabel}
+        </Link>
+      )}
+    </>
   );
 }

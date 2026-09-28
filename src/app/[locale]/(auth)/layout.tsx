@@ -28,6 +28,7 @@ export default async function AuthLayout({
         faqLabel={tnav("nav.faq")}
         languageLabel={tnav("nav.language")}
         loginLabel={tnav("nav.login")}
+        logoutLabel={tnav("nav.logout")}
         navigationLabel={tnav("nav.navigationLabel")}
         mobileNavigationLabel={tnav("nav.mobileNavigationLabel")}
         openMenuLabel={tnav("nav.openMenuLabel")}

@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { useMe } from "@/features/auth/hooks/use-me";
 import { Building2, MapPin, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 export function Footer() {
   const t = useTranslations("Footer");
+  const { data: user } = useMe();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -61,14 +63,16 @@ export function Footer() {
                     {t("home")}
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/login"
-                    className="inline-flex min-h-10 w-full items-center text-app-text transition-all duration-200 hover:translate-x-0.5 hover:text-app-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-focus sm:min-h-0"
-                  >
-                    {t("login")}
-                  </Link>
-                </li>
+                {!user && (
+                  <li>
+                    <Link
+                      href="/login"
+                      className="inline-flex min-h-10 w-full items-center text-app-text transition-all duration-200 hover:translate-x-0.5 hover:text-app-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-focus sm:min-h-0"
+                    >
+                      {t("login")}
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
 

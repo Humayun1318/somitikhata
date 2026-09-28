@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/shared/brand-logo";
+import { AuthNavButton } from "@/features/auth/components/auth-nav-button";
 
 type PublicNavbarProps = {
   locale: string;
@@ -12,6 +13,7 @@ type PublicNavbarProps = {
   faqLabel: string;
   languageLabel: string;
   loginLabel: string;
+  logoutLabel: string;
   navigationLabel: string;
   mobileNavigationLabel: string;
   openMenuLabel: string;
@@ -29,6 +31,7 @@ export function PublicNavbar({
   faqLabel,
   languageLabel,
   loginLabel,
+  logoutLabel,
   navigationLabel,
   mobileNavigationLabel,
   openMenuLabel,
@@ -93,13 +96,12 @@ export function PublicNavbar({
           >
             {languageLabel}
           </Link>
-          <Link
-            href="/login"
-            onClick={closeMenu}
-            className="hidden rounded-xl bg-app-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-app-primary-hover focus-visible:outline-2 focus-visible:outline-app-focus sm:inline-flex"
-          >
-            {loginLabel}
-          </Link>
+          <AuthNavButton
+            variant="desktop"
+            loginLabel={loginLabel}
+            logoutLabel={logoutLabel}
+            onNavigate={closeMenu}
+          />
 
           <button
             type="button"
@@ -146,13 +148,12 @@ export function PublicNavbar({
             >
               {faqLabel}
             </Link>
-            <Link
-              href="/login"
-              onClick={closeMenu}
-              className="mt-2 rounded-xl bg-app-primary px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-app-primary-hover"
-            >
-              {loginLabel}
-            </Link>
+            <AuthNavButton
+              variant="mobile"
+              loginLabel={loginLabel}
+              logoutLabel={logoutLabel}
+              onNavigate={closeMenu}
+            />
           </div>
         </nav>
       )}

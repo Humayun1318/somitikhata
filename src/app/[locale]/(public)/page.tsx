@@ -36,6 +36,7 @@ export default async function PublicPage({
         faqLabel={t("nav.faq")}
         languageLabel={t("nav.language")}
         loginLabel={t("nav.login")}
+        logoutLabel={t("nav.logout")}
         navigationLabel={t("nav.navigationLabel")}
         mobileNavigationLabel={t("nav.mobileNavigationLabel")}
         openMenuLabel={t("nav.openMenuLabel")}

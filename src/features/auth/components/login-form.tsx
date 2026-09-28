@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -8,12 +7,13 @@ import { Link } from "@/i18n/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createLoginSchema, type LoginInput } from "@/features/auth/schemas";
+import { useToast } from "@/components/shared/toast/toast-provider";
 import { useLogin } from "@/features/auth/hooks/use-login";
 import { ApiError } from "@/lib/api-errors";
 
 export function LoginForm() {
   const t = useTranslations("Auth");
-  const [serverError, setServerError] = useState<string | null>(null);
+  const toast = useToast();
   const loginMutation = useLogin();
   const loginSchema = createLoginSchema(t);
 
@@ -30,26 +30,19 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    setServerError(null);
     try {
       // useLogin() calls /auth/login, then /user/me, then redirects to the
-      // right dashboard/profile route itself — nothing else to do here.
+      // right dashboard/profile route itself. The toast lives in the root
+      // layout, so it survives that redirect.
       await loginMutation.mutateAsync(data);
+      toast.success(t("loginSuccess"));
     } catch (err) {
-      setServerError(
-        err instanceof ApiError ? err.message : t("serverErrorLogin"),
-      );
+      toast.error(err instanceof ApiError ? err.message : t("serverErrorLogin"));
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-      {serverError && (
-        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 border border-red-200">
-          {serverError}
-        </div>
-      )}
-
       <div>
         <label
           htmlFor="identifier"

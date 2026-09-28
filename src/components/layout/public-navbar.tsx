@@ -45,10 +45,7 @@ export function PublicNavbar({
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-app-border bg-app-background/95 shadow-sm backdrop-blur-md">
-      {/* Navbar content for desktop and mobile views, including logo, navigation
-      links, language switcher, and login button */}
       <div className="mx-auto flex min-h-16 max-w-app-wide items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8 ">
-        {/* logo and name with link to home page */}
         <Link
           href="/"
           onClick={closeMenu}
@@ -63,7 +60,6 @@ export function PublicNavbar({
           />
         </Link>
 
-        {/* Navigation links for desktop view */}
         <nav
           aria-label={navigationLabel}
           className="hidden items-center gap-6 text-sm font-medium text-app-text-muted md:flex"
@@ -88,7 +84,6 @@ export function PublicNavbar({
           </Link>
         </nav>
 
-        {/* language and login action */}
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
             href={pathname}
@@ -106,7 +101,6 @@ export function PublicNavbar({
             {loginLabel}
           </Link>
 
-          {/* hamburger menu button*/}
           <button
             type="button"
             aria-expanded={isMenuOpen}
@@ -124,7 +118,6 @@ export function PublicNavbar({
         </div>
       </div>
 
-      {/* mobile navigation list  */}
       {isMenuOpen && (
         <nav
           id="public-mobile-navigation"

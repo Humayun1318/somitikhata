@@ -1,6 +1,7 @@
 import { getRequestConfig } from 'next-intl/server';
 import { hasLocale } from 'next-intl';
 import { routing } from './routing';
+import { loadMessages } from './messages';
 
 export default getRequestConfig(async ({ locale }) => {
   const activeLocale = hasLocale(routing.locales, locale)
@@ -9,6 +10,6 @@ export default getRequestConfig(async ({ locale }) => {
 
   return {
     locale: activeLocale,
-    messages: (await import(`../../messages/${activeLocale}.json`)).default,
+    messages: await loadMessages(activeLocale),
   };
 });

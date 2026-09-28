@@ -25,7 +25,6 @@ export function MobileDrawer({ isOpen, onClose, items }: MobileDrawerProps) {
         isOpen && 'pointer-events-auto'
       )}
     >
-      {/* 1. Backdrop Fade Animation */}
       <div
         className={cn(
           'fixed inset-0 bg-black/50 opacity-0 transition-opacity duration-300 ease-in-out',
@@ -35,7 +34,6 @@ export function MobileDrawer({ isOpen, onClose, items }: MobileDrawerProps) {
         aria-hidden="true"
       />
 
-      {/* 2. Drawer Slide-in Animation & Responsive Width */}
       <div
         className={cn(
           'fixed inset-y-0 left-0 flex w-[80vw] max-w-xs flex-col bg-app-surface p-5 shadow-2xl transition-transform duration-300 ease-in-out -translate-x-full',
@@ -81,7 +79,6 @@ export function MobileDrawer({ isOpen, onClose, items }: MobileDrawerProps) {
                   <span>{t(item.titleKey)}</span>
                 </Link>
 
-                {/* Sub-menu inside Mobile Drawer */}
                 {item.children && item.children.length > 0 && (
                   <div className="ml-6 mt-1 space-y-1 border-l border-app-border pl-3">
                     {item.children.map((child) => {

@@ -23,7 +23,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         role="alert"
         className="w-full max-w-md rounded-2xl border border-app-border bg-app-surface p-6 text-center shadow-sm sm:p-8"
       >
-        {/* Error icon */}
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50">
           <svg
             aria-hidden="true"
@@ -41,17 +40,14 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </svg>
         </div>
 
-        {/* Title */}
         <h1 className="mt-5 text-xl font-semibold tracking-tight text-app-text sm:text-2xl">
           {t("title")}
         </h1>
 
-        {/* Description */}
         <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-app-text-muted">
           {t("description")}
         </p>
 
-        {/* Retry */}
         <button
           type="button"
           onClick={reset}

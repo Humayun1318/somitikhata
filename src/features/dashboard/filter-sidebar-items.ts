@@ -1,4 +1,4 @@
-import type {DashboardSidebarItem, UserRole, Permission } from '@/features/dashboard/types';
+import type { DashboardSidebarItem, UserRole, Permission } from '@/features/dashboard/types';
 
 type FilterParams = {
   items: DashboardSidebarItem[];
@@ -12,17 +12,12 @@ export function filterSidebarItemsByRole({
   userPermissions,
 }: FilterParams): DashboardSidebarItem[] {
   return items.reduce<DashboardSidebarItem[]>((acc, item) => {
-    // ১. চেক করুন ইউজার রোল এই মেনুর সাথে মিলে কিনা
-    const hasRole = item.roles.includes(userRole);
-
-    if (!hasRole) {
+    if (!item.roles.includes(userRole)) {
       return acc;
     }
 
-    // ২. পারমিশন ফিল্টারিং:
-    // - যদি মেনুতে কোনো permissions না থাকে -> True
-    // - যদি userPermissions প্রপস না পাঠানো হয় (undefined) -> True (সব পারমিশন এলাউ করবে)
-    // - যদি পারমিশন থাকে -> চেক করবে ইউজারের সেই পারমিশন আছে কিনা
+    // An item is allowed when it has no permissions, when the caller passed no
+    // userPermissions (all allowed), or when the user holds at least one of them.
     const hasPermission =
       !item.permissions ||
       userPermissions === undefined ||
@@ -32,7 +27,6 @@ export function filterSidebarItemsByRole({
       return acc;
     }
 
-    // ৩. সাব-মেনু ফিল্টারিং (যদি চিলড্রেন থাকে)
     const filteredChildren = item.children
       ? filterSidebarItemsByRole({
           items: item.children,
@@ -41,15 +35,12 @@ export function filterSidebarItemsByRole({
         })
       : undefined;
 
-    // যদি সাব-মেনু কনফিগার করা থাকে কিন্তু কোনো সাব-মেনুর এক্সেস না থাকে, তবে প্যারেন্ট আইটেম হাইড হবে
+    // A parent whose children are all filtered out is hidden too.
     if (item.children && (!filteredChildren || filteredChildren.length === 0)) {
       return acc;
     }
 
-    acc.push({
-      ...item,
-      children: filteredChildren,
-    });
+    acc.push({ ...item, children: filteredChildren });
 
     return acc;
   }, []);

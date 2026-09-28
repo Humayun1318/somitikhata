@@ -29,7 +29,6 @@ export default async function PublicPage({
 
   return (
     <div className="min-h-screen bg-[#F7F8F7] text-[#111827]">
-      {/* Render the public navbar (home page top) with translated labels and other props */}
       <PublicNavbar
         locale={locale}
         howItWorksLabel={t("nav.howItWorks")}
@@ -47,7 +46,6 @@ export default async function PublicPage({
         location={t("nav.location")}
       />
 
-      {/* Main content of the public page, including hero section, features, FAQ, and footer */}
       <main className="pt-16">
         <section className="pb-12 pt-12 md:pt-20">
           <PageContainer>

@@ -5,7 +5,6 @@ import { DashboardSidebarItem } from "@/features/dashboard/types";
 export class DashboardSidebarConfig {
   static readonly items: DashboardSidebarItem[] = [
     // ==========================================
-    // MEMBER ROUTES (সদস্যদের জন্য নির্ধারিত রাউট)
     // ==========================================
     {
       id: 'member-dashboard',
@@ -69,7 +68,6 @@ export class DashboardSidebarConfig {
     },
 
     // ==========================================
-    // ADMIN ROUTES (অ্যাডমিনদের জন্য নির্ধারিত রাউট)
     // ==========================================
     {
       id: 'admin-dashboard',

@@ -1,0 +1,38 @@
+{
+  "Footer": {
+    "orgName": "Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
+    "orgLocation": "Lohagara, Chattogram",
+    "registrationNo": "Reg. No: 7646/99",
+    "tagline": "A secure digital ledger system for savings, loan management, and shared assets.",
+    "quickLinks": "Quick Links",
+    "portal": "Portal Links",
+    "contact": "Contact & Location",
+    "home": "Home",
+    "login": "Login",
+    "register": "Member Registration",
+    "memberDashboard": "Member Dashboard",
+    "adminDashboard": "Admin Portal",
+    "address": "Bottoli Station Road, Lohagara, Chattogram, Bangladesh",
+    "rights": "All rights reserved.",
+    "developedBy": "Developed by",
+    "developerName": "Humayun Kabir"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "description": "The page could not be loaded. Please try again.",
+    "retry": "Try again"
+  },
+  "NotFound": {
+    "title": "Nothing found",
+    "description": "We couldn't find what you're looking for. It may have been moved, removed, or doesn't exist.",
+    "home": "Go home"
+  },
+  "Toast": {
+    "close": "Dismiss"
+  },
+  "Errors": {
+    "forbidden": "You don't have permission to access this page.",
+    "forbiddenTitle": "Access denied",
+    "backToDashboard": "Back to my dashboard"
+  }
+}

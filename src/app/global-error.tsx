@@ -26,7 +26,6 @@ export default function GlobalError({
             role="alert"
             className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm sm:p-8"
           >
-            {/* Error icon */}
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50">
               <svg
                 aria-hidden="true"

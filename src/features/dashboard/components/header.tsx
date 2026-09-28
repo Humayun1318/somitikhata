@@ -16,14 +16,13 @@ type HeaderProps = {
 export function Header({
   userName = "User",
   memberNumber,
-  userRole = "MEMBER", // Default to MEMBER if not provided
+  userRole = "MEMBER",
 }: HeaderProps) {
   const t = useTranslations();
   const profileHref = userRole === 'ADMIN' ? '/admin/profile' : '/member/profile';
 
   return (
     <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-app-border bg-app-surface px-4 sm:px-6">
-      {/* 1. Left Mobile Branding (Desktop branding is inside Desktop Sidebar) */}
       <div className="flex items-center gap-3 md:hidden">
         <BrandLogo
           shortName={t("HomePage.nav.shortName")}
@@ -33,11 +32,7 @@ export function Header({
         />
       </div>
 
-      {/* 2. Desktop Profile Info Card (Searchbar এর স্থানে শুধুমাত্র ডেস্কটপে দেখাবে) */}
       <div className="hidden md:flex items-center gap-3 rounded-lg border border-app-border bg-app-surface-muted px-3.5 py-1.5">
-        {/* <div className="flex h-8 w-8 items-center justify-center rounded-full bg-app-primary/10 text-app-primary">
-          <DynamicIcon name="User" className="h-4 w-4" />
-        </div> */}
         <div className="flex flex-col">
           <span className="text-sm font-semibold leading-tight text-app-text">
             {userName}
@@ -50,7 +45,6 @@ export function Header({
         </div>
       </div>
 
-      {/* 3. Right Controls: Language Switcher & Profile Avatar */}
       <div className="flex items-center gap-3.5">
         <LanguageSwitcher />
 

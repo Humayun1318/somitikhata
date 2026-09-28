@@ -50,24 +50,6 @@ export function LoginForm() {
         </div>
       )}
 
-      {/* <div>
-        <label
-          htmlFor="phone"
-          className="mb-1.5 block text-sm font-medium text-app-text"
-        >
-          {t('phone')}
-        </label>
-        <Input
-          id="phone"
-          type="tel"
-          placeholder={t('phonePlaceholder')}
-          error={!!errors.phone}
-          {...register('phone')}
-        />
-        {errors.phone && (
-          <p className="mt-1 text-xs text-red-600">{errors.phone.message}</p>
-        )}
-      </div> */}
       <div>
         <label
           htmlFor="identifier"

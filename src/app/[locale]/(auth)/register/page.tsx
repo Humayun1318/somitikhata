@@ -28,7 +28,6 @@ export default async function RegisterPage({
 
   return (
     <>
-      {/* <AuthHeader title={t('registerTitle')} subtitle={t('registerSubtitle')} /> */}
       <div className="mb-6 text-center">
       <h1 className="text-2xl font-bold text-app-text">{t('registerTitle')}</h1>
       <p className="mt-1.5 text-sm text-app-text-muted">{t('registerSubtitle')}</p>

@@ -5,6 +5,9 @@ import { DashboardShell } from "@/features/dashboard/components/dashboard-shell"
 import { DashboardSidebarConfig } from "@/features/dashboard/config/sidebar";
 import { filterSidebarItemsByRole } from "@/features/dashboard/filter-sidebar-items";
 
+// Server layout: it cannot read the session (cookies belong to the backend origin).
+// Pages under this layout are gated by AuthGate. For the current user in a
+// client component call useMe(), which reads GET /user/me from the query cache.
 export default function MemberLayout({ children }: { children: ReactNode }) {
   const filteredItems = filterSidebarItemsByRole({
     items: DashboardSidebarConfig.items,
@@ -16,7 +19,7 @@ export default function MemberLayout({ children }: { children: ReactNode }) {
       <DashboardShell
         userRole="MEMBER"
         filteredItems={filteredItems}
-        // TODO: replace placeholders with the logged-in user (useMe)
+        // Placeholders. The real user comes from useMe() (features/auth/hooks/use-me).
         userName="Member User"
         memberNumber="654321"
       >

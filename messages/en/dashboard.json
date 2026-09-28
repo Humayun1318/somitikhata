@@ -1,0 +1,20 @@
+{
+  "DashboardSidebar": {
+    "dashboard": "Dashboard",
+    "savings": "Savings",
+    "loans": "Loans",
+    "profile": "Profile",
+    "adminDashboard": "Admin Overview",
+    "members": "Members",
+    "collections": "Collections",
+    "loansManagement": "Loan Management",
+    "reports": "Reports & Accounts",
+    "settings": "Settings",
+    "pendingMembers": "Pending Members",
+    "allMembers": "All Members",
+    "mySavings": "My Savings",
+    "myLoans": "My Loans",
+    "depositRequest": "Deposit Request",
+    "applyLoan": "Apply for Loan"
+  }
+}

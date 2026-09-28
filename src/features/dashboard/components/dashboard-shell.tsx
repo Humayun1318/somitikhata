@@ -27,10 +27,8 @@ export function DashboardShell({
 
   return (
     <div className="flex min-h-screen bg-app-background">
-      {/* Desktop Sidebar with Children Support */}
       <DesktopSidebar items={filteredItems} />
 
-      {/* Main Container */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         <Header userName={userName} memberNumber={memberNumber} userRole={userRole} />
 
@@ -39,13 +37,11 @@ export function DashboardShell({
         </main>
       </div>
 
-      {/* Mobile Bottom Navigation Bar */}
       <MobileBottomNav
         userRole={userRole}
         onOpenMore={() => setIsDrawerOpen(true)}
       />
 
-      {/* Mobile Drawer */}
       <MobileDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}

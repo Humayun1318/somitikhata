@@ -18,11 +18,9 @@ export function MobileBottomNav({
   const t = useTranslations();
   const pathname = usePathname();
 
-  // ১. ড্যাশবোর্ড ইউআরএল
   const dashboardHref =
     userRole === "ADMIN" ? "/admin/dashboard" : "/member/dashboard";
 
-  // ২. রোল অনুযায়ী মিডল অপশন (Member -> Savings, Admin -> Collections)
   const middleNavItem =
     userRole === "ADMIN"
       ? {
@@ -38,7 +36,6 @@ export function MobileBottomNav({
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-app-border bg-app-surface px-4 shadow-lg md:hidden">
-      {/* 1. Dashboard (Left) */}
       <Link
         href={dashboardHref}
         className={cn(
@@ -54,7 +51,6 @@ export function MobileBottomNav({
         </span>
       </Link>
 
-      {/* 2. Middle Action (Savings / Collections) */}
       <Link
         href={middleNavItem.href}
         className={cn(
@@ -69,7 +65,6 @@ export function MobileBottomNav({
         <span className="mt-1 text-[10px]">{t(middleNavItem.titleKey)}</span>
       </Link>
 
-      {/* 3. More (Right - Hamburger Drawer Opener) */}
       <button
         onClick={onOpenMore}
         type="button"

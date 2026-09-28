@@ -27,7 +27,6 @@ export default async function LoginPage({
 
   return (
     <>
-      {/* <AuthHeader title={t('loginTitle')} subtitle={t('loginSubtitle')} /> */}
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-bold text-app-text">{t("loginTitle")}</h1>
         <p className="mt-1.5 text-sm text-app-text-muted">

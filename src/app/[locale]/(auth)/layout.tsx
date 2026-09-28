@@ -21,7 +21,6 @@ export default async function AuthLayout({
 
   return (
     <main className="min-h-screen bg-app-background">
-      {/* Render the public navbar (home page top) with translated labels and other props */}
       <PublicNavbar
         locale={locale}
         howItWorksLabel={tnav("nav.howItWorks")}

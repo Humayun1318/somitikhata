@@ -11,15 +11,10 @@ export function Footer() {
 
   return (
     <footer className="w-full border-t border-app-border bg-app-surface text-app-text">
-      {/* Main Container */}
       <div className="mx-auto max-w-app-wide px-4 pt-10 pb-8 sm:px-6 sm:pt-14 sm:pb-12 lg:px-8">
-        {/* Main Layout Grid */}
         <div className="flex flex-col gap-10 lg:grid lg:grid-cols-12 lg:gap-8">
-          {/* 1. Branding & Organization Identity */}
           <div className="flex flex-col gap-4 lg:col-span-5">
-            {/* Square Logo Box aligned with Title */}
             <div className="flex items-start gap-3.5 sm:items-center sm:gap-4">
-              {/* Perfect Square Logo Box */}
               <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-app-border bg-white p-2 shadow-2xs transition-all duration-300 hover:border-app-primary/30 hover:shadow-xs">
                 <Image
                   src="/branding/logo-mark-removebg-preview.png"
@@ -31,7 +26,6 @@ export function Footer() {
                 />
               </div>
 
-              {/* Organization Text & Badges Stack */}
               <div className="flex flex-col justify-center gap-1">
                 <h3 className="text-sm font-bold leading-snug tracking-tight text-app-text sm:text-base">
                   {t("orgName")}
@@ -51,15 +45,9 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Description / Tagline */}
-            {/* <p className="max-w-xl text-xs leading-relaxed text-app-text-muted sm:text-sm">
-              {t("tagline")}
-            </p> */}
           </div>
 
-          {/* 2. Navigation Links */}
           <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:col-span-4">
-            {/* Quick Links */}
             <div className="flex flex-col gap-3">
               <h4 className="text-[11px] font-bold uppercase tracking-wider text-app-text-muted">
                 {t("quickLinks")}
@@ -81,18 +69,9 @@ export function Footer() {
                     {t("login")}
                   </Link>
                 </li>
-                {/* <li>
-                  <Link
-                    href="/register"
-                    className="inline-flex min-h-10 w-full items-center text-app-text transition-all duration-200 hover:translate-x-0.5 hover:text-app-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-app-focus sm:min-h-0"
-                  >
-                    {t("register")}
-                  </Link>
-                </li> */}
               </ul>
             </div>
 
-            {/* Portal Links */}
             <div className="flex flex-col gap-3">
               <h4 className="text-[11px] font-bold uppercase tracking-wider text-app-text-muted">
                 {t("portal")}
@@ -120,7 +99,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* 3. Address Section */}
           <div className="flex flex-col gap-3 lg:col-span-3">
             <h4 className="text-[11px] font-bold uppercase tracking-wider text-app-text-muted">
               {t("contact")}
@@ -135,7 +113,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom Copyright & Credit */}
       <div className="border-t border-app-border bg-app-surface-muted/50 px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-app-wide flex-col items-center justify-between gap-3 text-center text-xs text-app-text-muted sm:flex-row sm:text-left">
           <p className="order-2 sm:order-1">

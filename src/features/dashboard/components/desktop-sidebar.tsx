@@ -13,7 +13,6 @@ export function DesktopSidebar({ items }: { items: DashboardSidebarItem[] }) {
 
   return (
     <aside className="hidden md:flex h-screen w-64 flex-col border-r border-app-border bg-app-surface px-4 py-6">
-      {/* Branding */}
       <BrandLogo
         shortName={t("HomePage.nav.shortName")}
         registration={t("HomePage.nav.registration")}
@@ -21,7 +20,6 @@ export function DesktopSidebar({ items }: { items: DashboardSidebarItem[] }) {
         location={t("HomePage.nav.location")}
       />
 
-      {/* Navigation */}
       <nav className="flex-1 space-y-1.5 overflow-y-auto mt-4">
         {items.map((item) => {
           const isActive =
@@ -45,7 +43,6 @@ export function DesktopSidebar({ items }: { items: DashboardSidebarItem[] }) {
                 <span>{t(item.titleKey)}</span>
               </Link>
 
-              {/* Sub-menu / Children Rendering */}
               {item.children && item.children.length > 0 && (
                 <div className="ml-6 mt-1 space-y-1 border-l border-app-border pl-3">
                   {item.children.map((child) => {

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { DashboardSidebarConfig } from "@/config/dashboard-sidebar";
-import { requireUser } from "@/lib/auth/session";
 import { filterSidebarItemsByRole } from "@/utils/dashboard-sidebar-filter";
 import { DashboardClientWrapper } from "../_components/dashboard-client-wrapper";
+import { AuthGate } from "../../(auth)/_components/auth-gate";
 
 type AdminLayoutProps = {
   children: ReactNode;
@@ -21,17 +21,17 @@ export default async function AdminLayout({
     userRole: "ADMIN",
   });
 
-  console.log("Filtered Sidebar Items for Admin:", filteredItems);
-
   return (
-    <DashboardClientWrapper
-      userRole="ADMIN"
-      filteredItems={filteredItems}
-      //   userName={user.name}
-      userName="Admin User" // Placeholder name for admin user
-      memberNumber="123456" // Placeholder member number for admin user
-    >
-      {children}
-    </DashboardClientWrapper>
+    <AuthGate>
+      <DashboardClientWrapper
+        userRole="ADMIN"
+        filteredItems={filteredItems}
+        //   userName={user.name}
+        userName="Admin User" // Placeholder name for admin user
+        memberNumber="123456" // Placeholder member number for admin user
+      >
+        {children}
+      </DashboardClientWrapper>
+    </AuthGate>
   );
 }

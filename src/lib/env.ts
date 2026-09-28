@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const publicEnvSchema = z.object({
-  NEXT_PUBLIC_API_BASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_API_BASE_URL: z.url(),
   NEXT_PUBLIC_USE_MOCK_API: z.enum(['true', 'false']).default('true'),
 });
 

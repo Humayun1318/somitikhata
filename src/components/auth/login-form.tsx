@@ -1,18 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { createLoginSchema, type LoginInput } from '@/lib/validations/zod/auth';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { createLoginSchema, type LoginInput } from "@/lib/validations/zod/auth";
+import { useLogin } from "@/hooks/use-login";
+import { ApiError } from "@/lib/api-errors";
 
 export function LoginForm() {
-  const t = useTranslations('Auth');
+  const t = useTranslations("Auth");
   const [serverError, setServerError] = useState<string | null>(null);
-
+  const loginMutation = useLogin();
   const loginSchema = createLoginSchema(t);
 
   const {
@@ -22,18 +24,22 @@ export function LoginForm() {
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      phone: '',
-      password: '',
+      identifier: "",
+      password: "",
     },
   });
 
   const onSubmit = async (data: LoginInput) => {
     setServerError(null);
+    console.log("login data: ", data)
     try {
-      // TODO: Replace with backend JWT auth service call
-      console.log('Login Payload:', data);
-    } catch {
-      setServerError(t('serverErrorLogin'));
+      // useLogin() calls /auth/login, then /user/me, then redirects to the
+      // right dashboard/profile route itself — nothing else to do here.
+      await loginMutation.mutateAsync(data);
+    } catch (err) {
+      setServerError(
+        err instanceof ApiError ? err.message : t("serverErrorLogin"),
+      );
     }
   };
 
@@ -45,7 +51,7 @@ export function LoginForm() {
         </div>
       )}
 
-      <div>
+      {/* <div>
         <label
           htmlFor="phone"
           className="mb-1.5 block text-sm font-medium text-app-text"
@@ -62,6 +68,26 @@ export function LoginForm() {
         {errors.phone && (
           <p className="mt-1 text-xs text-red-600">{errors.phone.message}</p>
         )}
+      </div> */}
+      <div>
+        <label
+          htmlFor="identifier"
+          className="mb-1.5 block text-sm font-medium text-app-text"
+        >
+          {t("identifier")}
+        </label>
+        <Input
+          id="identifier"
+          type="text"
+          placeholder={t("identifierPlaceholder")}
+          error={!!errors.identifier}
+          {...register("identifier")}
+        />
+        {errors.identifier && (
+          <p className="mt-1 text-xs text-red-600">
+            {errors.identifier.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -69,14 +95,14 @@ export function LoginForm() {
           htmlFor="password"
           className="mb-1.5 block text-sm font-medium text-app-text"
         >
-          {t('password')}
+          {t("password")}
         </label>
         <Input
           id="password"
           type="password"
-          placeholder={t('passwordPlaceholder')}
+          placeholder={t("passwordPlaceholder")}
           error={!!errors.password}
-          {...register('password')}
+          {...register("password")}
         />
         {errors.password && (
           <p className="mt-1 text-xs text-red-600">{errors.password.message}</p>
@@ -84,16 +110,16 @@ export function LoginForm() {
       </div>
 
       <Button type="submit" isLoading={isSubmitting} className="w-full">
-        {isSubmitting ? t('submitting') : t('loginSubmit')}
+        {isSubmitting ? t("submitting") : t("loginSubmit")}
       </Button>
 
       <p className="mt-4 text-center text-sm text-app-text-muted">
-        {t('noAccount')}{' '}
+        {t("noAccount")}{" "}
         <Link
           href="/register"
           className="font-semibold text-app-primary hover:underline"
         >
-          {t('registerLink')}
+          {t("registerLink")}
         </Link>
       </p>
     </form>

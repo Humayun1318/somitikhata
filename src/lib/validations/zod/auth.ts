@@ -5,10 +5,7 @@ const nidRegex = /^(\d{10}|\d{13}|\d{17})$/;
 
 export function createLoginSchema(t: (key: string) => string) {
   return z.object({
-    phone: z
-      .string()
-      .min(1, t('validation.phoneRequired'))
-      .regex(bdPhoneRegex, t('validation.phoneInvalid')),
+    identifier: z.string().min(1, t('validation.identifierRequired')),
     password: z
       .string()
       .min(1, t('validation.passwordRequired'))

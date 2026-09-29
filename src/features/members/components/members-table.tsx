@@ -6,6 +6,8 @@ import { cn } from "@/lib/cn";
 
 import type { Member } from "../types";
 
+import { MemberActions, type MemberAction } from "./member-actions";
+
 import {
   JoinDateCell,
   MEMBER_COLUMNS,
@@ -22,10 +24,11 @@ type MembersTableProps = {
   onSortChange: (sort: string) => void;
   /** True while a new page/search is loading and old rows are still shown. */
   isUpdating: boolean;
+  onAction: (action: MemberAction, member: Member) => void;
 };
 
 // Desktop: a real table. Mobile: one card per member (tables don't fit phones).
-export function MembersTable({ members, sort, onSortChange, isUpdating }: MembersTableProps) {
+export function MembersTable({ members, sort, onSortChange, isUpdating, onAction }: MembersTableProps) {
   const t = useTranslations("Members");
   const columns = MEMBER_COLUMNS.map((column) => {
     const label = t(`columns.${column.headerKey}`);
@@ -64,7 +67,7 @@ export function MembersTable({ members, sort, onSortChange, isUpdating }: Member
               <tr key={member._id} className="transition-colors hover:bg-app-surface-muted/40">
                 {columns.map(({ id, className, Cell }) => (
                   <td key={id} className={cn("px-4 py-3 align-middle", className)}>
-                    <Cell member={member} />
+                    <Cell member={member} onAction={onAction} />
                   </td>
                 ))}
               </tr>
@@ -77,15 +80,18 @@ export function MembersTable({ members, sort, onSortChange, isUpdating }: Member
         {members.map((member) => (
           <li key={member._id} className="rounded-2xl border border-app-border bg-app-surface p-4">
             <div className="flex items-start justify-between gap-3">
-              <NameCell member={member} />
-              <StatusCell member={member} />
+              <NameCell member={member} onAction={onAction} />
+              <StatusCell member={member} onAction={onAction} />
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
-              <MemberNoCell member={member} />
-              <PhoneCell member={member} />
+              <MemberNoCell member={member} onAction={onAction} />
+              <PhoneCell member={member} onAction={onAction} />
               <span className="text-app-text-muted">
-                <JoinDateCell member={member} />
+                <JoinDateCell member={member} onAction={onAction} />
               </span>
+            </div>
+            <div className="mt-3 border-t border-app-border pt-3">
+              <MemberActions member={member} onAction={onAction} variant="buttons" />
             </div>
           </li>
         ))}

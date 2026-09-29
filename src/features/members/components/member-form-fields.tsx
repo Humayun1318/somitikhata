@@ -7,9 +7,11 @@ import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 
-import { todayDateString, type CreateMemberInput } from "../schemas";
+import { toDhakaDateString } from "@/lib/dhaka-date";
 
-type AddMemberFieldsProps = {
+import type { CreateMemberInput } from "../schemas";
+
+type MemberFormFieldsProps = {
   register: UseFormRegister<CreateMemberInput>;
   errors: FieldErrors<CreateMemberInput>;
   /** True while saving: fields can't be edited. */
@@ -17,10 +19,10 @@ type AddMemberFieldsProps = {
 };
 
 // The admission-form fields. Required: name (Bangla), mobile, NID, join date.
-export function AddMemberFields({ register, errors, readOnly }: AddMemberFieldsProps) {
-  const t = useTranslations("AddMember");
+export function MemberFormFields({ register, errors, readOnly }: MemberFormFieldsProps) {
+  const t = useTranslations("MemberForm");
   const optional = t("optional");
-  const today = todayDateString();
+  const today = toDhakaDateString();
   const errorId = (name: keyof CreateMemberInput) => (errors[name] ? `${name}-error` : undefined);
   const inputProps = (name: keyof CreateMemberInput) => ({
     id: name,

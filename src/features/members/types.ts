@@ -1,6 +1,8 @@
 // Shapes returned by the backend member module (bottolisomobai-server).
 
-export type MemberStatus = "active" | "inactive" | "suspended" | "exited";
+// Same values as MemberStatus in the backend (member.interface.ts).
+export const MEMBER_STATUSES = ["active", "inactive", "suspended", "exited"] as const;
+export type MemberStatus = (typeof MEMBER_STATUSES)[number];
 export type GuardianRelation = "father" | "spouse";
 
 export type Member = {
@@ -19,7 +21,12 @@ export type Member = {
   admissionFormNo?: string;
   createdAt?: string;
   updatedAt?: string;
+  // The list endpoint fills these in (populate); other endpoints send only the id.
+  createdBy?: AuditUser | string;
+  updatedBy?: AuditUser | string;
 };
+
+export type AuditUser = { _id: string; name: string; email?: string; role?: string };
 
 // QueryBuilder.getMeta() on the backend
 export type PaginationMeta = {
@@ -48,6 +55,8 @@ export type MemberListParams = {
   page: number;
   limit: number;
   search: string;
+  /** "" = all statuses. */
+  status: MemberStatus | "";
   /** "", "field" (ascending) or "-field" (descending). "" = backend default (newest first). */
   sort: string;
   startJoinDate: string; // YYYY-MM-DD
@@ -67,4 +76,15 @@ export type CreateMemberPayload = {
   admissionFormNo?: string;
   /** Needed when the NID already has a membership (backend answers 409). */
   confirmExtraMembership?: boolean;
+};
+
+// PATCH /member/update/:memberNo (backend updateMemberZodSchema: strict,
+// every field optional, at least one field required).
+export type UpdateMemberPayload = Partial<Omit<CreateMemberPayload, "confirmExtraMembership">>;
+
+// PATCH /member/update-status/:memberNo. exitDate is required for "exited"
+// and must be left out for every other status.
+export type UpdateMemberStatusPayload = {
+  status: MemberStatus;
+  exitDate?: string;
 };

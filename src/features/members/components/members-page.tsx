@@ -1,20 +1,27 @@
 "use client";
 
-import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
+import { useMemberDialogs } from "../hooks/use-member-dialogs";
 import { useMemberListParams } from "../hooks/use-member-list-params";
 import { useMembers } from "../hooks/use-members";
+import type { Member } from "../types";
 
-import { AddMemberDialog } from "./add-member-dialog";
+import type { MemberAction } from "./member-actions";
+import { MemberDetailsDialog } from "./member-details-dialog";
+import { MemberFormDialog } from "./member-form-dialog";
+import { MemberStatusDialog } from "./member-status-dialog";
 import { MembersEmpty, MembersError, MembersLoading } from "./members-list-states";
 import { MembersPagination } from "./members-pagination";
 import { MembersTable } from "./members-table";
 import { MembersToolbar } from "./members-toolbar";
+
+// Which dialog each row action opens ("edit" reuses the add-member form).
+const DIALOG_FOR_ACTION = { view: "view", edit: "form", changeStatus: "status" } as const;
 
 // All Members: search/filter/sort/page live in the URL; the backend does the work.
 export function MembersPage() {
@@ -22,9 +29,7 @@ export function MembersPage() {
   const { params, setParams, hasFilters, clearFilters } = useMemberListParams();
   const { data, isPending, isError, isFetching, isPlaceholderData, refetch } = useMembers(params);
 
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  // New key per open remounts the dialog, so its form starts empty.
-  const [addDialogKey, setAddDialogKey] = useState(0);
+  const dialogs = useMemberDialogs();
 
   const members = data?.data ?? [];
   const meta = data?.meta;
@@ -37,11 +42,11 @@ export function MembersPage() {
   // Old rows stay visible while the next page/search loads.
   const isUpdating = isFetching && (isPlaceholderData || !isPending);
 
-  const openAddMember = () => {
-    setAddDialogKey((key) => key + 1);
-    setIsAddOpen(true);
-  };
-  const closeAddMember = () => setIsAddOpen(false);
+  const openAddMember = () => dialogs.open("form");
+  const handleAction = (action: MemberAction, member: Member) => dialogs.open(DIALOG_FOR_ACTION[action], member);
+  const activeMember = dialogs.member;
+  const openEdit = () => dialogs.open("form", activeMember);
+  const openStatus = () => dialogs.open("status", activeMember);
   const retry = () => void refetch();
   const changeSort = (sort: string) => setParams({ sort });
   const changePage = (page: number) => setParams({ page });
@@ -82,14 +87,42 @@ export function MembersPage() {
         {showError && <MembersError onRetry={retry} isRetrying={isFetching} />}
         {showEmpty && <MembersEmpty isFiltered={isFilteredEmpty} />}
         {showTable && (
-          <MembersTable members={members} sort={params.sort} onSortChange={changeSort} isUpdating={isUpdating} />
+          <MembersTable
+            members={members}
+            sort={params.sort}
+            onSortChange={changeSort}
+            isUpdating={isUpdating}
+            onAction={handleAction}
+          />
         )}
         {meta && meta.total > 0 && (
           <MembersPagination meta={meta} onPageChange={changePage} onLimitChange={changeLimit} />
         )}
       </section>
 
-      <AddMemberDialog key={addDialogKey} open={isAddOpen} onClose={closeAddMember} />
+      <MemberFormDialog
+        key={`form-${dialogs.key}`}
+        open={dialogs.openDialog === "form"}
+        onClose={dialogs.close}
+        member={activeMember}
+      />
+      {activeMember && (
+        <MemberDetailsDialog
+          open={dialogs.openDialog === "view"}
+          onClose={dialogs.close}
+          member={activeMember}
+          onEdit={openEdit}
+          onChangeStatus={openStatus}
+        />
+      )}
+      {activeMember && (
+        <MemberStatusDialog
+          key={`status-${dialogs.key}`}
+          open={dialogs.openDialog === "status"}
+          onClose={dialogs.close}
+          member={activeMember}
+        />
+      )}
     </div>
   );
 }

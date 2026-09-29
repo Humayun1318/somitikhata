@@ -4,7 +4,7 @@ import type { CreateMemberInput } from "./schemas";
 
 type Translate = (key: string) => string;
 
-export type CreateMemberErrors = {
+export type MemberFormErrors = {
   fieldErrors: { field: keyof CreateMemberInput; message: string }[];
   formError: string | null;
   /** Set when the NID already has a membership (409): the admin must confirm. */
@@ -28,11 +28,16 @@ const DUPLICATE_NID = /already has:\s*(.+?)\.\s*To add/i;
 
 type ErrorBody = { errorSources?: { path?: string; message?: string }[] };
 
-// Turns a failed POST /member/create into what the form should show.
-export function getCreateMemberErrors(error: unknown, t: Translate): CreateMemberErrors {
-  const none: CreateMemberErrors = { fieldErrors: [], formError: null, duplicateMemberNos: null };
+// Turns a failed member request into what the form should show.
+// genericKey: the fallback message ("errors.generic" for add, "errors.editGeneric" for edit).
+export function getMemberFormErrors(
+  error: unknown,
+  t: Translate,
+  genericKey = "errors.generic",
+): MemberFormErrors {
+  const none: MemberFormErrors = { fieldErrors: [], formError: null, duplicateMemberNos: null };
 
-  if (!(error instanceof ApiError)) return { ...none, formError: t("errors.generic") };
+  if (!(error instanceof ApiError)) return { ...none, formError: t(genericKey) };
   if (error.status === 0) return { ...none, formError: t("errors.network") };
 
   if (error.status === 409) {
@@ -49,5 +54,5 @@ export function getCreateMemberErrors(error: unknown, t: Translate): CreateMembe
   if (fieldErrors.length > 0) return { ...none, fieldErrors };
 
   const isUsefulMessage = error.status < 500 && !!error.message && error.message !== "Zod Error";
-  return { ...none, formError: isUsefulMessage ? error.message : t("errors.generic") };
+  return { ...none, formError: isUsefulMessage ? error.message : t(genericKey) };
 }

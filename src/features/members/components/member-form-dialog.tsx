@@ -11,30 +11,39 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
-import { getCreateMemberErrors } from "../create-member-errors";
+import { getMemberFormErrors } from "../member-form-errors";
 import { useCreateMember } from "../hooks/use-create-member";
+import { useUpdateMember } from "../hooks/use-update-member";
 import {
   createMemberSchema,
-  todayDateString,
+  findClearedFields,
   toCreateMemberPayload,
+  toMemberFormValues,
+  toUpdateMemberPayload,
   type CreateMemberInput,
 } from "../schemas";
+import type { Member } from "../types";
 
-import { AddMemberFields } from "./add-member-fields";
+import { MemberFormFields } from "./member-form-fields";
 
-type AddMemberDialogProps = {
+type MemberFormDialogProps = {
   open: boolean;
   onClose: () => void;
+  /** Given = edit this member. Not given = add a new member. */
+  member?: Member | null;
 };
 
 // Which NID the backend said already has a membership (409), and its numbers.
 type Duplicate = { nid: string; memberNos: string };
 
-// The parent passes a new `key` each time it opens, so the form starts empty.
-export function AddMemberDialog({ open, onClose }: AddMemberDialogProps) {
-  const t = useTranslations("AddMember");
+// One form for "Add member" and "Edit member".
+// The parent passes a new `key` each time it opens, so the form starts fresh.
+export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProps) {
+  const t = useTranslations("MemberForm");
   const toast = useToast();
   const createMember = useCreateMember();
+  const updateMember = useUpdateMember();
+  const isEdit = !!member;
   const runLocked = useSubmitLock();
   const [formError, setFormError] = useState<string | null>(null);
   const [duplicate, setDuplicate] = useState<Duplicate | null>(null);
@@ -44,43 +53,49 @@ export function AddMemberDialog({ open, onClose }: AddMemberDialogProps) {
     handleSubmit,
     setError,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty, dirtyFields },
   } = useForm<CreateMemberInput>({
     resolver: zodResolver(createMemberSchema(t)),
-    defaultValues: {
-      nameBn: "",
-      nameEn: "",
-      guardianName: "",
-      guardianRelation: "",
-      phone: "",
-      nid: "",
-      dob: "",
-      joinDate: todayDateString(),
-      admissionFormNo: "",
-    },
+    defaultValues: toMemberFormValues(member ?? undefined),
     mode: "onTouched",
   });
 
   // Busy while RHF submits OR the request is still running. isSubmitting alone
   // flips back to false when a blocked double-submit finishes early.
-  const isBusy = isSubmitting || createMember.isPending;
+  const isBusy = isSubmitting || createMember.isPending || updateMember.isPending;
   // The warning only applies to the NID it was about. Edit the NID and it goes away.
   const currentNid = useWatch({ control, name: "nid" }).trim();
   const isConfirmingDuplicate = !!duplicate && duplicate.nid === currentNid;
 
-  const create = async (values: CreateMemberInput) => {
-    setFormError(null);
+  const saveMember = (values: CreateMemberInput) => {
+    if (member) {
+      const payload = toUpdateMemberPayload(values, dirtyFields);
+      return updateMember.mutateAsync({ memberNo: member.memberNo, payload });
+    }
     const confirmExtraMembership = duplicate?.nid === values.nid.trim();
+    return createMember.mutateAsync({
+      ...toCreateMemberPayload(values),
+      ...(confirmExtraMembership && { confirmExtraMembership: true }),
+    });
+  };
+
+  const save = async (values: CreateMemberInput) => {
+    setFormError(null);
+
+    const clearedFields = member ? findClearedFields(member, values) : [];
+    if (clearedFields.length > 0) {
+      clearedFields.forEach((field, index) => {
+        setError(field, { type: "manual", message: t("validation.cannotClear") }, { shouldFocus: index === 0 });
+      });
+      return;
+    }
 
     try {
-      const member = await createMember.mutateAsync({
-        ...toCreateMemberPayload(values),
-        ...(confirmExtraMembership && { confirmExtraMembership: true }),
-      });
+      const saved = await saveMember(values);
       onClose();
-      toast.success(t("success", { memberNo: member.memberNo }));
+      toast.success(t(isEdit ? "editSuccess" : "success", { memberNo: saved.memberNo }));
     } catch (error) {
-      const result = getCreateMemberErrors(error, t);
+      const result = getMemberFormErrors(error, t, isEdit ? "errors.editGeneric" : "errors.generic");
       result.fieldErrors.forEach(({ field, message }, index) => {
         setError(field, { type: "server", message }, { shouldFocus: index === 0 });
       });
@@ -91,18 +106,23 @@ export function AddMemberDialog({ open, onClose }: AddMemberDialogProps) {
     }
   };
 
-  const onSubmit = (values: CreateMemberInput) => runLocked(() => create(values));
+  const onSubmit = (values: CreateMemberInput) => runLocked(() => save(values));
   const submitForm = (event: FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(event);
 
-  const idleLabel = isConfirmingDuplicate ? t("duplicate.confirm") : t("submit");
-  const submitLabel = isBusy ? t("submitting") : idleLabel;
+  const title = isEdit ? t("editTitle") : t("title");
+  const description = isEdit ? t("editDescription") : t("description");
+  const idleLabel = isEdit ? t("editSubmit") : isConfirmingDuplicate ? t("duplicate.confirm") : t("submit");
+  const busyLabel = isEdit ? t("editSubmitting") : t("submitting");
+  const submitLabel = isBusy ? busyLabel : idleLabel;
+  // Edit: nothing to save until something changed (the backend needs 1+ field).
+  const isSubmitDisabled = isEdit && !isDirty;
 
   return (
     <Dialog
       open={open}
       onClose={onClose}
-      title={t("title")}
-      description={t("description")}
+      title={title}
+      description={description}
       closeLabel={t("close")}
       dismissible={!isBusy}
       size="lg"
@@ -131,12 +151,14 @@ export function AddMemberDialog({ open, onClose }: AddMemberDialogProps) {
           </div>
         )}
 
-        <AddMemberFields register={register} errors={errors} readOnly={isBusy} />
+        <MemberFormFields register={register} errors={errors} readOnly={isBusy} />
 
-        <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">
-          <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          {t("loginNote")}
-        </p>
+        {!isEdit && (
+          <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">
+            <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            {t("loginNote")}
+          </p>
+        )}
 
         <div className="flex flex-col-reverse gap-2.5 sm:flex-row sm:justify-end">
           <Button
@@ -148,7 +170,7 @@ export function AddMemberDialog({ open, onClose }: AddMemberDialogProps) {
           >
             {t("cancel")}
           </Button>
-          <Button type="submit" isLoading={isBusy} className="w-full sm:w-auto">
+          <Button type="submit" isLoading={isBusy} disabled={isSubmitDisabled} className="w-full sm:w-auto">
             {submitLabel}
           </Button>
         </div>

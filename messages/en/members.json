@@ -11,7 +11,9 @@
       "toggle": "Filters",
       "joinDateFrom": "Joined from",
       "joinDateTo": "Joined to",
-      "clear": "Clear filters"
+      "clear": "Clear filters",
+      "status": "Status",
+      "allStatuses": "All statuses"
     },
     "sort": {
       "label": "Sort by",
@@ -30,7 +32,8 @@
       "phone": "Mobile",
       "nid": "NID",
       "joinDate": "Join date",
-      "status": "Status"
+      "status": "Status",
+      "actions": "Actions"
     },
     "sortBy": "Sort by {column}",
     "status": {
@@ -56,9 +59,15 @@
       "title": "Could not load members",
       "retry": "Try again"
     },
-    "updating": "Updating…"
+    "updating": "Updating…",
+    "actions": {
+      "view": "View details",
+      "edit": "Edit",
+      "changeStatus": "Change status",
+      "forMember": "{action}: {memberNo}"
+    }
   },
-  "AddMember": {
+  "MemberForm": {
     "title": "Add member",
     "description": "Enter the details from the admission form.",
     "loginNote": "A login account is created automatically. The member signs in with their member number; the first password is their mobile number.",
@@ -101,7 +110,8 @@
       "nidInvalid": "NID must be 10, 13 or 17 digits.",
       "joinDateRequired": "Choose the join date.",
       "dateInFuture": "Date cannot be in the future.",
-      "formNoMax": "Admission form number is too long (max 30 characters)."
+      "formNoMax": "Admission form number is too long (max 30 characters).",
+      "cannotClear": "This can't be emptied once saved. Enter a value."
     },
     "duplicate": {
       "title": "This NID already has a membership",
@@ -111,8 +121,59 @@
     },
     "errors": {
       "generic": "Could not add the member. Please try again.",
-      "network": "Could not reach the server. Check your connection and try again."
+      "network": "Could not reach the server. Check your connection and try again.",
+      "editGeneric": "Could not save the changes. Please try again."
     },
-    "success": "Member {memberNo} added."
+    "success": "Member {memberNo} added.",
+    "editTitle": "Edit member",
+    "editDescription": "Update this member's details. Only changed fields are saved.",
+    "editSubmit": "Save changes",
+    "editSubmitting": "Saving…",
+    "editSuccess": "Member {memberNo} updated."
+  },
+  "MemberStatusForm": {
+    "title": "Change status",
+    "description": "Choose the new status for {name} ({memberNo}).",
+    "current": "Current",
+    "effects": {
+      "active": "Can log in and use their account.",
+      "inactive": "Login is turned off.",
+      "suspended": "Temporarily blocked from logging in.",
+      "exited": "Left the society. Login is turned off."
+    },
+    "exitDate": "Exit date",
+    "exitDateRequired": "Choose the exit date.",
+    "dateInFuture": "Date cannot be in the future.",
+    "submit": "Update status",
+    "submitting": "Updating…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "success": "{memberNo} is now {status}.",
+    "errors": {
+      "generic": "Could not change the status. Please try again.",
+      "network": "Could not reach the server. Check your connection and try again."
+    }
+  },
+  "MemberDetails": {
+    "title": "Member details",
+    "close": "Close",
+    "edit": "Edit",
+    "changeStatus": "Change status",
+    "by": "{when} by {name}",
+    "relation": {
+      "father": "Father",
+      "spouse": "Spouse"
+    },
+    "fields": {
+      "guardian": "Father's / spouse's name",
+      "phone": "Mobile number",
+      "nid": "NID number",
+      "dob": "Date of birth",
+      "joinDate": "Join date",
+      "exitDate": "Exit date",
+      "admissionFormNo": "Admission form no.",
+      "createdAt": "Added",
+      "updatedAt": "Last updated"
+    }
   }
 }

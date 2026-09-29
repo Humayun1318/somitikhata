@@ -44,6 +44,8 @@
     "login": "লগইন হচ্ছে…",
     "logout": "লগআউট হচ্ছে…",
     "changePassword": "পাসওয়ার্ড আপডেট হচ্ছে…",
-    "createMember": "সদস্য যোগ করা হচ্ছে…"
+    "createMember": "সদস্য যোগ করা হচ্ছে…",
+    "updateMember": "পরিবর্তন সংরক্ষণ হচ্ছে…",
+    "updateMemberStatus": "অবস্থা হালনাগাদ হচ্ছে…"
   }
 }

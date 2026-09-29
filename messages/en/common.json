@@ -44,6 +44,8 @@
     "login": "Signing in…",
     "logout": "Signing out…",
     "changePassword": "Updating password…",
-    "createMember": "Adding member…"
+    "createMember": "Adding member…",
+    "updateMember": "Saving changes…",
+    "updateMemberStatus": "Updating status…"
   }
 }

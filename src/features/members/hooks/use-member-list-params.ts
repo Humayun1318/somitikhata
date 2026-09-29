@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
 
-import type { MemberListParams } from "../types";
+import { MEMBER_STATUSES, type MemberListParams, type MemberStatus } from "../types";
 
 export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const; // backend maxLimit is 100
 const DEFAULT_LIMIT = 10; // backend defaultLimit for members
@@ -13,10 +13,16 @@ const DEFAULTS: MemberListParams = {
   page: 1,
   limit: DEFAULT_LIMIT,
   search: "",
+  status: "",
   sort: "",
   startJoinDate: "",
   endJoinDate: "",
 };
+
+// Only real backend statuses; anything else means "all".
+function toStatus(value: string | null): MemberStatus | "" {
+  return MEMBER_STATUSES.find((status) => status === value) ?? "";
+}
 
 function toPositiveInt(value: string | null, fallback: number) {
   const number = Number(value);
@@ -39,6 +45,7 @@ export function useMemberListParams() {
     page: toPositiveInt(searchParams.get("page"), DEFAULTS.page),
     limit: PAGE_SIZE_OPTIONS.includes(limit as never) ? limit : DEFAULT_LIMIT,
     search: searchParams.get("search") ?? "",
+    status: toStatus(searchParams.get("status")),
     sort: searchParams.get("sort") ?? "",
     startJoinDate: searchParams.get("startJoinDate") ?? "",
     endJoinDate: searchParams.get("endJoinDate") ?? "",
@@ -59,8 +66,8 @@ export function useMemberListParams() {
     router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
   };
 
-  const hasFilters = !!(params.search || params.startJoinDate || params.endJoinDate);
-  const clearFilters = () => setParams({ search: "", startJoinDate: "", endJoinDate: "" });
+  const hasFilters = !!(params.search || params.status || params.startJoinDate || params.endJoinDate);
+  const clearFilters = () => setParams({ search: "", status: "", startJoinDate: "", endJoinDate: "" });
 
   return { params, setParams, hasFilters, clearFilters };
 }

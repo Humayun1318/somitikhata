@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/cn";
 
-import type { MemberListParams } from "../types";
+import { MEMBER_STATUSES, type MemberListParams, type MemberStatus } from "../types";
 
 import { MemberSearch } from "./member-search";
 
@@ -30,11 +30,27 @@ export function MembersToolbar({ params, setParams, hasFilters, onClearFilters }
 
   const toggleFilters = () => setIsFiltersOpen((open) => !open);
   const handleSearchChange = (search: string) => setParams({ search });
+  const handleStatusChange = (status: string) => setParams({ status: status as MemberStatus | "" });
 
   return (
     <div className="space-y-3">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
         <MemberSearch search={params.search} onSearchChange={handleSearchChange} />
+        <div className="sm:w-44">
+          <Select
+            aria-label={t("filters.status")}
+            value={params.status}
+            onChange={(event) => handleStatusChange(event.target.value)}
+            className={cn("min-h-11", params.status && "border-app-primary text-app-primary")}
+          >
+            <option value="">{t("filters.allStatuses")}</option>
+            {MEMBER_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {t(`status.${status}`)}
+              </option>
+            ))}
+          </Select>
+        </div>
         <div className="flex gap-2.5">
           <Button
             type="button"

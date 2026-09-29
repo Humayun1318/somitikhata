@@ -109,6 +109,15 @@ or page change would be noise.
 - Tables are built from a typed `columns` array, so a future column
   (e.g. Actions) is one new entry.
 
+## 0.7 Day-only dates (join date, date of birth, exit date)
+
+- The backend stores them as **midnight in Dhaka** (older rows: UTC midnight).
+- Show them with `timeZone: DHAKA_TIME_ZONE` (`src/lib/dhaka-date.ts`),
+  never in UTC — UTC shows Dhaka-midnight dates one day early.
+- Date inputs use `toDhakaDateString()` for "today" and for prefilling.
+- Range filters send whole Dhaka days: `dhakaDayStart()` / `dhakaDayEnd()`.
+  A plain `2026-03-01` is read as UTC midnight and misses the first 6 hours.
+
 ------------------------------------------------------------------------
 
 # 1. Purpose

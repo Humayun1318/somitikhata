@@ -1,3 +1,4 @@
+import { dhakaDayEnd, dhakaDayStart } from "@/lib/dhaka-date";
 import { httpKit } from "@/lib/http/http-kit";
 import type { ApiEnvelope } from "@/types/api";
 
@@ -6,6 +7,8 @@ import type {
   Member,
   MemberListParams,
   PaginatedResult,
+  UpdateMemberPayload,
+  UpdateMemberStatusPayload,
 } from "./types";
 
 // The backend runs `search` as a regular expression. Escape it so a user
@@ -21,9 +24,11 @@ function toQueryParams(params: MemberListParams) {
     page: params.page,
     limit: params.limit,
     ...(search && { search: escapeRegex(search) }),
+    ...(params.status && { status: params.status }),
     ...(params.sort && { sort: params.sort }),
-    ...(params.startJoinDate && { startJoinDate: params.startJoinDate }),
-    ...(params.endJoinDate && { endJoinDate: params.endJoinDate }),
+    // Whole Dhaka days, so the first/last day of the range is fully included.
+    ...(params.startJoinDate && { startJoinDate: dhakaDayStart(params.startJoinDate) }),
+    ...(params.endJoinDate && { endJoinDate: dhakaDayEnd(params.endJoinDate) }),
   };
 }
 
@@ -40,6 +45,25 @@ export const memberApi = {
   // POST /member/create -> data: the new Member (with its generated memberNo)
   create: async (payload: CreateMemberPayload): Promise<Member> => {
     const { data } = await httpKit.post<ApiEnvelope<Member>>("/member/create", payload);
+    return data.data;
+  },
+
+  // PATCH /member/update/:memberNo -> data: the updated Member
+  update: async (memberNo: string, payload: UpdateMemberPayload): Promise<Member> => {
+    const { data } = await httpKit.patch<ApiEnvelope<Member>>(
+      `/member/update/${encodeURIComponent(memberNo)}`,
+      payload,
+    );
+    return data.data;
+  },
+
+  // PATCH /member/update-status/:memberNo -> data: the updated Member.
+  // The backend also switches the member's login account to match.
+  updateStatus: async (memberNo: string, payload: UpdateMemberStatusPayload): Promise<Member> => {
+    const { data } = await httpKit.patch<ApiEnvelope<Member>>(
+      `/member/update-status/${encodeURIComponent(memberNo)}`,
+      payload,
+    );
     return data.data;
   },
 };

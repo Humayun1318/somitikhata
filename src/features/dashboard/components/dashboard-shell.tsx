@@ -12,16 +12,12 @@ type ClientWrapperProps = {
   children: React.ReactNode;
   userRole: UserRole;
   filteredItems: DashboardSidebarItem[];
-  userName?: string;
-  memberNumber?: string;
 };
 
 export function DashboardShell({
   children,
   userRole,
   filteredItems,
-  userName,
-  memberNumber,
 }: ClientWrapperProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -30,7 +26,7 @@ export function DashboardShell({
       <DesktopSidebar items={filteredItems} />
 
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
-        <Header userName={userName} memberNumber={memberNumber} userRole={userRole} />
+        <Header />
 
         <main className="flex-1 overflow-y-auto p-4 pb-20 sm:p-6 md:pb-6">
           {children}

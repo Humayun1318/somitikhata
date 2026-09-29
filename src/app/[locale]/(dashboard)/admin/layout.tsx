@@ -19,9 +19,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <DashboardShell
         userRole="ADMIN"
         filteredItems={filteredItems}
-        // Placeholders. The real user comes from useMe() (features/auth/hooks/use-me).
-        userName="Admin User"
-        memberNumber="123456"
       >
         {children}
       </DashboardShell>

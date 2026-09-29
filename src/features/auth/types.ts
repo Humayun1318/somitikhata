@@ -15,4 +15,8 @@ export type CurrentUser = {
   language: "bn" | "en";
   status: string;
   mustChangePassword: boolean;
+  // Identifier shown in the dashboard header: staffNo for admin area users,
+  // memberNo for members. Optional so a missing field never breaks the UI.
+  memberNo?: string;
+  staffNo?: string;
 };

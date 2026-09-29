@@ -16,5 +16,13 @@
     "myLoans": "আমার ঋণ",
     "depositRequest": "ডিপোজিট রিকোয়েস্ট",
     "applyLoan": "ঋণ আবেদন"
+  },
+  "DashboardHeader": {
+    "menuLabel": "অ্যাকাউন্ট মেনু",
+    "profile": "প্রোফাইল",
+    "settings": "সেটিংস",
+    "logout": "লগআউট",
+    "staffNo": "স্টাফ নং",
+    "memberNo": "সদস্য নং"
   }
 }

@@ -1,0 +1,118 @@
+{
+  "Members": {
+    "title": "All members",
+    "subtitle": "Everyone registered in the society. Search, filter and add members.",
+    "addMember": "Add member",
+    "search": {
+      "label": "Search members",
+      "placeholder": "Search by member no., name, phone or NID"
+    },
+    "filters": {
+      "toggle": "Filters",
+      "joinDateFrom": "Joined from",
+      "joinDateTo": "Joined to",
+      "clear": "Clear filters"
+    },
+    "sort": {
+      "label": "Sort by",
+      "default": "Newest first",
+      "memberNo": "Member no. (low to high)",
+      "-memberNo": "Member no. (high to low)",
+      "nameBn": "Name (A–Z)",
+      "-nameBn": "Name (Z–A)",
+      "-joinDate": "Join date (newest)",
+      "joinDate": "Join date (oldest)",
+      "status": "Status"
+    },
+    "columns": {
+      "memberNo": "Member no.",
+      "name": "Name",
+      "phone": "Mobile",
+      "nid": "NID",
+      "joinDate": "Join date",
+      "status": "Status"
+    },
+    "sortBy": "Sort by {column}",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended",
+      "exited": "Exited"
+    },
+    "pagination": {
+      "showing": "Showing {from, number}–{to, number} of {total, number}",
+      "page": "Page {page, number} of {totalPages, number}",
+      "previous": "Previous",
+      "next": "Next",
+      "perPage": "Per page"
+    },
+    "empty": {
+      "title": "No members yet",
+      "body": "Add the first member to get started.",
+      "filteredTitle": "No members match your search",
+      "filteredBody": "Try a different search or clear the filters."
+    },
+    "error": {
+      "title": "Could not load members",
+      "retry": "Try again"
+    },
+    "updating": "Updating…"
+  },
+  "AddMember": {
+    "title": "Add member",
+    "description": "Enter the details from the admission form.",
+    "loginNote": "A login account is created automatically. The member signs in with their member number; the first password is their mobile number.",
+    "optional": "optional",
+    "fields": {
+      "nameBn": "Name (Bangla)",
+      "nameEn": "Name (English)",
+      "guardianName": "Father's / spouse's name",
+      "guardianRelation": "Relation",
+      "phone": "Mobile number",
+      "nid": "NID number",
+      "dob": "Date of birth",
+      "joinDate": "Join date",
+      "admissionFormNo": "Admission form no."
+    },
+    "placeholders": {
+      "nameBn": "e.g. মোহাম্মদ রহিম উদ্দিন",
+      "nameEn": "e.g. Mohammad Rahim Uddin",
+      "guardianName": "e.g. Abdul Karim",
+      "phone": "01XXXXXXXXX",
+      "nid": "10, 13 or 17 digits",
+      "admissionFormNo": "e.g. 125"
+    },
+    "relation": {
+      "none": "Select",
+      "father": "Father",
+      "spouse": "Spouse"
+    },
+    "submit": "Add member",
+    "submitting": "Adding…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "validation": {
+      "nameRequired": "Enter the member's name.",
+      "nameMin": "Name must be at least 2 characters.",
+      "nameMax": "Name can be at most 50 characters.",
+      "phoneRequired": "Enter a mobile number.",
+      "phoneInvalid": "Enter a valid mobile number (e.g. 01712345678).",
+      "nidRequired": "Enter the NID number.",
+      "nidInvalid": "NID must be 10, 13 or 17 digits.",
+      "joinDateRequired": "Choose the join date.",
+      "dateInFuture": "Date cannot be in the future.",
+      "formNoMax": "Admission form number is too long (max 30 characters)."
+    },
+    "duplicate": {
+      "title": "This NID already has a membership",
+      "body": "Existing membership: {memberNos}. One person can hold more than one membership.",
+      "confirm": "Yes, add another membership",
+      "submitting": "Adding…"
+    },
+    "errors": {
+      "generic": "Could not add the member. Please try again.",
+      "network": "Could not reach the server. Check your connection and try again."
+    },
+    "success": "Member {memberNo} added."
+  }
+}

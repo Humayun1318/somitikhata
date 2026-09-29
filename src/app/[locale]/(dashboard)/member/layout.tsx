@@ -19,9 +19,6 @@ export default function MemberLayout({ children }: { children: ReactNode }) {
       <DashboardShell
         userRole="MEMBER"
         filteredItems={filteredItems}
-        // Placeholders. The real user comes from useMe() (features/auth/hooks/use-me).
-        userName="Member User"
-        memberNumber="654321"
       >
         {children}
       </DashboardShell>

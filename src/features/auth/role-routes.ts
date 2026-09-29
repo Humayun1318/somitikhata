@@ -31,6 +31,10 @@ export function getProfileRoute(area: AppArea): string {
   return `/${area}/profile`;
 }
 
+export function getSettingsRoute(area: AppArea): string {
+  return `/${area}/settings`;
+}
+
 // Where a logged-in user belongs right now.
 export function getPostLoginRoute(user: CurrentUser): string {
   const area = getRoleArea(user.role);

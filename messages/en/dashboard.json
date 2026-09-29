@@ -16,5 +16,13 @@
     "myLoans": "My Loans",
     "depositRequest": "Deposit Request",
     "applyLoan": "Apply for Loan"
+  },
+  "DashboardHeader": {
+    "menuLabel": "Account menu",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "staffNo": "Staff ID",
+    "memberNo": "Member ID"
   }
 }

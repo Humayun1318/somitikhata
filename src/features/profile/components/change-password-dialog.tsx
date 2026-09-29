@@ -17,7 +17,6 @@ import { getChangePasswordErrors } from "../change-password-errors";
 import { PasswordRulesChecklist } from "./password-rules-checklist";
 import {
   createChangePasswordSchema,
-  PASSWORD_MIN_LENGTH,
   PASSWORD_RULES,
   type ChangePasswordInput,
 } from "../schemas";
@@ -112,7 +111,6 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
   const submitForm = (event: FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(event);
 
   const submitLabel = isSubmitting ? t("submitting") : t("submit");
-  const passwordToggleLabels = { showLabel: t("showPassword"), hideLabel: t("hidePassword") };
   const errorId = (name: keyof ChangePasswordInput) => (errors[name] ? `${name}-error` : undefined);
   const newPasswordDescribedBy = [errorId("newPassword"), "newPassword-rules"]
     .filter(Boolean)
@@ -121,7 +119,7 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
   const passwordRules = PASSWORD_RULES.map((rule) => ({
     key: rule.key,
     met: rule.test(newPasswordValue),
-    label: t(`rules.${rule.key}`, { min: PASSWORD_MIN_LENGTH }),
+    label: t(`rules.${rule.key}`),
   }));
 
 
@@ -155,16 +153,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             id="currentPassword"
             data-autofocus
             autoComplete="current-password"
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
             enterKeyHint="next"
             placeholder={t("currentPasswordPlaceholder")}
             error={!!errors.currentPassword}
             aria-invalid={!!errors.currentPassword}
             aria-describedby={errorId("currentPassword")}
             readOnly={isSubmitting}
-            {...passwordToggleLabels}
             {...register("currentPassword")}
           />
         </Field>
@@ -187,16 +181,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
           <PasswordInput
             id="newPassword"
             autoComplete="new-password"
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
             enterKeyHint="next"
             placeholder={t("newPasswordPlaceholder")}
             error={!!errors.newPassword}
             aria-invalid={!!errors.newPassword}
             aria-describedby={newPasswordDescribedBy}
             readOnly={isSubmitting}
-            {...passwordToggleLabels}
             {...register("newPassword", { deps: ["confirmPassword"] })}
           />
         </Field>
@@ -205,16 +195,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
           <PasswordInput
             id="confirmPassword"
             autoComplete="new-password"
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
             enterKeyHint="done"
             placeholder={t("confirmPasswordPlaceholder")}
             error={!!errors.confirmPassword}
             aria-invalid={!!errors.confirmPassword}
             aria-describedby={errorId("confirmPassword")}
             readOnly={isSubmitting}
-            {...passwordToggleLabels}
             {...register("confirmPassword")}
           />
         </Field>

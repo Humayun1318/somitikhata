@@ -11,7 +11,7 @@ export function Header() {
   const t = useTranslations();
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between gap-3 border-b border-app-border bg-app-surface px-4 sm:px-6">
+    <header className="sticky top-0 z-40 flex h-16 w-full shrink-0 items-center justify-between gap-3 border-b border-app-border bg-app-surface px-4 sm:px-6 lg:px-8">
       <div className="flex min-w-0 items-center md:hidden">
         <BrandLogo
           shortName={t("HomePage.nav.shortName")}

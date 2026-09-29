@@ -41,8 +41,6 @@
     "currentPasswordPlaceholder": "বর্তমান পাসওয়ার্ড লিখুন",
     "newPasswordPlaceholder": "নতুন পাসওয়ার্ড লিখুন",
     "confirmPasswordPlaceholder": "নতুন পাসওয়ার্ড আবার লিখুন",
-    "showPassword": "পাসওয়ার্ড দেখুন",
-    "hidePassword": "পাসওয়ার্ড লুকান",
     "submit": "পাসওয়ার্ড আপডেট করুন",
     "submitting": "আপডেট হচ্ছে…",
     "cancel": "বাতিল",
@@ -63,7 +61,7 @@
     "success": "পাসওয়ার্ড পরিবর্তন হয়েছে। নতুন পাসওয়ার্ড দিয়ে আবার লগইন করুন।",
     "rules": {
       "title": "নতুন পাসওয়ার্ডে থাকতে হবে:",
-      "minLength": "কমপক্ষে {min}টি অক্ষর",
+      "minLength": "কমপক্ষে ৮ অক্ষরের হতে হবে",
       "uppercase": "একটি বড় হাতের অক্ষর (A–Z)",
       "lowercase": "একটি ছোট হাতের অক্ষর (a–z)",
       "number": "একটি সংখ্যা (0–9)",

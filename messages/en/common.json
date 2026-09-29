@@ -34,5 +34,9 @@
     "forbidden": "You don't have permission to access this page.",
     "forbiddenTitle": "Access denied",
     "backToDashboard": "Back to my dashboard"
+  },
+  "PasswordInput": {
+    "show": "Show password",
+    "hide": "Hide password"
   }
 }

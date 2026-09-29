@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Button } from '@/components/ui/button';
 import { createRegisterSchema, RegisterInput } from '@/features/auth/schemas';
 
@@ -114,9 +115,9 @@ export function RegisterForm() {
         >
           {t('password')}
         </label>
-        <Input
+        <PasswordInput
           id="password"
-          type="password"
+          autoComplete="new-password"
           placeholder={t('passwordPlaceholder')}
           error={!!errors.password}
           {...register('password')}
@@ -133,9 +134,9 @@ export function RegisterForm() {
         >
           {t('confirmPassword')}
         </label>
-        <Input
+        <PasswordInput
           id="confirmPassword"
-          type="password"
+          autoComplete="new-password"
           placeholder={t('passwordPlaceholder')}
           error={!!errors.confirmPassword}
           {...register('confirmPassword')}

@@ -12,7 +12,7 @@ export function DesktopSidebar({ items }: { items: DashboardSidebarItem[] }) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex h-screen w-64 flex-col border-r border-app-border bg-app-surface px-4 py-6">
+    <aside className="hidden w-64 shrink-0 flex-col border-r border-app-border bg-app-surface px-4 py-6 md:flex md:h-full">
       <BrandLogo
         shortName={t("HomePage.nav.shortName")}
         registration={t("HomePage.nav.registration")}

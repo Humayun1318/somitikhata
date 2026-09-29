@@ -41,8 +41,6 @@
     "currentPasswordPlaceholder": "Enter current password",
     "newPasswordPlaceholder": "Enter new password",
     "confirmPasswordPlaceholder": "Re-enter new password",
-    "showPassword": "Show password",
-    "hidePassword": "Hide password",
     "submit": "Update password",
     "submitting": "Updating…",
     "cancel": "Cancel",
@@ -63,7 +61,7 @@
     "success": "Password changed. Please sign in again with your new password.",
     "rules": {
       "title": "Your new password must have:",
-      "minLength": "At least {min} characters",
+      "minLength": "Minimum 8 characters",
       "uppercase": "One uppercase letter (A–Z)",
       "lowercase": "One lowercase letter (a–z)",
       "number": "One number (0–9)",

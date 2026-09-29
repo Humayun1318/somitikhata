@@ -2,28 +2,39 @@
 
 import { useState, type ComponentPropsWithoutRef } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/cn";
 
 import { Input } from "./input";
 
-type PasswordInputProps = Omit<ComponentPropsWithoutRef<typeof Input>, "type"> & {
-  showLabel: string;
-  hideLabel: string;
-};
+type PasswordInputProps = Omit<ComponentPropsWithoutRef<typeof Input>, "type">;
 
-// Input with a show/hide toggle. Works with react-hook-form's register() (ref is a prop in React 19).
-export function PasswordInput({ showLabel, hideLabel, className, ...props }: PasswordInputProps) {
+/**
+ * The one password field for the whole app (login, register, change password).
+ * Adds a show/hide toggle; the toggle's label comes from the "PasswordInput"
+ * messages, so callers only pass normal input props.
+ * Works with react-hook-form's register(): in React 19 `ref` is a normal prop.
+ */
+export function PasswordInput({ className, ...props }: PasswordInputProps) {
+  const t = useTranslations("PasswordInput");
   const [isVisible, setIsVisible] = useState(false);
 
   const inputType = isVisible ? "text" : "password";
-  const toggleLabel = isVisible ? hideLabel : showLabel;
+  const toggleLabel = isVisible ? t("hide") : t("show");
   const ToggleIcon = isVisible ? EyeOff : Eye;
   const toggleVisibility = () => setIsVisible((visible) => !visible);
 
   return (
     <div className="relative">
-      <Input type={inputType} className={cn("min-h-11 pr-12", className)} {...props} />
+      <Input
+        type={inputType}
+        autoCapitalize="none"
+        autoCorrect="off"
+        spellCheck={false}
+        className={cn("min-h-11 pr-12", className)}
+        {...props}
+      />
       <button
         type="button"
         onClick={toggleVisibility}

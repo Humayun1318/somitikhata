@@ -11,6 +11,7 @@ import { ApiError } from "@/lib/api-errors";
 // must log out (useLogout) and send the user to sign in with the new password.
 export function useChangePassword() {
   return useMutation<void, ApiError, ChangePasswordPayload>({
+    meta: { loadingMessage: "changePassword" },
     mutationFn: authApi.changePassword,
   });
 }

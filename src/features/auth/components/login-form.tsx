@@ -14,12 +14,14 @@ import { createLoginSchema, type LoginInput } from "@/features/auth/schemas";
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { useLogin } from "@/features/auth/hooks/use-login";
 import { getLoginError, type LoginError } from "@/features/auth/login-errors";
+import { useSubmitLock } from "@/lib/use-submit-lock";
 
 export function LoginForm() {
   const t = useTranslations("Auth");
   const toast = useToast();
   const loginMutation = useLogin();
   const loginSchema = createLoginSchema(t);
+  const runLocked = useSubmitLock();
   // Inline copy of the API error. Stays until the next submit.
   const [serverError, setServerError] = useState<LoginError | null>(null);
 
@@ -35,7 +37,10 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = async (data: LoginInput) => {
+  // Busy while RHF submits OR the request is still running. isSubmitting alone
+  // flips back to false when a blocked double-submit finishes early.
+  const isBusy = isSubmitting || loginMutation.isPending;
+  const login = async (data: LoginInput) => {
     setServerError(null);
     try {
       // useLogin() calls /auth/login, then /user/me, then redirects to the
@@ -50,6 +55,8 @@ export function LoginForm() {
       toast.error(loginError.message);
     }
   };
+
+  const onSubmit = (data: LoginInput) => runLocked(() => login(data));
 
   const ServerErrorIcon = serverError?.kind === "locked" ? LockKeyhole : CircleAlert;
 
@@ -107,8 +114,8 @@ export function LoginForm() {
         )}
       </div>
 
-      <Button type="submit" isLoading={isSubmitting} className="w-full">
-        {isSubmitting ? t("submitting") : t("loginSubmit")}
+      <Button type="submit" isLoading={isBusy} className="w-full">
+        {isBusy ? t("submitting") : t("loginSubmit")}
       </Button>
 
       <p className="mt-4 text-center text-sm text-app-text-muted">

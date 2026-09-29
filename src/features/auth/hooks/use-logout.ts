@@ -13,6 +13,7 @@ export function useLogout() {
   const router = useRouter();
 
   return useMutation<void, ApiError>({
+    meta: { loadingMessage: "logout" },
     mutationFn: authApi.logout,
     onSettled: () => {
       router.replace(LOGIN_ROUTE);

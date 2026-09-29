@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import { MutationLoadingToasts } from "@/components/shared/toast/mutation-loading-toasts";
 import { ToastProvider } from "@/components/shared/toast/toast-provider";
 import { SessionExpiredListener } from "@/features/auth/components/session-expired-listener";
 import QueryProvider from "@/lib/query/query-provider";
@@ -11,6 +12,7 @@ export default function AppProviders({ children }: { children: ReactNode }) {
     <QueryProvider>
       <ToastProvider>
         <SessionExpiredListener />
+        <MutationLoadingToasts />
         {children}
       </ToastProvider>
     </QueryProvider>

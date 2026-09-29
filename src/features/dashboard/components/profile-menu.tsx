@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
 import { UserAvatar } from "@/components/shared/user-avatar";
+import { Spinner } from "@/components/ui/spinner";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useMe } from "@/features/auth/hooks/use-me";
 import {
@@ -43,10 +44,10 @@ export function ProfileMenu() {
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((open) => !open);
 
-  const handleLogout = () => {
-    closeMenu();
-    logout.mutate();
-  };
+  // The menu stays open while logging out, so the spinner is visible.
+  // Logout then redirects to the login page.
+  const handleLogout = () => logout.mutate();
+  const isLoggingOut = logout.isPending;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -150,11 +151,13 @@ export function ProfileMenu() {
         <button
           type="button"
           role="menuitem"
-          disabled={logout.isPending}
+          disabled={isLoggingOut}
+          aria-busy={isLoggingOut}
           onClick={handleLogout}
           className={cn(ITEM_CLASS, "text-red-600 hover:bg-red-50 disabled:opacity-60")}
         >
-          <DynamicIcon name="LogOut" className="h-5 w-5 shrink-0" />
+          {isLoggingOut && <Spinner className="h-5 w-5" />}
+          {!isLoggingOut && <DynamicIcon name="LogOut" className="h-5 w-5 shrink-0" />}
           {t("logout")}
         </button>
       </div>

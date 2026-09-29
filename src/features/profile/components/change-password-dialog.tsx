@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useState, type FormEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -9,9 +9,11 @@ import { CircleAlert } from "lucide-react";
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { FormField } from "@/components/ui/form-field";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useChangePassword } from "@/features/auth/hooks/use-change-password";
 import { useLogout } from "@/features/auth/hooks/use-logout";
+import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getChangePasswordErrors } from "../change-password-errors";
 import { PasswordRulesChecklist } from "./password-rules-checklist";
@@ -20,31 +22,6 @@ import {
   PASSWORD_RULES,
   type ChangePasswordInput,
 } from "../schemas";
-
-type FieldProps = {
-  id: string;
-  label: string;
-  error?: string;
-  children: ReactNode;
-  footer?: ReactNode;
-};
-
-function Field({ id, label, error, children, footer }: FieldProps) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-app-text">
-        {label}
-      </label>
-      {children}
-      {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-xs text-red-600">
-          {error}
-        </p>
-      )}
-      {footer}
-    </div>
-  );
-}
 
 const EMPTY_VALUES: ChangePasswordInput = {
   currentPassword: "",
@@ -64,9 +41,7 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
   const changePassword = useChangePassword();
   const logout = useLogout();
   const [formError, setFormError] = useState<string | null>(null);
-  // isSubmitting only updates after a re-render, so a fast double-tap or repeated
-  // Enter can start a second request. This ref blocks it synchronously.
-  const isRequestInFlight = useRef(false);
+  const runLocked = useSubmitLock();
 
   const {
     register,
@@ -80,12 +55,13 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
     mode: "onTouched",
   });
 
+  // Busy while RHF submits OR the request is still running. isSubmitting alone
+  // flips back to false when a blocked double-submit finishes early.
+  const isBusy = isSubmitting || changePassword.isPending;
   const newPasswordValue = useWatch({ control, name: "newPassword" });
 
   // Only the old and new password go to the API. confirmPassword stays here.
-  const onSubmit = async ({ currentPassword, newPassword }: ChangePasswordInput) => {
-    if (isRequestInFlight.current) return;
-    isRequestInFlight.current = true;
+  const changePasswordNow = async ({ currentPassword, newPassword }: ChangePasswordInput) => {
     setFormError(null);
 
     try {
@@ -96,11 +72,9 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
         setError(field, { type: "server", message }, { shouldFocus: index === 0 });
       });
       setFormError(result.formError);
-      isRequestInFlight.current = false;
       return;
     }
 
-    // Toasts sit under an open dialog, so close it first.
     onClose();
     toast.success(t("success"));
     // The backend now rejects the old cookies. Log out cleanly instead of
@@ -108,9 +82,11 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
     logout.mutate();
   };
 
+  const onSubmit = (values: ChangePasswordInput) => runLocked(() => changePasswordNow(values));
+
   const submitForm = (event: FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(event);
 
-  const submitLabel = isSubmitting ? t("submitting") : t("submit");
+  const submitLabel = isBusy ? t("submitting") : t("submit");
   const errorId = (name: keyof ChangePasswordInput) => (errors[name] ? `${name}-error` : undefined);
   const newPasswordDescribedBy = [errorId("newPassword"), "newPassword-rules"]
     .filter(Boolean)
@@ -130,12 +106,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
       title={t("title")}
       description={t("description")}
       closeLabel={t("close")}
-      dismissible={!isSubmitting}
+      dismissible={!isBusy}
     >
       <form
         onSubmit={submitForm}
         noValidate
-        aria-busy={isSubmitting}
+        aria-busy={isBusy}
         className="space-y-4"
       >
         {formError && (
@@ -148,7 +124,7 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
           </div>
         )}
 
-        <Field id="currentPassword" label={t("currentPassword")} error={errors.currentPassword?.message}>
+        <FormField id="currentPassword" label={t("currentPassword")} error={errors.currentPassword?.message}>
           <PasswordInput
             id="currentPassword"
             data-autofocus
@@ -158,12 +134,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             error={!!errors.currentPassword}
             aria-invalid={!!errors.currentPassword}
             aria-describedby={errorId("currentPassword")}
-            readOnly={isSubmitting}
+            readOnly={isBusy}
             {...register("currentPassword")}
           />
-        </Field>
+        </FormField>
 
-        <Field
+        <FormField
           id="newPassword"
           label={t("newPassword")}
           error={errors.newPassword?.message}
@@ -186,12 +162,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             error={!!errors.newPassword}
             aria-invalid={!!errors.newPassword}
             aria-describedby={newPasswordDescribedBy}
-            readOnly={isSubmitting}
+            readOnly={isBusy}
             {...register("newPassword", { deps: ["confirmPassword"] })}
           />
-        </Field>
+        </FormField>
 
-        <Field id="confirmPassword" label={t("confirmPassword")} error={errors.confirmPassword?.message}>
+        <FormField id="confirmPassword" label={t("confirmPassword")} error={errors.confirmPassword?.message}>
           <PasswordInput
             id="confirmPassword"
             autoComplete="new-password"
@@ -200,22 +176,22 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             error={!!errors.confirmPassword}
             aria-invalid={!!errors.confirmPassword}
             aria-describedby={errorId("confirmPassword")}
-            readOnly={isSubmitting}
+            readOnly={isBusy}
             {...register("confirmPassword")}
           />
-        </Field>
+        </FormField>
 
         <div className="flex flex-col-reverse gap-2.5 pt-2 sm:flex-row sm:justify-end">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
-            disabled={isSubmitting}
+            disabled={isBusy}
             className="w-full sm:w-auto"
           >
             {t("cancel")}
           </Button>
-          <Button type="submit" isLoading={isSubmitting} className="w-full sm:w-auto">
+          <Button type="submit" isLoading={isBusy} className="w-full sm:w-auto">
             {submitLabel}
           </Button>
         </div>

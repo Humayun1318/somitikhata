@@ -62,6 +62,9 @@ or page change would be noise.
      component knows the right message.
 2. **Button** shows its spinner and is disabled while the request runs
    (`<Button isLoading={...}>`, or `Spinner` for custom buttons).
+   In forms use `const isBusy = isSubmitting || mutation.isPending` for the
+   button, inputs and dialog. `isSubmitting` alone flips back to false when
+   a blocked double-submit ends early, which would re-enable the button.
 3. **No duplicate submits.** Forms wrap their submit in `useSubmitLock()`
    (`src/lib/use-submit-lock.ts`). `isSubmitting` alone is not enough:
    it only updates after a re-render, so a fast double tap can slip through.

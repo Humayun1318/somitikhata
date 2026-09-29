@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import { Link } from "@/i18n/navigation";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useMe } from "@/features/auth/hooks/use-me";
@@ -40,6 +41,7 @@ export function AuthNavButton({
   const showPlaceholder = isLoading;
   const showLogout = !isLoading && !!user;
   const showLogin = !isLoading && !user;
+  const isLoggingOut = logout.isPending;
 
   const handleLogout = () => {
     onNavigate?.();
@@ -54,10 +56,12 @@ export function AuthNavButton({
       {showLogout && (
         <button
           type="button"
-          disabled={logout.isPending}
+          disabled={isLoggingOut}
+          aria-busy={isLoggingOut}
           onClick={handleLogout}
           className={styles.button}
         >
+          {isLoggingOut && <Spinner className="mr-2 align-[-2px]" />}
           {logoutLabel}
         </button>
       )}

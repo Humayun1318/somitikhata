@@ -21,6 +21,8 @@ type DialogProps = {
   closeLabel: string;
   /** Set false while a request runs, so Esc, backdrop and X can't close it mid-submit. */
   dismissible?: boolean;
+  /** "md" for short forms (default), "lg" for longer forms. */
+  size?: "md" | "lg";
   children: ReactNode;
 };
 
@@ -29,8 +31,8 @@ type DialogProps = {
  * in the browser's top layer, all with no extra package.
  * Mobile: bottom sheet. sm and up: centered card.
  *
- * Note: toasts render below the top layer, so they are hidden while a dialog
- * is open. Show errors inside the dialog; toast only after it closes.
+ * Toasts also use the top layer (see ToastProvider), so they stay visible
+ * above an open dialog. Field/form errors still belong inside the dialog.
  */
 export function Dialog({
   open,
@@ -39,6 +41,7 @@ export function Dialog({
   description,
   closeLabel,
   dismissible = true,
+  size = "md",
   children,
 }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -92,7 +95,8 @@ export function Dialog({
       onClick={handleClick}
       className={cn(
         "fixed inset-x-0 bottom-0 top-auto m-0 max-h-[92dvh] w-full max-w-none overflow-y-auto rounded-t-3xl bg-app-surface p-0 text-app-text shadow-2xl",
-        "sm:inset-0 sm:m-auto sm:max-h-[85dvh] sm:max-w-md sm:rounded-2xl",
+        "sm:inset-0 sm:m-auto sm:max-h-[85dvh] sm:rounded-2xl",
+        size === "lg" ? "sm:max-w-2xl" : "sm:max-w-md",
         "backdrop:bg-black/40 backdrop:backdrop-blur-[2px]",
         "opacity-0 translate-y-6 sm:translate-y-2 sm:scale-95",
         "open:opacity-100 open:translate-y-0 sm:open:scale-100",

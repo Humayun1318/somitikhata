@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/cn';
+import { Spinner } from './spinner';
 
 type ButtonProps = ComponentPropsWithoutRef<'button'> & {
   variant?: 'primary' | 'secondary' | 'outline';
@@ -34,7 +35,7 @@ export function Button({
     >
       {isLoading ? (
         <span className="flex items-center gap-2">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <Spinner />
           <span>{children}</span>
         </span>
       ) : (

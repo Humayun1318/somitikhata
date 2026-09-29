@@ -38,5 +38,12 @@
   "PasswordInput": {
     "show": "Show password",
     "hide": "Hide password"
+  },
+  "ApiLoading": {
+    "default": "Please wait…",
+    "login": "Signing in…",
+    "logout": "Signing out…",
+    "changePassword": "Updating password…",
+    "createMember": "Adding member…"
   }
 }

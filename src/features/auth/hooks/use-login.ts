@@ -15,6 +15,7 @@ export function useLogin() {
   const router = useRouter();
 
   return useMutation<CurrentUser, ApiError, LoginPayload>({
+    meta: { loadingMessage: "login" },
     mutationFn: async (payload) => {
       await authApi.login(payload);
       // Direct call, not fetchQuery: we want a guaranteed fresh network

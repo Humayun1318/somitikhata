@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
+import { UserAvatar } from "@/components/shared/user-avatar";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useMe } from "@/features/auth/hooks/use-me";
 import {
@@ -13,17 +14,6 @@ import {
 } from "@/features/auth/role-routes";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
-
-// First letter of the first two words. Array.from keeps Bangla characters whole.
-function getInitials(name: string): string {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((word) => Array.from(word)[0] ?? "")
-    .join("")
-    .toUpperCase();
-}
 
 const ITEM_CLASS =
   "flex min-h-12 w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-app-focus sm:min-h-11 sm:py-2.5";
@@ -42,7 +32,6 @@ export function ProfileMenu() {
   const area = getRoleArea(user?.role ?? "member");
   const isStaff = area === "admin";
   const name = user?.name ?? "";
-  const initials = getInitials(name);
   const identifier = isStaff ? user?.staffNo : user?.memberNo;
   const identifierLabel = isStaff ? t("staffNo") : t("memberNo");
 
@@ -93,9 +82,7 @@ export function ProfileMenu() {
         aria-label={t("menuLabel")}
         className="flex min-h-11 items-center gap-2.5 rounded-full p-1 transition-colors hover:bg-app-surface-muted focus-visible:outline-2 focus-visible:outline-app-focus md:rounded-xl md:py-1 md:pr-3"
       >
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-app-primary/10 text-sm font-semibold text-app-primary">
-          {initials || <DynamicIcon name="User" className="h-5 w-5" />}
-        </span>
+        <UserAvatar name={name} size="sm" />
 
         <span className="hidden min-w-0 max-w-48 flex-col text-left md:flex">
           <span className="truncate text-sm font-semibold leading-tight text-app-text">
@@ -131,9 +118,7 @@ export function ProfileMenu() {
         )}
       >
         <div className="flex items-center gap-3 px-3 py-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-app-primary/10 text-base font-semibold text-app-primary">
-            {initials || <DynamicIcon name="User" className="h-5 w-5" />}
-          </span>
+          <UserAvatar name={name} size="md" />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-app-text">{name}</p>
             {identifier && (

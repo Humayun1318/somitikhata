@@ -12,6 +12,18 @@
   --color-app-text-muted: var(--color-text-muted);
   --color-app-focus: var(--color-focus-ring);
   --max-width-app-wide: 75rem;
+  --animate-fade-in-up: fade-in-up 220ms ease-out both;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 :root {
@@ -76,4 +88,35 @@ textarea {
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
+}
+
+/*
+ * Tailwind v4 resets <button> to `cursor: default`. Restore the pointer for
+ * every genuinely interactive element in one place, so new buttons, menu
+ * items and tabs get it automatically. Links (<a href>) already have it.
+ * Inside @layer base, so a utility like `cursor-default` still overrides it.
+ */
+@layer base {
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='menuitem']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  [role='option']:not([aria-disabled='true']),
+  select:not(:disabled),
+  summary,
+  input[type='checkbox']:not(:disabled),
+  input[type='radio']:not(:disabled),
+  input[type='file']::file-selector-button {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Stop the page behind an open modal <dialog> from scrolling. */
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
+  }
 }

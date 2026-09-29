@@ -1,0 +1,67 @@
+{
+  "Profile": {
+    "eyebrow": "Account",
+    "title": "My profile",
+    "subtitle": "Your account details and sign-in security.",
+    "roles": {
+      "super_admin": "Super admin",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended",
+      "deactivated": "Deactivated"
+    },
+    "personalInfo": "Personal information",
+    "personalInfoHint": "To update these details, please contact the society office.",
+    "fields": {
+      "name": "Full name",
+      "phone": "Mobile number",
+      "email": "Email",
+      "memberNo": "Member ID",
+      "staffNo": "Staff ID",
+      "role": "Role"
+    },
+    "notProvided": "Not provided",
+    "security": "Security",
+    "password": "Password",
+    "passwordHint": "Change the password you use to sign in.",
+    "changePassword": "Change password",
+    "mustChangeTitle": "Set a new password to continue",
+    "mustChangeBody": "You are signed in with a temporary password. Choose your own password to keep your account safe.",
+    "mustChangeAction": "Change password now"
+  },
+  "ChangePassword": {
+    "title": "Change password",
+    "description": "Enter your current password, then choose a new one.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPasswordPlaceholder": "Re-enter new password",
+    "newPasswordHint": "At least {min} characters.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "submit": "Update password",
+    "submitting": "Updating…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "validation": {
+      "currentRequired": "Enter your current password.",
+      "newRequired": "Enter a new password.",
+      "newMin": "Password must be at least {min} characters.",
+      "newSameAsCurrent": "New password must be different from your current password.",
+      "confirmRequired": "Confirm your new password.",
+      "mismatch": "Passwords do not match."
+    },
+    "errors": {
+      "wrongCurrent": "Your current password is incorrect.",
+      "generic": "Could not change your password. Please try again.",
+      "network": "Could not reach the server. Check your connection and try again."
+    },
+    "success": "Your password has been changed."
+  }
+}

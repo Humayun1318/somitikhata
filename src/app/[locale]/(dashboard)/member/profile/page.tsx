@@ -1,5 +1,5 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { ProfileView } from "@/features/profile/components/profile-view";
 
 export default function MemberProfilePage() {
-  return <PageHeader titleKey="profile" />;
+  return <ProfileView />;
 }

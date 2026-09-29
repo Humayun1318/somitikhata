@@ -7,6 +7,107 @@
 
 ------------------------------------------------------------------------
 
+# 0. Current Working Rules (read first)
+
+> These rules describe how the code works **today** and override any older
+> section below that says otherwise (older sections still mention
+> `src/services/`, `messages/en.json` and a mock API — those are gone).
+
+## 0.1 Where things live
+
+``` text
+src/
+  app/                 routing only (layouts, pages, error/loading)
+  features/<name>/     api.ts, query-keys.ts, types.ts, schemas.ts,
+                       hooks/, components/  — everything for one feature
+  components/ui/       small primitives: Button, Input, PasswordInput,
+                       Select, Dialog, Spinner
+  components/shared/   app-wide pieces: PageHeader, UserAvatar, toast/
+  lib/                 http (axios + refresh), query (TanStack setup),
+                       env, cn, small helpers
+  providers/           AppProviders (query client, toasts, listeners)
+messages/<locale>/<feature>.json   one file per feature, same keys in en + bn
+```
+
+## 0.2 API calls
+
+- Every request goes through `httpKit` (`src/lib/http/http-kit.ts`).
+  It sends the auth cookies, refreshes on 401 and retries once.
+  Never call `fetch`/`axios` directly and never store tokens.
+- Each feature has one `api.ts` with plain async functions
+  (`memberApi.list`, `authApi.login`, …). No React inside it.
+- Reads use `useQuery`, writes use `useMutation`, inside the feature's
+  `hooks/` folder. Query keys live in the feature's `query-keys.ts`.
+- Only send query parameters the backend really supports (check the
+  module's `*.builder.config.ts` and the QueryBuilder). Do not invent them.
+
+## 0.3 Every API call must show that it is running
+
+**Reads (`useQuery`)** show loading inside the page:
+a skeleton/spinner on first load, and a small "updating" hint while a
+new page/search loads (`placeholderData: keepPreviousData` keeps the old
+rows visible). No toast for reads — a toast on every search keystroke
+or page change would be noise.
+
+**Actions (`useMutation`)** — login, logout, create, update, delete:
+
+1. **Loading toast — automatic.** `MutationLoadingToasts` (mounted once in
+   `AppProviders`) listens to TanStack's mutation cache and shows a loading
+   toast the moment any mutation starts, and removes it when it ends.
+   You do not write loading-toast code per feature.
+   - Custom text: `useMutation({ meta: { loadingMessage: "createMember" } })`
+     → key in `messages/<locale>/common.json` under `ApiLoading`.
+     Without `meta`, the default "Please wait…" is used.
+   - Success/error toasts stay in the component, because only the
+     component knows the right message.
+2. **Button** shows its spinner and is disabled while the request runs
+   (`<Button isLoading={...}>`, or `Spinner` for custom buttons).
+3. **No duplicate submits.** Forms wrap their submit in `useSubmitLock()`
+   (`src/lib/use-submit-lock.ts`). `isSubmitting` alone is not enough:
+   it only updates after a re-render, so a fast double tap can slip through.
+4. **Dialogs** cannot be closed while their request is running
+   (`<Dialog dismissible={!isSubmitting}>`).
+5. **Errors** show in a toast **and** inside the form when the user needs to
+   fix something there (field error or a form-level alert).
+
+## 0.4 Toasts
+
+- `const toast = useToast()` → `success`, `error`, `info`, `loading`
+  (returns an id), `dismiss(id)`.
+- Pass already-translated text; keys live in the feature's messages file.
+- Toasts render in the browser top layer, so they stay visible above
+  open dialogs.
+
+## 0.5 Keep it simple
+
+- Simple and readable beats clever. Another developer must understand a
+  file in one read.
+- Before creating something new, look for an existing component, hook or
+  helper and reuse it.
+- Do not build a generic system for something that has one use. Extract a
+  shared piece only when a second real use exists.
+- Small, focused components and files. If a component grows past one clear
+  job, split it (e.g. list page = toolbar + table + pagination).
+- Follow the JSX rule in section 12: logic before `return`, `return` holds
+  only JSX.
+- No new package without a named, concrete need — ask first.
+- Before changing a file, read it and understand its job. Do not rewrite
+  working code just to match a preferred style.
+
+## 0.6 List pages (pattern used by All Members)
+
+- Query state (page, limit, search, filters, sort) lives in the **URL**
+  search params. Refresh, back button and shared links keep the same view,
+  and state survives after an action like "Add member".
+- The page reads the params, calls one `useQuery` with them, and renders
+  the backend's own `meta` (`page`, `totalPages`, `total`, `hasNextPage`…).
+  No client-side paging or filtering.
+- Changing search/filters/sort resets to page 1.
+- Tables are built from a typed `columns` array, so a future column
+  (e.g. Actions) is one new entry.
+
+------------------------------------------------------------------------
+
 # 1. Purpose
 
 This document is the single source of truth for the project’s
@@ -491,26 +592,9 @@ until genuine reuse exists.
 
 # 14. Service Layer
 
-Current directory:
-
-``` text
-src/services/
-```
-
-This is a reserved service/integration layer.
-
-It is **not automatically defined as the API folder**.
-
-Depending on the final architecture, it may contain:
-
-- API integrations
-- authentication integrations
-- notification integrations
-- external service adapters
-- domain service adapters
-
-Do not invent a service architecture before it is needed.
-
+Superseded by section 0.2. There is no `src/services/` folder: each feature
+owns its API functions in `src/features/<name>/api.ts`, and all requests use
+`httpKit`.
 ------------------------------------------------------------------------
 
 # 15. TanStack Query Architecture
@@ -535,13 +619,12 @@ Local UI state examples:
 - temporary input state
 - dropdown state
 
-## Current status
+## Current conventions
 
-The exact query-hook/query-key folder architecture has not yet been
-finalized.
-
-Therefore, future query conventions must be documented when introduced
-rather than pretending they already exist.
+See section 0.2 and 0.3: hooks live in `features/<name>/hooks/`, keys in
+`features/<name>/query-keys.ts`, one shared QueryClient setup in
+`src/lib/query/`, loading toasts for mutations come from
+`MutationLoadingToasts`.
 
 ------------------------------------------------------------------------
 
@@ -1259,12 +1342,14 @@ Use existing shared components and tokens.
 
 ## Step 6 — Add translations
 
-Update both:
+Update both locales in the feature's file:
 
 ``` text
-messages/en.json
-messages/bn.json
+messages/en/<feature>.json
+messages/bn/<feature>.json
 ```
+
+New file? Also add its name to `MESSAGE_FILES` in `src/i18n/messages.ts`.
 
 ## Step 7 — Implement API states
 

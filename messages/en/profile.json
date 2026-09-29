@@ -11,8 +11,7 @@
     "status": {
       "active": "Active",
       "inactive": "Inactive",
-      "suspended": "Suspended",
-      "deactivated": "Deactivated"
+      "suspended": "Suspended"
     },
     "personalInfo": "Personal information",
     "personalInfoHint": "To update these details, please contact the society office.",
@@ -42,7 +41,6 @@
     "currentPasswordPlaceholder": "Enter current password",
     "newPasswordPlaceholder": "Enter new password",
     "confirmPasswordPlaceholder": "Re-enter new password",
-    "newPasswordHint": "At least {min} characters.",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "submit": "Update password",
@@ -52,16 +50,26 @@
     "validation": {
       "currentRequired": "Enter your current password.",
       "newRequired": "Enter a new password.",
-      "newMin": "Password must be at least {min} characters.",
       "newSameAsCurrent": "New password must be different from your current password.",
       "confirmRequired": "Confirm your new password.",
-      "mismatch": "Passwords do not match."
+      "mismatch": "Passwords do not match.",
+      "newWeak": "Password does not meet all the requirements below."
     },
     "errors": {
       "wrongCurrent": "Your current password is incorrect.",
       "generic": "Could not change your password. Please try again.",
       "network": "Could not reach the server. Check your connection and try again."
     },
-    "success": "Your password has been changed."
+    "success": "Password changed. Please sign in again with your new password.",
+    "rules": {
+      "title": "Your new password must have:",
+      "minLength": "At least {min} characters",
+      "uppercase": "One uppercase letter (A–Z)",
+      "lowercase": "One lowercase letter (a–z)",
+      "number": "One number (0–9)",
+      "special": "One special character (@ $ ! % * ? &)",
+      "met": "met",
+      "notMet": "not met"
+    }
   }
 }

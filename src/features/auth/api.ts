@@ -1,7 +1,7 @@
 import { httpKit } from "@/lib/http/http-kit";
 import type { ApiEnvelope } from "@/types/api";
 
-import type { CurrentUser, LoginPayload } from "./types";
+import type { ChangePasswordPayload, CurrentUser, LoginPayload } from "./types";
 
 // Plain async functions. No React, no cache logic.
 export const authApi = {
@@ -22,5 +22,11 @@ export const authApi = {
   me: async (): Promise<CurrentUser> => {
     const { data } = await httpKit.get<ApiEnvelope<CurrentUser>>("/user/me");
     return data.data;
+  },
+
+  // Success returns data: null. The backend then rejects every older token,
+  // so the caller must end the session (see useChangePassword).
+  changePassword: async (payload: ChangePasswordPayload): Promise<void> => {
+    await httpKit.patch("/user/me/change-password", payload);
   },
 };

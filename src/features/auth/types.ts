@@ -6,6 +6,12 @@ export type LoginPayload = {
   password: string;
 };
 
+// PATCH /user/me/change-password. The backend schema is strict: only these two keys.
+export type ChangePasswordPayload = {
+  oldPassword: string;
+  newPassword: string;
+};
+
 export type CurrentUser = {
   _id: string;
   name: string;

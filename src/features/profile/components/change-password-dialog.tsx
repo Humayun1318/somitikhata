@@ -1,18 +1,24 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { CircleAlert } from "lucide-react";
 
+import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { PasswordInput } from "@/components/ui/password-input";
+import { useChangePassword } from "@/features/auth/hooks/use-change-password";
+import { useLogout } from "@/features/auth/hooks/use-logout";
 
+import { getChangePasswordErrors } from "../change-password-errors";
+import { PasswordRulesChecklist } from "./password-rules-checklist";
 import {
   createChangePasswordSchema,
   PASSWORD_MIN_LENGTH,
+  PASSWORD_RULES,
   type ChangePasswordInput,
 } from "../schemas";
 
@@ -20,25 +26,23 @@ type FieldProps = {
   id: string;
   label: string;
   error?: string;
-  hint?: string;
   children: ReactNode;
+  footer?: ReactNode;
 };
 
-function Field({ id, label, error, hint, children }: FieldProps) {
-  const message = error ?? hint;
-  const messageClass = error ? "text-red-600" : "text-app-text-muted";
-
+function Field({ id, label, error, children, footer }: FieldProps) {
   return (
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-app-text">
         {label}
       </label>
       {children}
-      {message && (
-        <p id={`${id}-message`} className={`mt-1.5 text-xs ${messageClass}`}>
-          {message}
+      {error && (
+        <p id={`${id}-error`} className="mt-1.5 text-xs text-red-600">
+          {error}
         </p>
       )}
+      {footer}
     </div>
   );
 }
@@ -57,11 +61,19 @@ type ChangePasswordDialogProps = {
 // The parent passes a new `key` each time it opens, so the form starts empty.
 export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProps) {
   const t = useTranslations("ChangePassword");
+  const toast = useToast();
+  const changePassword = useChangePassword();
+  const logout = useLogout();
   const [formError, setFormError] = useState<string | null>(null);
+  // isSubmitting only updates after a re-render, so a fast double-tap or repeated
+  // Enter can start a second request. This ref blocks it synchronously.
+  const isRequestInFlight = useRef(false);
 
   const {
     register,
+    control,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ChangePasswordInput>({
     resolver: zodResolver(createChangePasswordSchema(t)),
@@ -69,16 +81,49 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
     mode: "onTouched",
   });
 
-  const onSubmit = async (values: ChangePasswordInput) => {
+  const newPasswordValue = useWatch({ control, name: "newPassword" });
+
+  // Only the old and new password go to the API. confirmPassword stays here.
+  const onSubmit = async ({ currentPassword, newPassword }: ChangePasswordInput) => {
+    if (isRequestInFlight.current) return;
+    isRequestInFlight.current = true;
     setFormError(null);
-    // API call is wired after the backend contract is confirmed.
-    void values;
+
+    try {
+      await changePassword.mutateAsync({ oldPassword: currentPassword, newPassword });
+    } catch (error) {
+      const result = getChangePasswordErrors(error, t);
+      result.fieldErrors.forEach(({ field, message }, index) => {
+        setError(field, { type: "server", message }, { shouldFocus: index === 0 });
+      });
+      setFormError(result.formError);
+      isRequestInFlight.current = false;
+      return;
+    }
+
+    // Toasts sit under an open dialog, so close it first.
+    onClose();
+    toast.success(t("success"));
+    // The backend now rejects the old cookies. Log out cleanly instead of
+    // waiting for the next request to fail with 401.
+    logout.mutate();
   };
+
+  const submitForm = (event: FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(event);
 
   const submitLabel = isSubmitting ? t("submitting") : t("submit");
   const passwordToggleLabels = { showLabel: t("showPassword"), hideLabel: t("hidePassword") };
-  const describedBy = (name: keyof ChangePasswordInput) =>
-    errors[name] || name === "newPassword" ? `${name}-message` : undefined;
+  const errorId = (name: keyof ChangePasswordInput) => (errors[name] ? `${name}-error` : undefined);
+  const newPasswordDescribedBy = [errorId("newPassword"), "newPassword-rules"]
+    .filter(Boolean)
+    .join(" ");
+
+  const passwordRules = PASSWORD_RULES.map((rule) => ({
+    key: rule.key,
+    met: rule.test(newPasswordValue),
+    label: t(`rules.${rule.key}`, { min: PASSWORD_MIN_LENGTH }),
+  }));
+
 
   return (
     <Dialog
@@ -89,7 +134,12 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
       closeLabel={t("close")}
       dismissible={!isSubmitting}
     >
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
+      <form
+        onSubmit={submitForm}
+        noValidate
+        aria-busy={isSubmitting}
+        className="space-y-4"
+      >
         {formError && (
           <div
             role="alert"
@@ -112,8 +162,8 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             placeholder={t("currentPasswordPlaceholder")}
             error={!!errors.currentPassword}
             aria-invalid={!!errors.currentPassword}
-            aria-describedby={describedBy("currentPassword")}
-            disabled={isSubmitting}
+            aria-describedby={errorId("currentPassword")}
+            readOnly={isSubmitting}
             {...passwordToggleLabels}
             {...register("currentPassword")}
           />
@@ -123,7 +173,16 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
           id="newPassword"
           label={t("newPassword")}
           error={errors.newPassword?.message}
-          hint={t("newPasswordHint", { min: PASSWORD_MIN_LENGTH })}
+          footer={
+            <PasswordRulesChecklist
+              id="newPassword-rules"
+              title={t("rules.title")}
+              metLabel={t("rules.met")}
+              notMetLabel={t("rules.notMet")}
+              rules={passwordRules}
+              highlightUnmet={!!errors.newPassword}
+            />
+          }
         >
           <PasswordInput
             id="newPassword"
@@ -135,8 +194,8 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             placeholder={t("newPasswordPlaceholder")}
             error={!!errors.newPassword}
             aria-invalid={!!errors.newPassword}
-            aria-describedby={describedBy("newPassword")}
-            disabled={isSubmitting}
+            aria-describedby={newPasswordDescribedBy}
+            readOnly={isSubmitting}
             {...passwordToggleLabels}
             {...register("newPassword", { deps: ["confirmPassword"] })}
           />
@@ -153,8 +212,8 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             placeholder={t("confirmPasswordPlaceholder")}
             error={!!errors.confirmPassword}
             aria-invalid={!!errors.confirmPassword}
-            aria-describedby={describedBy("confirmPassword")}
-            disabled={isSubmitting}
+            aria-describedby={errorId("confirmPassword")}
+            readOnly={isSubmitting}
             {...passwordToggleLabels}
             {...register("confirmPassword")}
           />

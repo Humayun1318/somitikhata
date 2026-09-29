@@ -64,7 +64,12 @@
       "view": "View details",
       "edit": "Edit",
       "changeStatus": "Change status",
-      "forMember": "{action}: {memberNo}"
+      "forMember": "{action}: {memberNo}",
+      "short": {
+        "view": "Details",
+        "edit": "Edit",
+        "changeStatus": "Status"
+      }
     }
   },
   "MemberForm": {

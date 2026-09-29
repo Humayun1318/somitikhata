@@ -64,7 +64,12 @@
       "view": "বিস্তারিত দেখুন",
       "edit": "সম্পাদনা",
       "changeStatus": "অবস্থা পরিবর্তন",
-      "forMember": "{action}: {memberNo}"
+      "forMember": "{action}: {memberNo}",
+      "short": {
+        "view": "বিস্তারিত",
+        "edit": "সম্পাদনা",
+        "changeStatus": "অবস্থা"
+      }
     }
   },
   "MemberForm": {

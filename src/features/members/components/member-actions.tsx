@@ -30,12 +30,14 @@ export function MemberActions({ member, onAction, variant }: MemberActionsProps)
     action,
     Icon,
     label: t(action),
+    // Short text for the mobile buttons, so three fit in one row.
+    shortLabel: t(`short.${action}`),
     ariaLabel: t("forMember", { action: t(action), memberNo: member.memberNo }),
   }));
 
   return (
     <div className={cn("flex items-center", isIcons ? "justify-end gap-1" : "gap-2")}>
-      {items.map(({ action, Icon, label, ariaLabel }) => (
+      {items.map(({ action, Icon, label, shortLabel, ariaLabel }) => (
         <button
           key={action}
           type="button"
@@ -46,11 +48,12 @@ export function MemberActions({ member, onAction, variant }: MemberActionsProps)
             "inline-flex items-center justify-center rounded-lg text-app-text-muted transition-colors hover:bg-app-surface-muted hover:text-app-text focus-visible:outline-2 focus-visible:outline-app-focus",
             isIcons
               ? "h-9 w-9"
-              : "min-h-10 flex-1 gap-1.5 border border-app-border px-2 text-xs font-medium text-app-text",
+              : "min-h-10 min-w-0 flex-1 gap-1.5 whitespace-nowrap border border-app-border px-1.5 text-xs font-medium text-app-text",
           )}
         >
-          <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />
-          {!isIcons && <span className="truncate">{label}</span>}
+          {/* Very narrow phones (< 360px): text only, so the words are never cut. */}
+          <Icon aria-hidden="true" className={cn("h-4 w-4 shrink-0", !isIcons && "max-[359px]:hidden")} />
+          {!isIcons && <span className="truncate">{shortLabel}</span>}
         </button>
       ))}
     </div>

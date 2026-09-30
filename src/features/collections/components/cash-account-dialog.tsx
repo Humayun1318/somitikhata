@@ -15,7 +15,7 @@ import { getCollectionError } from "../collection-errors";
 import { useCreateCashAccount } from "../hooks/use-collection-mutations";
 import type { CashAccountKind } from "../types";
 
-import { FormAlert } from "./form-alert";
+import { FormAlert } from "@/components/shared/form-alert";
 
 type CashAccountDialogProps = { open: boolean; onClose: () => void };
 type FieldErrors = { name?: string; bankName?: string };

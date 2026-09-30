@@ -51,7 +51,8 @@
     "reverseTransaction": "Reversing transaction…",
     "createOpening": "Saving opening entry…",
     "createCashAccount": "Adding account…",
-    "updateCashAccountStatus": "Updating account…"
+    "updateCashAccountStatus": "Updating account…",
+    "createAdmin": "Creating admin…"
   },
   "Pagination": {
     "showing": "Showing {from, number}–{to, number} of {total, number}",
@@ -59,5 +60,14 @@
     "previous": "Previous",
     "next": "Next",
     "perPage": "Per page"
+  },
+  "PasswordRules": {
+    "minLength": "Minimum 8 characters",
+    "uppercase": "One uppercase letter (A–Z)",
+    "lowercase": "One lowercase letter (a–z)",
+    "number": "One number (0–9)",
+    "special": "One special character (@ $ ! % * ? &)",
+    "met": "met",
+    "notMet": "not met"
   }
 }

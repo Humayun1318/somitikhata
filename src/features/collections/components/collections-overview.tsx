@@ -46,7 +46,8 @@ export function CollectionsOverview() {
   const catalog = useTransactionTypes();
   const dialogs = useTransactionDialogs();
   const updateStatus = useUpdateCashAccountStatus();
-  const [accountDialogKey, setAccountDialogKey] = useState<number | null>(null);
+  const [accountDialogKey, setAccountDialogKey] = useState(0);
+  const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false);
 
   // Total of active accounts only; each balance is the backend's own figure.
   const activeBalances = accountList.flatMap((account, index) =>
@@ -59,8 +60,11 @@ export function CollectionsOverview() {
   const shortcuts = isSuperAdmin ? SHORTCUTS : SHORTCUTS.slice(0, 2);
 
   const openRecord = () => dialogs.openRecord({ cashAccountId: firstActive?._id });
-  const openAddAccount = () => setAccountDialogKey(Date.now());
-  const closeAddAccount = () => setAccountDialogKey(null);
+  const openAddAccount = () => {
+    setAccountDialogKey((key) => key + 1);
+    setIsAccountDialogOpen(true);
+  };
+  const closeAddAccount = () => setIsAccountDialogOpen(false);
   const retry = () => void accounts.refetch();
 
   const toggleStatus = async (account: CashAccount) => {
@@ -153,7 +157,7 @@ export function CollectionsOverview() {
 
       <TransactionDialogs dialogs={dialogs} catalog={catalog} />
       {isSuperAdmin && (
-        <CashAccountDialog key={`account-${accountDialogKey}`} open={accountDialogKey !== null} onClose={closeAddAccount} />
+        <CashAccountDialog key={accountDialogKey} open={isAccountDialogOpen} onClose={closeAddAccount} />
       )}
     </div>
   );

@@ -51,7 +51,8 @@
     "reverseTransaction": "লেনদেন বাতিল (রিভার্স) হচ্ছে…",
     "createOpening": "প্রারম্ভিক জের সংরক্ষণ হচ্ছে…",
     "createCashAccount": "হিসাব যোগ করা হচ্ছে…",
-    "updateCashAccountStatus": "হিসাব হালনাগাদ হচ্ছে…"
+    "updateCashAccountStatus": "হিসাব হালনাগাদ হচ্ছে…",
+    "createAdmin": "অ্যাডমিন তৈরি হচ্ছে…"
   },
   "Pagination": {
     "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",
@@ -59,5 +60,14 @@
     "previous": "আগের",
     "next": "পরের",
     "perPage": "প্রতি পৃষ্ঠায়"
+  },
+  "PasswordRules": {
+    "minLength": "কমপক্ষে ৮ অক্ষরের হতে হবে",
+    "uppercase": "একটি বড় হাতের অক্ষর (A–Z)",
+    "lowercase": "একটি ছোট হাতের অক্ষর (a–z)",
+    "number": "একটি সংখ্যা (0–9)",
+    "special": "একটি বিশেষ চিহ্ন (@ $ ! % * ? &)",
+    "met": "পূরণ হয়েছে",
+    "notMet": "পূরণ হয়নি"
   }
 }

@@ -1,0 +1,86 @@
+{
+  "Admins": {
+    "title": "Admins",
+    "subtitle": "Staff accounts that can manage the society's records.",
+    "addAdmin": "Add admin",
+    "search": {
+      "label": "Search admins",
+      "placeholder": "Search by name, email, phone or staff ID"
+    },
+    "columns": {
+      "name": "Admin",
+      "staffNo": "Staff ID",
+      "phone": "Mobile",
+      "status": "Status",
+      "lastLogin": "Last login",
+      "added": "Added"
+    },
+    "sortBy": "Sort by {column}",
+    "sort": {
+      "label": "Sort",
+      "default": "Newest first",
+      "name": "Name (A–Z)",
+      "-name": "Name (Z–A)",
+      "-lastLogin": "Recent login first",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
+    },
+    "mustChangePassword": "Hasn't changed the first password",
+    "neverLoggedIn": "Never",
+    "updating": "Updating…",
+    "empty": {
+      "title": "No admins yet",
+      "body": "A super admin can add the first admin.",
+      "filteredTitle": "No matching admins",
+      "filteredBody": "Try another search."
+    },
+    "error": "Couldn't load the admins.",
+    "retry": "Try again"
+  },
+  "AdminForm": {
+    "title": "Add admin",
+    "description": "Creates a staff login with admin access. A staff ID is given automatically.",
+    "close": "Close",
+    "cancel": "Cancel",
+    "submit": "Create admin",
+    "submitting": "Creating…",
+    "fields": {
+      "name": "Full name",
+      "phone": "Mobile number",
+      "email": "Email",
+      "password": "First password",
+      "confirmPassword": "Confirm password"
+    },
+    "placeholders": {
+      "name": "e.g. Abdul Karim",
+      "phone": "01XXXXXXXXX",
+      "email": "name@example.com"
+    },
+    "rulesTitle": "The password must have:",
+    "loginNote": "The new admin signs in with the staff ID or email and this password, and must change the password after the first sign-in.",
+    "success": "{name} added as admin ({staffNo}).",
+    "validation": {
+      "nameRequired": "Enter the name",
+      "nameMin": "At least 2 characters",
+      "nameMax": "Up to 50 characters",
+      "phoneRequired": "Enter the mobile number",
+      "phoneInvalid": "Enter a valid mobile number (e.g. 01712345678)",
+      "emailRequired": "Enter the email",
+      "emailInvalid": "Enter a valid email",
+      "passwordRequired": "Enter a password",
+      "passwordWeak": "Password does not meet all the requirements below.",
+      "confirmRequired": "Confirm the password",
+      "mismatch": "Passwords do not match."
+    },
+    "errors": {
+      "generic": "Couldn't create the admin. Please try again.",
+      "network": "Can't reach the server. Check your connection.",
+      "forbidden": "Only a super admin can add an admin.",
+      "emailTaken": "This email is already used by another account."
+    }
+  }
+}

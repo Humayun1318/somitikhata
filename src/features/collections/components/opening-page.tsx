@@ -26,7 +26,7 @@ import { OPENING_FIELDS, openingSchema, toOpeningPayload, type OpeningInput } fr
 import { typeName } from "../transaction-effects";
 
 import { CollectionsHeader } from "./collections-header";
-import { FormAlert } from "./form-alert";
+import { FormAlert } from "@/components/shared/form-alert";
 import { MemberPreview } from "./member-preview";
 
 const RULE_KEYS = ["once", "fix", "date"] as const;

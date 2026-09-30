@@ -11,15 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FormField } from "@/components/ui/form-field";
 import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordRulesChecklist } from "@/components/shared/password-rules-checklist";
+import { PASSWORD_RULES } from "@/lib/password-rules";
 import { useChangePassword } from "@/features/auth/hooks/use-change-password";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getChangePasswordErrors } from "../change-password-errors";
-import { PasswordRulesChecklist } from "./password-rules-checklist";
 import {
   createChangePasswordSchema,
-  PASSWORD_RULES,
   type ChangePasswordInput,
 } from "../schemas";
 
@@ -37,6 +37,7 @@ type ChangePasswordDialogProps = {
 // The parent passes a new `key` each time it opens, so the form starts empty.
 export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProps) {
   const t = useTranslations("ChangePassword");
+  const tRules = useTranslations("PasswordRules");
   const toast = useToast();
   const changePassword = useChangePassword();
   const logout = useLogout();
@@ -95,7 +96,7 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
   const passwordRules = PASSWORD_RULES.map((rule) => ({
     key: rule.key,
     met: rule.test(newPasswordValue),
-    label: t(`rules.${rule.key}`),
+    label: tRules(rule.key),
   }));
 
 
@@ -147,8 +148,8 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
             <PasswordRulesChecklist
               id="newPassword-rules"
               title={t("rules.title")}
-              metLabel={t("rules.met")}
-              notMetLabel={t("rules.notMet")}
+              metLabel={tRules("met")}
+              notMetLabel={tRules("notMet")}
               rules={passwordRules}
               highlightUnmet={!!errors.newPassword}
             />

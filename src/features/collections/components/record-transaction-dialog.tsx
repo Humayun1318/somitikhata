@@ -36,7 +36,7 @@ import {
 } from "../schemas";
 import { balanceOf, typeName } from "../transaction-effects";
 
-import { FormAlert } from "./form-alert";
+import { FormAlert } from "@/components/shared/form-alert";
 import { MemberPreview } from "./member-preview";
 
 type RecordTransactionDialogProps = {

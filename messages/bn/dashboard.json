@@ -20,7 +20,8 @@
     "cashBook": "ক্যাশ বই",
     "passbook": "সদস্য পাসবই",
     "openingBalances": "প্রারম্ভিক জের",
-    "membership": "সদস্যপদ"
+    "membership": "সদস্যপদ",
+    "admins": "অ্যাডমিন"
   },
   "DashboardHeader": {
     "menuLabel": "অ্যাকাউন্ট মেনু",

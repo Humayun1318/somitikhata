@@ -162,6 +162,13 @@ export class DashboardSidebarConfig {
       permissions: ['VIEW_REPORTS'],
     },
     {
+      id: 'admin-admins',
+      titleKey: 'DashboardSidebar.admins',
+      href: '/admin/admins',
+      iconName: 'ShieldCheck',
+      roles: ['ADMIN'],
+    },
+    {
       id: 'admin-settings',
       titleKey: 'DashboardSidebar.settings',
       href: '/admin/settings',

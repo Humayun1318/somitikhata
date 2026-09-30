@@ -20,7 +20,8 @@
     "cashBook": "Cash Book",
     "passbook": "Member Passbook",
     "openingBalances": "Opening Balances",
-    "membership": "Membership"
+    "membership": "Membership",
+    "admins": "Admins"
   },
   "DashboardHeader": {
     "menuLabel": "Account menu",

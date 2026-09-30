@@ -1,7 +1,7 @@
 // One JSON file per feature area in messages/<locale>/.
 // Each file holds top-level namespaces (e.g. auth.json -> "Auth").
 // New feature: add messages/en/<name>.json and messages/bn/<name>.json, then list <name> here.
-const MESSAGE_FILES = ['common', 'home', 'auth', 'dashboard', 'profile', 'members', 'collections'] as const;
+const MESSAGE_FILES = ['common', 'home', 'auth', 'dashboard', 'profile', 'members', 'collections', 'admins'] as const;
 
 export async function loadMessages(locale: string) {
   const parts = await Promise.all(

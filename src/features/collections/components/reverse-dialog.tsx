@@ -17,7 +17,7 @@ import { useReverseTransaction } from "../hooks/use-collection-mutations";
 import { typeName } from "../transaction-effects";
 import type { Transaction } from "../types";
 
-import { FormAlert } from "./form-alert";
+import { FormAlert } from "@/components/shared/form-alert";
 
 type ReverseDialogProps = {
   open: boolean;

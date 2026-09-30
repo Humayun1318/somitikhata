@@ -7,8 +7,8 @@ import type { AdminListParams, CreateAdminPayload, PaginatedResult, StaffUser } 
 const escapeRegex = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export const adminApi = {
-  // GET /user with role=admin. `role` is an enum field in user.builder.config.ts;
-  // search covers name, email, phone, memberNo and staffNo.
+  // GET /user with role=admin. role and status are filterable enum fields in
+  // user.builder.config.ts; search covers name, email, phone, memberNo and staffNo.
   list: async (params: AdminListParams): Promise<PaginatedResult<StaffUser>> => {
     const search = params.search.trim();
     const { data } = await httpKit.get<ApiEnvelope<PaginatedResult<StaffUser>>>("/user", {
@@ -17,6 +17,7 @@ export const adminApi = {
         page: params.page,
         limit: params.limit,
         ...(search && { search: escapeRegex(search) }),
+        ...(params.status && { status: params.status }),
         ...(params.sort && { sort: params.sort }),
       },
     });

@@ -30,6 +30,8 @@ export type AdminListParams = {
   page: number;
   limit: number;
   search: string;
+  /** "" = all statuses. */
+  status: AccountStatus | "";
   sort: string;
 };
 

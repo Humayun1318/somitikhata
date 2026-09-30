@@ -36,10 +36,15 @@
       "title": "No admins yet",
       "body": "A super admin can add the first admin.",
       "filteredTitle": "No matching admins",
-      "filteredBody": "Try another search."
+      "filteredBody": "Try another search or clear the filters."
     },
     "error": "Couldn't load the admins.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "filters": {
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "clear": "Clear"
+    }
   },
   "AdminForm": {
     "title": "Add admin",

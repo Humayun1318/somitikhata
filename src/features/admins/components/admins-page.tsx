@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { ShieldCheck, UserPlus } from "lucide-react";
+import { ShieldCheck, UserPlus, X } from "lucide-react";
 
 import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-states";
 import { Pagination } from "@/components/shared/pagination";
@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { useMe } from "@/features/auth/hooks/use-me";
+import { cn } from "@/lib/cn";
 
 import { useAdminListParams } from "../hooks/use-admin-list-params";
 import { useAdmins } from "../hooks/use-admins";
+import { ACCOUNT_STATUSES, type AccountStatus } from "../types";
 
 import { AdminsTable } from "./admins-table";
 import { CreateAdminDialog } from "./create-admin-dialog";
@@ -26,7 +28,7 @@ export function AdminsPage() {
   const t = useTranslations("Admins");
   const { data: user } = useMe();
   const isSuperAdmin = user?.role === "super_admin";
-  const { params, setParams } = useAdminListParams();
+  const { params, setParams, hasFilters, clearFilters } = useAdminListParams();
   const { data, error, isPending, isFetching, isPlaceholderData, refetch } = useAdmins(params);
   // New key per open remounts the dialog, so its form starts empty.
   const [createKey, setCreateKey] = useState(0);
@@ -36,7 +38,7 @@ export function AdminsPage() {
   const meta = data?.meta;
   const showError = !!error && !data;
   const showEmpty = !!data && admins.length === 0;
-  const isFilteredEmpty = !!params.search || (meta?.total ?? 0) > 0;
+  const isFilteredEmpty = hasFilters || (meta?.total ?? 0) > 0;
   const isUpdating = isFetching && (isPlaceholderData || !isPending);
 
   const openCreate = () => {
@@ -46,6 +48,7 @@ export function AdminsPage() {
   const closeCreate = () => setIsCreateOpen(false);
   const retry = () => void refetch();
   const changeSearch = (search: string) => setParams({ search });
+  const changeStatus = (status: string) => setParams({ status: status as AccountStatus | "" });
   const changeSort = (sort: string) => setParams({ sort });
   const changePage = (page: number) => setParams({ page });
   const changeLimit = (limit: number) => setParams({ limit });
@@ -73,6 +76,21 @@ export function AdminsPage() {
           search={params.search}
           onSearchChange={changeSearch}
         />
+        <div className="sm:w-44">
+          <Select
+            aria-label={t("filters.status")}
+            value={params.status}
+            onChange={(event) => changeStatus(event.target.value)}
+            className={cn("min-h-11", params.status && "border-app-primary text-app-primary")}
+          >
+            <option value="">{t("filters.allStatuses")}</option>
+            {ACCOUNT_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {t(`status.${status}`)}
+              </option>
+            ))}
+          </Select>
+        </div>
         <div className="md:hidden">
           <Select aria-label={t("sort.label")} value={params.sort} onChange={(event) => changeSort(event.target.value)} className="min-h-11">
             {SORT_OPTIONS.map((option) => (
@@ -82,6 +100,12 @@ export function AdminsPage() {
             ))}
           </Select>
         </div>
+        {hasFilters && (
+          <Button type="button" variant="outline" onClick={clearFilters} className="gap-2 px-4">
+            <X aria-hidden="true" className="h-4 w-4" />
+            {t("filters.clear")}
+          </Button>
+        )}
       </div>
 
       <section className="relative space-y-4">

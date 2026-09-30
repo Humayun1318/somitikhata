@@ -2,11 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 
+import { PAGE_SIZE_OPTIONS } from "@/components/shared/pagination";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
 import { MEMBER_STATUSES, type MemberListParams, type MemberStatus } from "../types";
 
-export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const; // backend maxLimit is 100
 const DEFAULT_LIMIT = 10; // backend defaultLimit for members
 
 const DEFAULTS: MemberListParams = {

@@ -16,7 +16,7 @@ import {
   PhoneCell,
   StatusCell,
 } from "./member-columns";
-import { getAriaSort, SortableHeader } from "./sortable-header";
+import { getAriaSort, SortableHeader } from "@/components/shared/sortable-header";
 
 type MembersTableProps = {
   members: Member[];

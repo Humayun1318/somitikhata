@@ -60,6 +60,13 @@ export class DashboardSidebarConfig {
       ],
     },
     {
+      id: 'member-membership',
+      titleKey: 'DashboardSidebar.membership',
+      href: '/member/membership',
+      iconName: 'IdCard',
+      roles: ['MEMBER'],
+    },
+    {
       id: 'member-profile',
       titleKey: 'DashboardSidebar.profile',
       href: '/member/profile',
@@ -107,6 +114,36 @@ export class DashboardSidebarConfig {
       iconName: 'Receipt',
       roles: ['ADMIN'],
       permissions: ['MANAGE_COLLECTIONS'],
+      children: [
+        {
+          id: 'admin-collections-overview',
+          titleKey: 'DashboardSidebar.collectionsOverview',
+          href: '/admin/collections',
+          iconName: 'LayoutGrid',
+          roles: ['ADMIN'],
+        },
+        {
+          id: 'admin-cash-book',
+          titleKey: 'DashboardSidebar.cashBook',
+          href: '/admin/collections/cash-book',
+          iconName: 'BookOpenText',
+          roles: ['ADMIN'],
+        },
+        {
+          id: 'admin-passbook',
+          titleKey: 'DashboardSidebar.passbook',
+          href: '/admin/collections/passbook',
+          iconName: 'Wallet',
+          roles: ['ADMIN'],
+        },
+        {
+          id: 'admin-opening-balances',
+          titleKey: 'DashboardSidebar.openingBalances',
+          href: '/admin/collections/opening',
+          iconName: 'History',
+          roles: ['ADMIN'],
+        },
+      ],
     },
     {
       id: 'admin-loans-management',

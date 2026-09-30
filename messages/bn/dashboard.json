@@ -15,7 +15,12 @@
     "mySavings": "আমার সঞ্চয়",
     "myLoans": "আমার ঋণ",
     "depositRequest": "ডিপোজিট রিকোয়েস্ট",
-    "applyLoan": "ঋণ আবেদন"
+    "applyLoan": "ঋণ আবেদন",
+    "collectionsOverview": "সারসংক্ষেপ",
+    "cashBook": "ক্যাশ বই",
+    "passbook": "সদস্য পাসবই",
+    "openingBalances": "প্রারম্ভিক জের",
+    "membership": "সদস্যপদ"
   },
   "DashboardHeader": {
     "menuLabel": "অ্যাকাউন্ট মেনু",

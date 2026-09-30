@@ -48,6 +48,18 @@ export const memberApi = {
     return data.data;
   },
 
+  // GET /member/:memberNo (admin). Accepts "41", "0041" or "LBKS-0041".
+  getByMemberNo: async (memberNo: string): Promise<Member> => {
+    const { data } = await httpKit.get<ApiEnvelope<Member>>(`/member/${encodeURIComponent(memberNo)}`);
+    return data.data;
+  },
+
+  // GET /member/me (member role): the logged-in member's own record.
+  me: async (): Promise<Member> => {
+    const { data } = await httpKit.get<ApiEnvelope<Member>>("/member/me");
+    return data.data;
+  },
+
   // PATCH /member/update/:memberNo -> data: the updated Member
   update: async (memberNo: string, payload: UpdateMemberPayload): Promise<Member> => {
     const { data } = await httpKit.patch<ApiEnvelope<Member>>(

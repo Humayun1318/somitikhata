@@ -46,6 +46,18 @@
     "changePassword": "Updating password…",
     "createMember": "Adding member…",
     "updateMember": "Saving changes…",
-    "updateMemberStatus": "Updating status…"
+    "updateMemberStatus": "Updating status…",
+    "createTransaction": "Saving transaction…",
+    "reverseTransaction": "Reversing transaction…",
+    "createOpening": "Saving opening entry…",
+    "createCashAccount": "Adding account…",
+    "updateCashAccountStatus": "Updating account…"
+  },
+  "Pagination": {
+    "showing": "Showing {from, number}–{to, number} of {total, number}",
+    "page": "Page {page, number} of {totalPages, number}",
+    "previous": "Previous",
+    "next": "Next",
+    "perPage": "Per page"
   }
 }

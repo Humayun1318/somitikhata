@@ -42,13 +42,6 @@
       "suspended": "স্থগিত",
       "exited": "সদস্যপদ ত্যাগ"
     },
-    "pagination": {
-      "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",
-      "page": "পৃষ্ঠা {page, number} / {totalPages, number}",
-      "previous": "আগের",
-      "next": "পরের",
-      "perPage": "প্রতি পৃষ্ঠায়"
-    },
     "empty": {
       "title": "এখনো কোনো সদস্য নেই",
       "body": "প্রথম সদস্য যোগ করে শুরু করুন।",

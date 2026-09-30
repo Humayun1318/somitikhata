@@ -15,7 +15,12 @@
     "mySavings": "My Savings",
     "myLoans": "My Loans",
     "depositRequest": "Deposit Request",
-    "applyLoan": "Apply for Loan"
+    "applyLoan": "Apply for Loan",
+    "collectionsOverview": "Overview",
+    "cashBook": "Cash Book",
+    "passbook": "Member Passbook",
+    "openingBalances": "Opening Balances",
+    "membership": "Membership"
   },
   "DashboardHeader": {
     "menuLabel": "Account menu",

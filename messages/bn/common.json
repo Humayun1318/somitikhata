@@ -46,6 +46,18 @@
     "changePassword": "পাসওয়ার্ড আপডেট হচ্ছে…",
     "createMember": "সদস্য যোগ করা হচ্ছে…",
     "updateMember": "পরিবর্তন সংরক্ষণ হচ্ছে…",
-    "updateMemberStatus": "অবস্থা হালনাগাদ হচ্ছে…"
+    "updateMemberStatus": "অবস্থা হালনাগাদ হচ্ছে…",
+    "createTransaction": "লেনদেন সংরক্ষণ হচ্ছে…",
+    "reverseTransaction": "লেনদেন বাতিল (রিভার্স) হচ্ছে…",
+    "createOpening": "প্রারম্ভিক জের সংরক্ষণ হচ্ছে…",
+    "createCashAccount": "হিসাব যোগ করা হচ্ছে…",
+    "updateCashAccountStatus": "হিসাব হালনাগাদ হচ্ছে…"
+  },
+  "Pagination": {
+    "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",
+    "page": "পৃষ্ঠা {page, number} / {totalPages, number}",
+    "previous": "আগের",
+    "next": "পরের",
+    "perPage": "প্রতি পৃষ্ঠায়"
   }
 }

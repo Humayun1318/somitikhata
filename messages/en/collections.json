@@ -1,0 +1,267 @@
+{
+  "Collections": {
+    "title": "Collections",
+    "subtitle": "Cash and bank balances, deposits, withdrawals and member passbooks.",
+    "recordTransaction": "Record transaction",
+    "totalBalance": "Total balance",
+    "totalBalanceHint": "All active cash and bank accounts",
+    "accountsTitle": "Cash & bank accounts",
+    "addAccount": "Add account",
+    "openCashBook": "Cash book",
+    "balanceError": "Couldn't load balance",
+    "kind": {
+      "cash": "Cash",
+      "bank": "Bank"
+    },
+    "accountStatus": {
+      "active": "Active",
+      "closed": "Closed"
+    },
+    "closeAccount": "Close account",
+    "reopenAccount": "Reopen account",
+    "accountsError": "Couldn't load the accounts.",
+    "accountsEmpty": "No cash or bank account yet.",
+    "retry": "Try again",
+    "updating": "Updating…",
+    "shortcuts": {
+      "title": "Go to",
+      "cashBook": "Cash Book",
+      "cashBookBody": "Every in and out entry of one cash or bank account.",
+      "passbook": "Member Passbook",
+      "passbookBody": "A member's balances and full transaction history.",
+      "opening": "Opening Balances",
+      "openingBody": "One-time entries carried over from the old books."
+    },
+    "buckets": {
+      "share": "Share",
+      "amanot": "Amanot",
+      "stayi": "Fixed Amanot",
+      "loan": "Loan outstanding"
+    },
+    "reversalBadge": "Reversal",
+    "columns": {
+      "date": "Date",
+      "transactionNo": "Txn no.",
+      "type": "Type",
+      "member": "Member",
+      "account": "Account",
+      "voucher": "Voucher",
+      "in": "In (৳)",
+      "out": "Out (৳)",
+      "effect": "Effect",
+      "actions": "Actions"
+    },
+    "sortBy": "Sort by {column}",
+    "viewDetails": "Details",
+    "pageTotals": "Total on this page",
+    "filters": {
+      "searchLabel": "Search transactions",
+      "searchPlaceholder": "Search by txn no., voucher or description",
+      "toggle": "Filters",
+      "clear": "Clear",
+      "type": "Transaction type",
+      "allTypes": "All types",
+      "reversalTypes": "Reversals",
+      "dateFrom": "Date from",
+      "dateTo": "Date to",
+      "minAmount": "Min amount (৳)",
+      "maxAmount": "Max amount (৳)",
+      "sort": "Sort"
+    },
+    "sort": {
+      "default": "Newest date first",
+      "transactionDate": "Oldest date first",
+      "-transactionDate": "Newest date first",
+      "-amount": "Largest amount first",
+      "amount": "Smallest amount first",
+      "-createdAt": "Recently recorded first",
+      "transactionNo": "Txn no. (A–Z)"
+    },
+    "empty": {
+      "title": "No transactions yet",
+      "body": "Entries will appear here once they are recorded.",
+      "filteredTitle": "No matching transactions",
+      "filteredBody": "Try another search or clear the filters."
+    },
+    "listError": "Couldn't load the transactions.",
+    "typesError": "Couldn't load the transaction types. Some labels may be missing."
+  },
+  "CashBook": {
+    "title": "Cash Book",
+    "subtitle": "In and out entries of one cash or bank account.",
+    "account": "Account",
+    "closed": "(closed)",
+    "currentBalance": "Current balance"
+  },
+  "Passbook": {
+    "title": "Member Passbook",
+    "subtitle": "Look up a member to see balances and every transaction.",
+    "lookupLabel": "Member no.",
+    "lookupPlaceholder": "e.g. LBKS-0001 or 1",
+    "lookupSubmit": "Open passbook",
+    "prompt": "Enter a member number to open their passbook.",
+    "notFound": "No member found with number “{memberNo}”.",
+    "lookupError": "Couldn't load this member.",
+    "balancesTitle": "Current balances",
+    "balancesError": "Couldn't load the balances.",
+    "shareDone": "Share deposited",
+    "shareMissing": "No share deposit yet",
+    "ledgerTitle": "Transactions"
+  },
+  "TransactionForm": {
+    "title": "Record transaction",
+    "description": "A member deposit or withdrawal. It can't be edited later, only reversed.",
+    "close": "Close",
+    "cancel": "Cancel",
+    "submit": "Save transaction",
+    "submitting": "Saving…",
+    "success": "{transactionNo} saved.",
+    "fields": {
+      "memberNo": "Member no.",
+      "memberNoPlaceholder": "e.g. LBKS-0001 or 1",
+      "type": "Transaction type",
+      "typePlaceholder": "Choose a type",
+      "account": "Cash / bank account",
+      "accountPlaceholder": "Choose an account",
+      "amount": "Amount (৳)",
+      "amountPlaceholder": "0.00",
+      "date": "Transaction date",
+      "voucherNo": "Voucher no.",
+      "description": "Description",
+      "optional": "optional"
+    },
+    "groups": {
+      "deposit": "Deposit",
+      "withdrawal": "Withdrawal"
+    },
+    "member": {
+      "looking": "Finding member…",
+      "notFound": "No member with this number.",
+      "notActive": "Transactions can only be recorded for active members.",
+      "shareDone": "Share already deposited",
+      "balance": "{bucket} balance"
+    },
+    "shareTaken": "{type} (already deposited)",
+    "withdrawalInfo": "Current {bucket} balance: {balance}. Withdrawals are limited to {percent}% of the balance; the server checks the exact limit when you save.",
+    "summary": "{direction} {amount} · {type} · {memberNo} · {account}",
+    "validation": {
+      "memberNo": "Enter the member number",
+      "type": "Choose a transaction type",
+      "account": "Choose an account",
+      "amountRequired": "Enter the amount",
+      "amountFormat": "Use numbers only, with up to 2 decimals",
+      "amountPositive": "Amount must be more than 0",
+      "amountTooLarge": "Amount is too large",
+      "date": "Choose the date",
+      "dateFuture": "Date can't be in the future",
+      "voucherTooLong": "Up to 30 characters",
+      "descriptionTooLong": "Up to 200 characters"
+    }
+  },
+  "TransactionDetails": {
+    "title": "Transaction details",
+    "close": "Close",
+    "reverse": "Reverse",
+    "fields": {
+      "type": "Type",
+      "date": "Transaction date",
+      "member": "Member",
+      "account": "Account",
+      "voucherNo": "Voucher no.",
+      "description": "Description",
+      "recordedBy": "Recorded by",
+      "recordedAt": "Recorded at",
+      "effect": "Effect"
+    },
+    "reversalOf": "This entry reverses {transactionNo}.",
+    "reversedBy": "Reversed by {transactionNo} on {date}.",
+    "checkingReversal": "Checking reversal…",
+    "notReversible": "This type can't be reversed automatically.",
+    "cashIn": "Cash in",
+    "cashOut": "Cash out",
+    "noCash": "No cash movement"
+  },
+  "ReverseForm": {
+    "title": "Reverse transaction",
+    "description": "Adds an opposite entry that cancels {transactionNo}. The original stays in the books.",
+    "close": "Close",
+    "cancel": "Cancel",
+    "submit": "Reverse",
+    "submitting": "Reversing…",
+    "reason": "Reason",
+    "reasonPlaceholder": "Why is this entry being reversed?",
+    "reasonShort": "Write at least 5 characters",
+    "reasonLong": "Up to 200 characters",
+    "dateNote": "The reversal is dated today.",
+    "success": "{original} reversed. New entry: {reversal}."
+  },
+  "OpeningForm": {
+    "title": "Opening Balances",
+    "subtitle": "Carry balances over from the old books, once per member or account.",
+    "superAdminOnly": "Only a super admin can record opening balances.",
+    "rules": {
+      "title": "Before you start",
+      "once": "Each member (per type) or account gets one opening entry. A second one is refused.",
+      "fix": "To fix a wrong entry, reverse it from the passbook or cash book, then record it again.",
+      "date": "Use the day the old books were closed."
+    },
+    "formTitle": "New opening entry",
+    "type": "Opening type",
+    "typePlaceholder": "Choose a type",
+    "memberNo": "Member no.",
+    "memberNoPlaceholder": "e.g. LBKS-0001 or 1",
+    "account": "Cash / bank account",
+    "accountPlaceholder": "Choose an account",
+    "amount": "Amount (৳)",
+    "date": "Opening date",
+    "description": "Description",
+    "optional": "optional",
+    "submit": "Save opening entry",
+    "submitting": "Saving…",
+    "success": "{transactionNo} saved.",
+    "lastSaved": "Last saved: {transactionNo} · {amount}",
+    "noTypes": "No active opening types.",
+    "validation": {
+      "type": "Choose an opening type",
+      "memberNo": "Enter the member number",
+      "account": "Choose an account"
+    }
+  },
+  "CashAccountForm": {
+    "title": "Add cash or bank account",
+    "close": "Close",
+    "cancel": "Cancel",
+    "submit": "Add account",
+    "submitting": "Adding…",
+    "name": "Account name",
+    "namePlaceholder": "e.g. Sonali Bank – Lohagara",
+    "kind": "Account type",
+    "bankName": "Bank name",
+    "success": "{name} added.",
+    "closed": "{name} closed.",
+    "reopened": "{name} reopened.",
+    "validation": {
+      "nameShort": "At least 2 characters",
+      "nameLong": "Up to 50 characters",
+      "bankName": "Enter the bank name"
+    }
+  },
+  "CollectionErrors": {
+    "generic": "Couldn't save. Please try again.",
+    "network": "Can't reach the server. Check your connection.",
+    "forbidden": "You don't have permission for this.",
+    "memberNotFound": "No member with this number.",
+    "invalidMemberNo": "This member number isn't valid.",
+    "memberNotActive": "This member isn't active. Transactions can only be recorded for active members.",
+    "accountClosed": "This account is closed.",
+    "accountNotFound": "This account no longer exists.",
+    "shareExists": "{memberNo} already has a Share Deposit. Reverse it first to record a new one.",
+    "withdrawalLimit": "Withdrawal is over the limit ({percent}% of the current balance). Allowed: {allowed}, requested: {requested}.",
+    "loanBacking": "This withdrawal would leave too little Amanot to back the member's active loan. At least {amount} must remain.",
+    "alreadyReversed": "This transaction has already been reversed.",
+    "reversalOfReversal": "A reversal entry can't be reversed.",
+    "notReversible": "This transaction type can't be reversed automatically.",
+    "openingExists": "An opening entry already exists ({transactionNo}). Reverse it first to correct it.",
+    "notFound": "Transaction not found."
+  }
+}

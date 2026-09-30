@@ -3,6 +3,7 @@
 import { UserPlus } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { Pagination } from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -16,7 +17,6 @@ import { MemberDetailsDialog } from "./member-details-dialog";
 import { MemberFormDialog } from "./member-form-dialog";
 import { MemberStatusDialog } from "./member-status-dialog";
 import { MembersEmpty, MembersError, MembersLoading } from "./members-list-states";
-import { MembersPagination } from "./members-pagination";
 import { MembersTable } from "./members-table";
 import { MembersToolbar } from "./members-toolbar";
 
@@ -96,7 +96,7 @@ export function MembersPage() {
           />
         )}
         {meta && meta.total > 0 && (
-          <MembersPagination meta={meta} onPageChange={changePage} onLimitChange={changeLimit} />
+          <Pagination meta={meta} onPageChange={changePage} onLimitChange={changeLimit} />
         )}
       </section>
 

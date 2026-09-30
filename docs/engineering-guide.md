@@ -21,8 +21,10 @@ src/
   features/<name>/     api.ts, query-keys.ts, types.ts, schemas.ts,
                        hooks/, components/  — everything for one feature
   components/ui/       small primitives: Button, Input, PasswordInput,
-                       Select, Dialog, Spinner
-  components/shared/   app-wide pieces: PageHeader, UserAvatar, toast/
+                       Select, Textarea, Dialog, Spinner, FormField
+  components/shared/   app-wide pieces: PageHeader, UserAvatar, Money,
+                       SearchInput, Pagination, SortableHeader,
+                       list-states, toast/
   lib/                 http (axios + refresh), query (TanStack setup),
                        env, cn, small helpers
   providers/           AppProviders (query client, toasts, listeners)
@@ -108,6 +110,9 @@ or page change would be noise.
 - Changing search/filters/sort resets to page 1.
 - Tables are built from a typed `columns` array, so a future column
   (e.g. Actions) is one new entry.
+- Reuse the shared list pieces in `components/shared/`: `SearchInput`
+  (debounced, URL-synced), `SortableHeader`, `Pagination`,
+  `ListLoading` / `ListEmpty` / `ListError`.
 
 ## 0.7 Day-only dates (join date, date of birth, exit date)
 
@@ -117,6 +122,33 @@ or page change would be noise.
 - Date inputs use `toDhakaDateString()` for "today" and for prefilling.
 - Range filters send whole Dhaka days: `dhakaDayStart()` / `dhakaDayEnd()`.
   A plain `2026-03-01` is read as UTC midnight and misses the first 6 hours.
+- Transaction dates follow the same rule.
+
+## 0.8 Money
+
+- The backend **stores and returns paisa** (integer). It **accepts taka**
+  (number, max 2 decimals) in request bodies. Amount range filters
+  (`minAmount`/`maxAmount`) are compared against stored values, so they are
+  sent in **paisa** (`takaToPaisa()`).
+- Show money only with `<Money paisa={...} />` or `formatPaisa()`
+  (`src/lib/money.ts`): taka sign, 2 decimals, lakh grouping, Bangla digits
+  in Bangla. Never divide by 100 in a component.
+- Taka inputs are text inputs with `inputMode="decimal"`, checked with
+  `TAKA_INPUT_PATTERN`; the form sends `Number(value)`.
+- Balances and limits come from the backend. The frontend may add up rows it
+  shows (e.g. a "total on this page" row, labelled as such), but never
+  recomputes a balance or a withdrawal limit; the server is the check.
+- A wrong entry is never edited: it is reversed (a new opposite entry).
+
+## 0.9 System Profile vs Member Profile
+
+- **System Profile** (`/admin/profile`, `/member/profile`, `features/profile`):
+  the login account from `GET /user/me` — name, phone, email, role, status,
+  password. Same for staff and members.
+- **Member Profile** (`/member/membership`, `features/membership`): the
+  society's member record from `GET /member/me` — member info, society info,
+  and later nominee. Each part is one `InfoSection`; a new part (nominee) is
+  one more section.
 
 ------------------------------------------------------------------------
 

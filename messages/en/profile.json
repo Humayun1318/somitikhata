@@ -69,5 +69,42 @@
       "met": "met",
       "notMet": "not met"
     }
+  },
+  "Membership": {
+    "eyebrow": "Society membership",
+    "title": "Membership",
+    "subtitle": "Your record as a member of the society.",
+    "systemProfileLink": "Account & password",
+    "notProvided": "Not provided",
+    "memberInfo": "Member information",
+    "memberInfoHint": "To correct these details, please contact the society office.",
+    "societyInfo": "Society information",
+    "fields": {
+      "nameBn": "Name (Bangla)",
+      "nameEn": "Name (English)",
+      "guardian": "Father's / spouse's name",
+      "dob": "Date of birth",
+      "phone": "Mobile number",
+      "nid": "NID number",
+      "memberNo": "Member no.",
+      "status": "Membership status",
+      "joinDate": "Joined on",
+      "exitDate": "Exit date",
+      "admissionFormNo": "Admission form no.",
+      "share": "Share"
+    },
+    "relation": {
+      "father": "father",
+      "spouse": "spouse"
+    },
+    "shareDone": "Share deposited",
+    "shareMissing": "No share deposit yet",
+    "nominee": {
+      "title": "Nominee",
+      "notAvailable": "Nominee details will be shown here. This isn't available yet."
+    },
+    "notLinked": "No society membership is linked to this account. Please contact the society office.",
+    "error": "Couldn't load your membership details.",
+    "retry": "Try again"
   }
 }

@@ -7,11 +7,11 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { SearchInput } from "@/components/shared/search-input";
 import { cn } from "@/lib/cn";
 
 import { MEMBER_STATUSES, type MemberListParams, type MemberStatus } from "../types";
 
-import { MemberSearch } from "./member-search";
 
 // Mobile has no clickable table headers, so it gets a sort dropdown.
 const SORT_OPTIONS = ["", "memberNo", "-memberNo", "nameBn", "-nameBn", "-joinDate", "joinDate", "status"];
@@ -35,7 +35,13 @@ export function MembersToolbar({ params, setParams, hasFilters, onClearFilters }
   return (
     <div className="space-y-3">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
-        <MemberSearch search={params.search} onSearchChange={handleSearchChange} />
+        <SearchInput
+          id="member-search"
+          label={t("search.label")}
+          placeholder={t("search.placeholder")}
+          search={params.search}
+          onSearchChange={handleSearchChange}
+        />
         <div className="sm:w-44">
           <Select
             aria-label={t("filters.status")}

@@ -6,18 +6,20 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 
-import { PAGE_SIZE_OPTIONS } from "../hooks/use-member-list-params";
-import type { PaginationMeta } from "../types";
+import type { PaginationMeta } from "@/types/api";
 
-type MembersPaginationProps = {
+// Backend QueryBuilder maxLimit is 100.
+export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
+
+type PaginationProps = {
   meta: PaginationMeta;
   onPageChange: (page: number) => void;
   onLimitChange: (limit: number) => void;
 };
 
-// Everything comes from the backend meta: page, limit, total, totalPages, next/previous.
-export function MembersPagination({ meta, onPageChange, onLimitChange }: MembersPaginationProps) {
-  const t = useTranslations("Members.pagination");
+// Shared by every list page. Everything comes from the backend meta.
+export function Pagination({ meta, onPageChange, onLimitChange }: PaginationProps) {
+  const t = useTranslations("Pagination");
 
   const from = meta.total === 0 ? 0 : meta.skip + 1;
   const to = Math.min(meta.skip + meta.limit, meta.total);

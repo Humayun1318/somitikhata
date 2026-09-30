@@ -1,0 +1,290 @@
+"use client";
+
+import { useState, type FormEvent } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocale, useTranslations } from "next-intl";
+import { Info } from "lucide-react";
+
+import { useToast } from "@/components/shared/toast/toast-provider";
+import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
+import { FormField } from "@/components/ui/form-field";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { toDhakaDateString } from "@/lib/dhaka-date";
+import { formatPaisa, takaToPaisa, TAKA_INPUT_PATTERN } from "@/lib/money";
+import { useDebouncedValue } from "@/lib/use-debounced-value";
+import { useSubmitLock } from "@/lib/use-submit-lock";
+
+import { getCollectionError } from "../collection-errors";
+import { useCreateTransaction } from "../hooks/use-collection-mutations";
+import {
+  useCashAccounts,
+  useMemberBalances,
+  useMemberLookup,
+  useSetting,
+  type TransactionTypeCatalog,
+} from "../hooks/use-collection-queries";
+import type { RecordDefaults } from "../hooks/use-transaction-dialogs";
+import {
+  RECORD_FIELDS,
+  recordTransactionSchema,
+  toCreateTransactionPayload,
+  type RecordTransactionInput,
+} from "../schemas";
+import { balanceOf, typeName } from "../transaction-effects";
+
+import { FormAlert } from "./form-alert";
+import { MemberPreview } from "./member-preview";
+
+type RecordTransactionDialogProps = {
+  open: boolean;
+  onClose: () => void;
+  catalog: TransactionTypeCatalog;
+  defaults: RecordDefaults;
+};
+
+// Backend SYSTEM_TYPE_CODES.SHARE_DEPOSIT: allowed once per member.
+const SHARE_DEPOSIT_CODE = "SHARE_DEPOSIT";
+
+// POST /transactions/create: one member deposit or withdrawal.
+// The parent passes a new `key` each time it opens, so the form starts fresh.
+export function RecordTransactionDialog({ open, onClose, catalog, defaults }: RecordTransactionDialogProps) {
+  const t = useTranslations("TransactionForm");
+  const tErrors = useTranslations("CollectionErrors");
+  const tBucket = useTranslations("Collections.buckets");
+  const locale = useLocale();
+  const toast = useToast();
+  const createTransaction = useCreateTransaction();
+  const runLocked = useSubmitLock();
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<RecordTransactionInput>({
+    resolver: zodResolver(recordTransactionSchema(t)),
+    defaultValues: {
+      memberNo: defaults.memberNo ?? "",
+      typeCode: "",
+      cashAccountId: defaults.cashAccountId ?? "",
+      amount: "",
+      transactionDate: toDhakaDateString(),
+      voucherNo: "",
+      description: "",
+    },
+    mode: "onTouched",
+  });
+
+  const [memberNoInput, typeCode, cashAccountId, amount] = useWatch({
+    control,
+    name: ["memberNo", "typeCode", "cashAccountId", "amount"],
+  });
+
+  // Look the member up once typing pauses.
+  const lookupNo = useDebouncedValue(memberNoInput.trim());
+  const lookup = useMemberLookup(lookupNo);
+  const member = lookup.data;
+  const balances = useMemberBalances(member?.status === "active" ? member.memberNo : "");
+  const accounts = useCashAccounts();
+
+  const memberTypes = catalog.types.filter(
+    (type) =>
+      (type.typeGroup === "member_deposit" || type.typeGroup === "member_withdrawal") &&
+      type.cashEffect !== "none" &&
+      type.memberRule === "required",
+  );
+  const depositTypes = memberTypes.filter((type) => type.typeGroup === "member_deposit");
+  const withdrawalTypes = memberTypes.filter((type) => type.typeGroup === "member_withdrawal");
+  const selectedType = memberTypes.find((type) => type.code === typeCode);
+  const isWithdrawal = selectedType?.typeGroup === "member_withdrawal";
+  const activeAccounts = (accounts.data ?? []).filter((account) => account.status === "active");
+  const selectedAccount = activeAccounts.find((account) => account._id === cashAccountId);
+
+  const limit = useSetting(isWithdrawal ? "withdrawal_limit_percent" : "");
+  const withdrawnBuckets = isWithdrawal
+    ? (selectedType?.memberEffects ?? []).filter((effect) => effect.sign === "minus").map((effect) => effect.bucket)
+    : [];
+
+  const numberFormat = new Intl.NumberFormat(locale === "bn" ? "bn-BD" : "en-IN");
+  // Information only: the server applies the exact limit when saving.
+  const withdrawalNotes = withdrawnBuckets.map((bucket) => ({
+    bucket,
+    text: t("withdrawalInfo", {
+      bucket: tBucket(bucket),
+      balance: balances.data ? formatPaisa(balanceOf(balances.data, bucket), locale) : "…",
+      percent: limit.data?.value ? numberFormat.format(Number(limit.data.value)) : "…",
+    }),
+  }));
+
+  const isLooking = !!lookupNo && (lookup.isPending || lookupNo !== memberNoInput.trim());
+  // 404: no such member. 400: not a valid member number at all.
+  const isNotFound = !isLooking && (lookup.error?.status === 404 || lookup.error?.status === 400);
+  const isMemberBlocked = isNotFound || (!!member && member.status !== "active");
+  const isBusy = isSubmitting || createTransaction.isPending;
+
+  const amountText = amount.trim();
+  const hasAmount = TAKA_INPUT_PATTERN.test(amountText) && Number(amountText) > 0;
+  const showSummary = !!member && !!selectedType && !!selectedAccount && hasAmount;
+  const summary = showSummary
+    ? t("summary", {
+        direction: t(isWithdrawal ? "groups.withdrawal" : "groups.deposit"),
+        amount: formatPaisa(takaToPaisa(amountText), locale),
+        type: typeName(selectedType, locale),
+        memberNo: member.memberNo,
+        account: selectedAccount.name,
+      })
+    : "";
+
+  const save = async (values: RecordTransactionInput) => {
+    setFormError(null);
+    try {
+      const created = await createTransaction.mutateAsync(toCreateTransactionPayload(values));
+      onClose();
+      toast.success(t("success", { transactionNo: created.transactionNo }));
+    } catch (error) {
+      const result = getCollectionError(error, tErrors, locale, RECORD_FIELDS);
+      result.fieldErrors.forEach(({ field, message }, index) => {
+        setError(field as keyof RecordTransactionInput, { type: "server", message }, { shouldFocus: index === 0 });
+      });
+      setFormError(result.formError);
+    }
+  };
+
+  const onSubmit = (values: RecordTransactionInput) => runLocked(() => save(values));
+  const submitForm = (event: FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(event);
+  const fieldProps = (name: keyof RecordTransactionInput) => ({
+    id: `record-${name}`,
+    error: !!errors[name],
+    "aria-invalid": !!errors[name],
+    "aria-describedby": errors[name] ? `record-${name}-error` : undefined,
+  });
+  const typeLabel = (code: string, name: string) =>
+    code === SHARE_DEPOSIT_CODE && member?.hasShareDeposit ? t("shareTaken", { type: name }) : name;
+
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={t("title")}
+      description={t("description")}
+      closeLabel={t("close")}
+      dismissible={!isBusy}
+      size="lg"
+    >
+      <form onSubmit={submitForm} noValidate aria-busy={isBusy} className="space-y-4">
+        {formError && <FormAlert message={formError} />}
+
+        <FormField id="record-memberNo" label={t("fields.memberNo")} error={errors.memberNo?.message}>
+          <Input
+            {...fieldProps("memberNo")}
+            {...register("memberNo")}
+            autoComplete="off"
+            autoCapitalize="characters"
+            readOnly={isBusy}
+            placeholder={t("fields.memberNoPlaceholder")}
+            className="min-h-11 font-mono"
+            data-autofocus
+          />
+          <MemberPreview isLooking={isLooking} isNotFound={isNotFound} member={member} balances={balances.data} />
+        </FormField>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField id="record-typeCode" label={t("fields.type")} error={errors.typeCode?.message}>
+            <Select {...fieldProps("typeCode")} {...register("typeCode")} disabled={isBusy} className="min-h-11">
+              <option value="">{t("fields.typePlaceholder")}</option>
+              <optgroup label={t("groups.deposit")}>
+                {depositTypes.map((type) => (
+                  <option
+                    key={type.code}
+                    value={type.code}
+                    disabled={type.code === SHARE_DEPOSIT_CODE && !!member?.hasShareDeposit}
+                  >
+                    {typeLabel(type.code, typeName(type, locale))}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label={t("groups.withdrawal")}>
+                {withdrawalTypes.map((type) => (
+                  <option key={type.code} value={type.code}>
+                    {typeName(type, locale)}
+                  </option>
+                ))}
+              </optgroup>
+            </Select>
+          </FormField>
+
+          <FormField id="record-cashAccountId" label={t("fields.account")} error={errors.cashAccountId?.message}>
+            <Select {...fieldProps("cashAccountId")} {...register("cashAccountId")} disabled={isBusy} className="min-h-11">
+              <option value="">{t("fields.accountPlaceholder")}</option>
+              {activeAccounts.map((account) => (
+                <option key={account._id} value={account._id}>
+                  {account.name}
+                </option>
+              ))}
+            </Select>
+          </FormField>
+
+          <FormField id="record-amount" label={t("fields.amount")} error={errors.amount?.message}>
+            <Input
+              {...fieldProps("amount")}
+              {...register("amount")}
+              inputMode="decimal"
+              autoComplete="off"
+              readOnly={isBusy}
+              placeholder={t("fields.amountPlaceholder")}
+              className="min-h-11 text-right text-base font-semibold tabular-nums"
+            />
+          </FormField>
+
+          <FormField id="record-transactionDate" label={t("fields.date")} error={errors.transactionDate?.message}>
+            <Input
+              {...fieldProps("transactionDate")}
+              {...register("transactionDate")}
+              type="date"
+              max={toDhakaDateString()}
+              readOnly={isBusy}
+              className="min-h-11"
+            />
+          </FormField>
+        </div>
+
+        {withdrawalNotes.map(({ bucket, text }) => (
+          <p key={bucket} className="flex items-start gap-2 rounded-xl bg-sky-50 p-3 text-xs text-sky-900">
+            <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            {text}
+          </p>
+        ))}
+
+        <div className="grid gap-4 sm:grid-cols-[1fr_2fr]">
+          <FormField id="record-voucherNo" label={t("fields.voucherNo")} labelHint={t("fields.optional")} error={errors.voucherNo?.message}>
+            <Input {...fieldProps("voucherNo")} {...register("voucherNo")} maxLength={30} readOnly={isBusy} className="min-h-11" />
+          </FormField>
+          <FormField id="record-description" label={t("fields.description")} labelHint={t("fields.optional")} error={errors.description?.message}>
+            <Textarea {...fieldProps("description")} {...register("description")} rows={1} maxLength={200} readOnly={isBusy} className="min-h-11" />
+          </FormField>
+        </div>
+
+        {showSummary && (
+          <p className="rounded-xl border border-app-primary/30 bg-app-primary/5 p-3 text-sm font-medium text-app-text">
+            {summary}
+          </p>
+        )}
+
+        <div className="flex flex-col-reverse gap-2.5 pt-1 sm:flex-row sm:justify-end">
+          <Button type="button" variant="outline" onClick={onClose} disabled={isBusy} className="w-full sm:w-auto">
+            {t("cancel")}
+          </Button>
+          <Button type="submit" isLoading={isBusy} disabled={isMemberBlocked} className="w-full sm:w-auto">
+            {isBusy ? t("submitting") : t("submit")}
+          </Button>
+        </div>
+      </form>
+    </Dialog>
+  );
+}

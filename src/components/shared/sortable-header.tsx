@@ -4,19 +4,18 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 
 import { cn } from "@/lib/cn";
 
-import type { MemberSortField } from "../types";
-
 type SortableHeaderProps = {
   label: string;
   sortLabel: string;
-  field: MemberSortField;
+  /** A field the backend can sort by. */
+  field: string;
   /** Current sort from the URL: "", "field" or "-field". */
   sort: string;
   onSortChange: (sort: string) => void;
 };
 
 // Click cycles: ascending -> descending -> back to the default order.
-function nextSort(field: MemberSortField, sort: string) {
+function nextSort(field: string, sort: string) {
   if (sort === field) return `-${field}`;
   if (sort === `-${field}`) return "";
   return field;
@@ -45,7 +44,7 @@ export function SortableHeader({ label, sortLabel, field, sort, onSortChange }: 
   );
 }
 
-export function getAriaSort(field: MemberSortField | undefined, sort: string) {
+export function getAriaSort(field: string | undefined, sort: string) {
   if (!field) return undefined;
   if (sort === field) return "ascending" as const;
   if (sort === `-${field}`) return "descending" as const;

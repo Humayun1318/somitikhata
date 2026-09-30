@@ -1,3 +1,7 @@
+import type { PaginatedResult, PaginationMeta } from "@/types/api";
+
+export type { PaginatedResult, PaginationMeta };
+
 // Shapes returned by the backend member module (bottolisomobai-server).
 
 // Same values as MemberStatus in the backend (member.interface.ts).
@@ -19,6 +23,8 @@ export type Member = {
   status: MemberStatus;
   exitDate?: string;
   admissionFormNo?: string;
+  /** Set by the transaction service once the one-time Share Deposit is recorded. */
+  hasShareDeposit?: boolean;
   createdAt?: string;
   updatedAt?: string;
   // The list endpoint fills these in (populate); other endpoints send only the id.
@@ -27,25 +33,6 @@ export type Member = {
 };
 
 export type AuditUser = { _id: string; name: string; email?: string; role?: string };
-
-// QueryBuilder.getMeta() on the backend
-export type PaginationMeta = {
-  page: number;
-  limit: number;
-  skip: number;
-  total: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  nextPage: number | null;
-  previousPage: number | null;
-};
-
-// QueryBuilder.execute() on the backend: { meta, data }
-export type PaginatedResult<T> = {
-  meta: PaginationMeta;
-  data: T[];
-};
 
 // Fields the backend lets us sort by (member.builder.config.ts sortableFields).
 export type MemberSortField = "memberNo" | "nameBn" | "joinDate" | "status";

@@ -1,0 +1,267 @@
+{
+  "Collections": {
+    "title": "কালেকশন",
+    "subtitle": "নগদ ও ব্যাংক জের, জমা, উত্তোলন এবং সদস্যদের পাসবই।",
+    "recordTransaction": "লেনদেন লিখুন",
+    "totalBalance": "মোট জের",
+    "totalBalanceHint": "সকল চালু নগদ ও ব্যাংক হিসাব",
+    "accountsTitle": "নগদ ও ব্যাংক হিসাব",
+    "addAccount": "হিসাব যোগ করুন",
+    "openCashBook": "ক্যাশ বই",
+    "balanceError": "জের লোড করা যায়নি",
+    "kind": {
+      "cash": "নগদ",
+      "bank": "ব্যাংক"
+    },
+    "accountStatus": {
+      "active": "চালু",
+      "closed": "বন্ধ"
+    },
+    "closeAccount": "হিসাব বন্ধ করুন",
+    "reopenAccount": "হিসাব আবার চালু করুন",
+    "accountsError": "হিসাবগুলো লোড করা যায়নি।",
+    "accountsEmpty": "এখনো কোনো নগদ বা ব্যাংক হিসাব নেই।",
+    "retry": "আবার চেষ্টা করুন",
+    "updating": "হালনাগাদ হচ্ছে…",
+    "shortcuts": {
+      "title": "যান",
+      "cashBook": "ক্যাশ বই",
+      "cashBookBody": "একটি নগদ বা ব্যাংক হিসাবের সব জমা ও খরচের এন্ট্রি।",
+      "passbook": "সদস্য পাসবই",
+      "passbookBody": "একজন সদস্যের জের ও সম্পূর্ণ লেনদেনের ইতিহাস।",
+      "opening": "প্রারম্ভিক জের",
+      "openingBody": "পুরনো খাতা থেকে আনা এককালীন এন্ট্রি।"
+    },
+    "buckets": {
+      "share": "শেয়ার",
+      "amanot": "আমানত",
+      "stayi": "স্থায়ী আমানত",
+      "loan": "বকেয়া ঋণ"
+    },
+    "reversalBadge": "রিভার্স",
+    "columns": {
+      "date": "তারিখ",
+      "transactionNo": "লেনদেন নং",
+      "type": "ধরন",
+      "member": "সদস্য",
+      "account": "হিসাব",
+      "voucher": "ভাউচার",
+      "in": "জমা (৳)",
+      "out": "খরচ (৳)",
+      "effect": "প্রভাব",
+      "actions": "অ্যাকশন"
+    },
+    "sortBy": "{column} অনুযায়ী সাজান",
+    "viewDetails": "বিস্তারিত",
+    "pageTotals": "এই পৃষ্ঠার মোট",
+    "filters": {
+      "searchLabel": "লেনদেন খুঁজুন",
+      "searchPlaceholder": "লেনদেন নং, ভাউচার বা বিবরণ দিয়ে খুঁজুন",
+      "toggle": "ফিল্টার",
+      "clear": "মুছুন",
+      "type": "লেনদেনের ধরন",
+      "allTypes": "সব ধরন",
+      "reversalTypes": "রিভার্স",
+      "dateFrom": "তারিখ থেকে",
+      "dateTo": "তারিখ পর্যন্ত",
+      "minAmount": "সর্বনিম্ন টাকা (৳)",
+      "maxAmount": "সর্বোচ্চ টাকা (৳)",
+      "sort": "সাজান"
+    },
+    "sort": {
+      "default": "নতুন তারিখ আগে",
+      "transactionDate": "পুরনো তারিখ আগে",
+      "-transactionDate": "নতুন তারিখ আগে",
+      "-amount": "বেশি টাকা আগে",
+      "amount": "কম টাকা আগে",
+      "-createdAt": "সম্প্রতি লেখা আগে",
+      "transactionNo": "লেনদেন নং (ক্রমানুসারে)"
+    },
+    "empty": {
+      "title": "এখনো কোনো লেনদেন নেই",
+      "body": "লেনদেন লেখা হলে এখানে দেখা যাবে।",
+      "filteredTitle": "মিলে যাওয়া কোনো লেনদেন নেই",
+      "filteredBody": "অন্যভাবে খুঁজুন বা ফিল্টার মুছে দিন।"
+    },
+    "listError": "লেনদেনগুলো লোড করা যায়নি।",
+    "typesError": "লেনদেনের ধরনগুলো লোড করা যায়নি। কিছু লেবেল দেখা নাও যেতে পারে।"
+  },
+  "CashBook": {
+    "title": "ক্যাশ বই",
+    "subtitle": "একটি নগদ বা ব্যাংক হিসাবের জমা ও খরচের এন্ট্রি।",
+    "account": "হিসাব",
+    "closed": "(বন্ধ)",
+    "currentBalance": "বর্তমান জের"
+  },
+  "Passbook": {
+    "title": "সদস্য পাসবই",
+    "subtitle": "সদস্য নম্বর দিয়ে খুঁজে জের ও সব লেনদেন দেখুন।",
+    "lookupLabel": "সদস্য নং",
+    "lookupPlaceholder": "যেমন LBKS-0001 বা 1",
+    "lookupSubmit": "পাসবই খুলুন",
+    "prompt": "পাসবই খুলতে সদস্য নম্বর লিখুন।",
+    "notFound": "“{memberNo}” নম্বরে কোনো সদস্য পাওয়া যায়নি।",
+    "lookupError": "এই সদস্যের তথ্য লোড করা যায়নি।",
+    "balancesTitle": "বর্তমান জের",
+    "balancesError": "জের লোড করা যায়নি।",
+    "shareDone": "শেয়ার জমা হয়েছে",
+    "shareMissing": "এখনো শেয়ার জমা হয়নি",
+    "ledgerTitle": "লেনদেন"
+  },
+  "TransactionForm": {
+    "title": "লেনদেন লিখুন",
+    "description": "সদস্যের জমা বা উত্তোলন। পরে সম্পাদনা করা যাবে না, শুধু রিভার্স করা যাবে।",
+    "close": "বন্ধ করুন",
+    "cancel": "বাতিল",
+    "submit": "লেনদেন সংরক্ষণ করুন",
+    "submitting": "সংরক্ষণ হচ্ছে…",
+    "success": "{transactionNo} সংরক্ষণ হয়েছে।",
+    "fields": {
+      "memberNo": "সদস্য নং",
+      "memberNoPlaceholder": "যেমন LBKS-0001 বা 1",
+      "type": "লেনদেনের ধরন",
+      "typePlaceholder": "ধরন বেছে নিন",
+      "account": "নগদ / ব্যাংক হিসাব",
+      "accountPlaceholder": "হিসাব বেছে নিন",
+      "amount": "টাকার পরিমাণ (৳)",
+      "amountPlaceholder": "0.00",
+      "date": "লেনদেনের তারিখ",
+      "voucherNo": "ভাউচার নং",
+      "description": "বিবরণ",
+      "optional": "ঐচ্ছিক"
+    },
+    "groups": {
+      "deposit": "জমা",
+      "withdrawal": "উত্তোলন"
+    },
+    "member": {
+      "looking": "সদস্য খোঁজা হচ্ছে…",
+      "notFound": "এই নম্বরে কোনো সদস্য নেই।",
+      "notActive": "শুধু সক্রিয় সদস্যের লেনদেন লেখা যায়।",
+      "shareDone": "শেয়ার আগেই জমা হয়েছে",
+      "balance": "{bucket} জের"
+    },
+    "shareTaken": "{type} (আগেই জমা হয়েছে)",
+    "withdrawalInfo": "বর্তমান {bucket} জের: {balance}। উত্তোলন জেরের সর্বোচ্চ {percent}% পর্যন্ত; সংরক্ষণের সময় সার্ভার সঠিক সীমা যাচাই করবে।",
+    "summary": "{direction} {amount} · {type} · {memberNo} · {account}",
+    "validation": {
+      "memberNo": "সদস্য নম্বর লিখুন",
+      "type": "লেনদেনের ধরন বেছে নিন",
+      "account": "হিসাব বেছে নিন",
+      "amountRequired": "টাকার পরিমাণ লিখুন",
+      "amountFormat": "শুধু সংখ্যা লিখুন, দশমিকের পর সর্বোচ্চ ২ ঘর",
+      "amountPositive": "টাকার পরিমাণ ০ এর বেশি হতে হবে",
+      "amountTooLarge": "টাকার পরিমাণ অনেক বেশি",
+      "date": "তারিখ বেছে নিন",
+      "dateFuture": "তারিখ ভবিষ্যতের হতে পারবে না",
+      "voucherTooLong": "সর্বোচ্চ ৩০ অক্ষর",
+      "descriptionTooLong": "সর্বোচ্চ ২০০ অক্ষর"
+    }
+  },
+  "TransactionDetails": {
+    "title": "লেনদেনের বিস্তারিত",
+    "close": "বন্ধ করুন",
+    "reverse": "রিভার্স করুন",
+    "fields": {
+      "type": "ধরন",
+      "date": "লেনদেনের তারিখ",
+      "member": "সদস্য",
+      "account": "হিসাব",
+      "voucherNo": "ভাউচার নং",
+      "description": "বিবরণ",
+      "recordedBy": "লিখেছেন",
+      "recordedAt": "লেখার সময়",
+      "effect": "প্রভাব"
+    },
+    "reversalOf": "এই এন্ট্রি {transactionNo} কে রিভার্স করেছে।",
+    "reversedBy": "{date} তারিখে {transactionNo} দ্বারা রিভার্স করা হয়েছে।",
+    "checkingReversal": "রিভার্স হয়েছে কিনা দেখা হচ্ছে…",
+    "notReversible": "এই ধরনের লেনদেন স্বয়ংক্রিয়ভাবে রিভার্স করা যায় না।",
+    "cashIn": "নগদ জমা",
+    "cashOut": "নগদ খরচ",
+    "noCash": "নগদ লেনদেন নেই"
+  },
+  "ReverseForm": {
+    "title": "লেনদেন রিভার্স করুন",
+    "description": "{transactionNo} বাতিল করতে একটি বিপরীত এন্ট্রি যোগ হবে। মূল এন্ট্রি খাতায় থেকে যাবে।",
+    "close": "বন্ধ করুন",
+    "cancel": "বাতিল",
+    "submit": "রিভার্স করুন",
+    "submitting": "রিভার্স হচ্ছে…",
+    "reason": "কারণ",
+    "reasonPlaceholder": "কেন এই এন্ট্রি রিভার্স করা হচ্ছে?",
+    "reasonShort": "কমপক্ষে ৫ অক্ষর লিখুন",
+    "reasonLong": "সর্বোচ্চ ২০০ অক্ষর",
+    "dateNote": "রিভার্স এন্ট্রির তারিখ হবে আজ।",
+    "success": "{original} রিভার্স হয়েছে। নতুন এন্ট্রি: {reversal}।"
+  },
+  "OpeningForm": {
+    "title": "প্রারম্ভিক জের",
+    "subtitle": "পুরনো খাতা থেকে জের আনুন, প্রতি সদস্য বা হিসাবে একবার।",
+    "superAdminOnly": "শুধু সুপার অ্যাডমিন প্রারম্ভিক জের লিখতে পারেন।",
+    "rules": {
+      "title": "শুরু করার আগে",
+      "once": "প্রতি সদস্য (প্রতি ধরনে) বা প্রতি হিসাবে একটি প্রারম্ভিক এন্ট্রি হয়। দ্বিতীয়টি গ্রহণ করা হবে না।",
+      "fix": "ভুল এন্ট্রি ঠিক করতে পাসবই বা ক্যাশ বই থেকে রিভার্স করুন, তারপর আবার লিখুন।",
+      "date": "পুরনো খাতা যেদিন বন্ধ হয়েছে সেই তারিখ দিন।"
+    },
+    "formTitle": "নতুন প্রারম্ভিক এন্ট্রি",
+    "type": "প্রারম্ভিক জেরের ধরন",
+    "typePlaceholder": "ধরন বেছে নিন",
+    "memberNo": "সদস্য নং",
+    "memberNoPlaceholder": "যেমন LBKS-0001 বা 1",
+    "account": "নগদ / ব্যাংক হিসাব",
+    "accountPlaceholder": "হিসাব বেছে নিন",
+    "amount": "টাকার পরিমাণ (৳)",
+    "date": "প্রারম্ভিক তারিখ",
+    "description": "বিবরণ",
+    "optional": "ঐচ্ছিক",
+    "submit": "প্রারম্ভিক এন্ট্রি সংরক্ষণ করুন",
+    "submitting": "সংরক্ষণ হচ্ছে…",
+    "success": "{transactionNo} সংরক্ষণ হয়েছে।",
+    "lastSaved": "সর্বশেষ সংরক্ষিত: {transactionNo} · {amount}",
+    "noTypes": "কোনো চালু প্রারম্ভিক জেরের ধরন নেই।",
+    "validation": {
+      "type": "প্রারম্ভিক জেরের ধরন বেছে নিন",
+      "memberNo": "সদস্য নম্বর লিখুন",
+      "account": "হিসাব বেছে নিন"
+    }
+  },
+  "CashAccountForm": {
+    "title": "নগদ বা ব্যাংক হিসাব যোগ করুন",
+    "close": "বন্ধ করুন",
+    "cancel": "বাতিল",
+    "submit": "হিসাব যোগ করুন",
+    "submitting": "যোগ করা হচ্ছে…",
+    "name": "হিসাবের নাম",
+    "namePlaceholder": "যেমন সোনালী ব্যাংক – লোহাগড়া",
+    "kind": "হিসাবের ধরন",
+    "bankName": "ব্যাংকের নাম",
+    "success": "{name} যোগ হয়েছে।",
+    "closed": "{name} বন্ধ করা হয়েছে।",
+    "reopened": "{name} আবার চালু হয়েছে।",
+    "validation": {
+      "nameShort": "কমপক্ষে ২ অক্ষর",
+      "nameLong": "সর্বোচ্চ ৫০ অক্ষর",
+      "bankName": "ব্যাংকের নাম লিখুন"
+    }
+  },
+  "CollectionErrors": {
+    "generic": "সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।",
+    "network": "সার্ভারে পৌঁছানো যাচ্ছে না। ইন্টারনেট সংযোগ দেখুন।",
+    "forbidden": "এই কাজের অনুমতি আপনার নেই।",
+    "memberNotFound": "এই নম্বরে কোনো সদস্য নেই।",
+    "invalidMemberNo": "সদস্য নম্বরটি সঠিক নয়।",
+    "memberNotActive": "এই সদস্য সক্রিয় নন। শুধু সক্রিয় সদস্যের লেনদেন লেখা যায়।",
+    "accountClosed": "এই হিসাবটি বন্ধ।",
+    "accountNotFound": "এই হিসাবটি আর নেই।",
+    "shareExists": "{memberNo} এর শেয়ার আগেই জমা হয়েছে। নতুনটি লিখতে আগেরটি রিভার্স করুন।",
+    "withdrawalLimit": "উত্তোলন সীমার বেশি (বর্তমান জেরের {percent}%)। অনুমোদিত: {allowed}, চাওয়া হয়েছে: {requested}।",
+    "loanBacking": "এই উত্তোলনে সদস্যের চলমান ঋণের জামানত হিসেবে যথেষ্ট আমানত থাকবে না। কমপক্ষে {amount} রাখতে হবে।",
+    "alreadyReversed": "এই লেনদেন আগেই রিভার্স করা হয়েছে।",
+    "reversalOfReversal": "রিভার্স এন্ট্রি আবার রিভার্স করা যায় না।",
+    "notReversible": "এই ধরনের লেনদেন স্বয়ংক্রিয়ভাবে রিভার্স করা যায় না।",
+    "openingExists": "প্রারম্ভিক এন্ট্রি আগেই আছে ({transactionNo})। ঠিক করতে আগে সেটি রিভার্স করুন।",
+    "notFound": "লেনদেন পাওয়া যায়নি।"
+  }
+}

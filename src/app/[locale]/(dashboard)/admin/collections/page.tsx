@@ -1,5 +1,5 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { CollectionsOverview } from "@/features/collections/components/collections-overview";
 
 export default function AdminCollectionsPage() {
-  return <PageHeader titleKey="collections" />;
+  return <CollectionsOverview />;
 }

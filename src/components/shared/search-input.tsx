@@ -2,21 +2,21 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { Search } from "lucide-react";
-import { useTranslations } from "next-intl";
-
 import { Input } from "@/components/ui/input";
 
 const SEARCH_DELAY_MS = 400;
 
-type MemberSearchProps = {
+type SearchInputProps = {
+  id: string;
+  label: string;
+  placeholder: string;
   /** The search currently in the URL. */
   search: string;
   onSearchChange: (search: string) => void;
 };
 
 // Waits until the user stops typing, then searches. Enter searches at once.
-export function MemberSearch({ search, onSearchChange }: MemberSearchProps) {
-  const t = useTranslations("Members.search");
+export function SearchInput({ id, label, placeholder, search, onSearchChange }: SearchInputProps) {
   const [draft, setDraft] = useState(search);
   const [lastSent, setLastSent] = useState(search);
   const [seenSearch, setSeenSearch] = useState(search);
@@ -53,22 +53,22 @@ export function MemberSearch({ search, onSearchChange }: MemberSearchProps) {
 
   return (
     <form role="search" onSubmit={handleSubmit} className="relative flex-1">
-      <label htmlFor="member-search" className="sr-only">
-        {t("label")}
+      <label htmlFor={id} className="sr-only">
+        {label}
       </label>
       <Search
         aria-hidden="true"
         className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-app-text-muted"
       />
       <Input
-        id="member-search"
+        id={id}
         type="search"
         inputMode="search"
         enterKeyHint="search"
         autoComplete="off"
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
-        placeholder={t("placeholder")}
+        placeholder={placeholder}
         className="min-h-11 pl-10"
       />
     </form>

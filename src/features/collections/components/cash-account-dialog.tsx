@@ -4,11 +4,11 @@ import { useState, type FormEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getCollectionError } from "../collection-errors";
@@ -37,6 +37,10 @@ export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
   const [formError, setFormError] = useState<string | null>(null);
   const isBusy = createAccount.isPending;
   const isBank = accountKind === "bank";
+  const kindOptions = [
+    { value: "bank", label: tCollections("kind.bank") },
+    { value: "cash", label: tCollections("kind.cash") },
+  ];
 
   // Same rules as the backend createCashAccountZodSchema.
   const validate = (): FieldErrors => {
@@ -75,64 +79,68 @@ export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} title={t("title")} closeLabel={t("close")} dismissible={!isBusy}>
-      <form onSubmit={submitForm} noValidate aria-busy={isBusy} className="space-y-4">
-        {formError && <FormAlert message={formError} />}
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={t("title")}
+      closeLabel={t("close")}
+      dismissible={!isBusy}
+      onSubmit={submitForm}
+      busy={isBusy}
+      footer={
+        <DialogActions
+          cancelLabel={t("cancel")}
+          onCancel={onClose}
+          actionLabel={isBusy ? t("submitting") : t("submit")}
+          isBusy={isBusy}
+        />
+      }
+    >
+      {formError && <FormAlert message={formError} />}
 
-        <FormField id="account-kind" label={t("kind")}>
-          <Select
-            id="account-kind"
-            value={accountKind}
-            disabled={isBusy}
-            onChange={(event) => setAccountKind(event.target.value as CashAccountKind)}
-            className="min-h-11"
-          >
-            <option value="bank">{tCollections("kind.bank")}</option>
-            <option value="cash">{tCollections("kind.cash")}</option>
-          </Select>
-        </FormField>
+      <div>
+        <p className="mb-1.5 text-sm font-medium text-app-text">{t("kind")}</p>
+        <SegmentedControl
+          aria-label={t("kind")}
+          value={accountKind}
+          onChange={(kind) => setAccountKind(kind as CashAccountKind)}
+          options={kindOptions}
+          disabled={isBusy}
+          fullWidth
+        />
+      </div>
 
-        <FormField id="account-name" label={t("name")} error={fieldErrors.name}>
+      <FormField id="account-name" label={t("name")} error={fieldErrors.name}>
+        <Input
+          id="account-name"
+          value={name}
+          maxLength={50}
+          readOnly={isBusy}
+          error={!!fieldErrors.name}
+          aria-invalid={!!fieldErrors.name}
+          aria-describedby={fieldErrors.name ? "account-name-error" : undefined}
+          placeholder={t("namePlaceholder")}
+          onChange={(event) => setName(event.target.value)}
+          className="min-h-11"
+          data-autofocus
+        />
+      </FormField>
+
+      {isBank && (
+        <FormField id="account-bankName" label={t("bankName")} error={fieldErrors.bankName}>
           <Input
-            id="account-name"
-            value={name}
+            id="account-bankName"
+            value={bankName}
             maxLength={50}
             readOnly={isBusy}
-            error={!!fieldErrors.name}
-            aria-invalid={!!fieldErrors.name}
-            aria-describedby={fieldErrors.name ? "account-name-error" : undefined}
-            placeholder={t("namePlaceholder")}
-            onChange={(event) => setName(event.target.value)}
+            error={!!fieldErrors.bankName}
+            aria-invalid={!!fieldErrors.bankName}
+            aria-describedby={fieldErrors.bankName ? "account-bankName-error" : undefined}
+            onChange={(event) => setBankName(event.target.value)}
             className="min-h-11"
-            data-autofocus
           />
         </FormField>
-
-        {isBank && (
-          <FormField id="account-bankName" label={t("bankName")} error={fieldErrors.bankName}>
-            <Input
-              id="account-bankName"
-              value={bankName}
-              maxLength={50}
-              readOnly={isBusy}
-              error={!!fieldErrors.bankName}
-              aria-invalid={!!fieldErrors.bankName}
-              aria-describedby={fieldErrors.bankName ? "account-bankName-error" : undefined}
-              onChange={(event) => setBankName(event.target.value)}
-              className="min-h-11"
-            />
-          </FormField>
-        )}
-
-        <div className="flex flex-col-reverse gap-2.5 pt-1 sm:flex-row sm:justify-end">
-          <Button type="button" variant="outline" onClick={onClose} disabled={isBusy} className="w-full sm:w-auto">
-            {t("cancel")}
-          </Button>
-          <Button type="submit" isLoading={isBusy} className="w-full sm:w-auto">
-            {isBusy ? t("submitting") : t("submit")}
-          </Button>
-        </div>
-      </form>
+      )}
     </Dialog>
   );
 }

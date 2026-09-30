@@ -15,6 +15,14 @@
   --animate-fade-in-up: fade-in-up 220ms ease-out both;
 }
 
+/* Scrolls, but hides the scrollbar (e.g. a row of filter chips on phones). */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;

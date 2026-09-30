@@ -6,11 +6,14 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { SearchInput } from "@/components/shared/search-input";
 import { cn } from "@/lib/cn";
 
 import { MEMBER_STATUSES, type MemberListParams, type MemberStatus } from "../types";
+
+import { STATUS_STYLES } from "./member-status-badge";
 
 
 // Mobile has no clickable table headers, so it gets a sort dropdown.
@@ -30,6 +33,12 @@ export function MembersToolbar({ params, setParams, hasFilters, onClearFilters }
 
   const toggleFilters = () => setIsFiltersOpen((open) => !open);
   const handleSearchChange = (search: string) => setParams({ search });
+  const statusOptions = [
+    { value: "", label: t("filters.allStatuses") },
+    ...MEMBER_STATUSES.map((status) => ({ value: status, label: t(`status.${status}`), dot: STATUS_STYLES[status].dot })),
+  ];
+  const sortOptions = SORT_OPTIONS.map((option) => ({ value: option, label: t(`sort.${option || "default"}`) }));
+
   const handleStatusChange = (status: string) => setParams({ status: status as MemberStatus | "" });
 
   return (
@@ -42,21 +51,6 @@ export function MembersToolbar({ params, setParams, hasFilters, onClearFilters }
           search={params.search}
           onSearchChange={handleSearchChange}
         />
-        <div className="sm:w-44">
-          <Select
-            aria-label={t("filters.status")}
-            value={params.status}
-            onChange={(event) => handleStatusChange(event.target.value)}
-            className={cn("min-h-11", params.status && "border-app-primary text-app-primary")}
-          >
-            <option value="">{t("filters.allStatuses")}</option>
-            {MEMBER_STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {t(`status.${status}`)}
-              </option>
-            ))}
-          </Select>
-        </div>
         <div className="flex gap-2.5">
           <Button
             type="button"
@@ -77,6 +71,13 @@ export function MembersToolbar({ params, setParams, hasFilters, onClearFilters }
           )}
         </div>
       </div>
+
+      <SegmentedControl
+        aria-label={t("filters.status")}
+        value={params.status}
+        onChange={handleStatusChange}
+        options={statusOptions}
+      />
 
       {isFiltersOpen && (
         <div
@@ -103,20 +104,16 @@ export function MembersToolbar({ params, setParams, hasFilters, onClearFilters }
               className="mt-1.5 min-h-11"
             />
           </label>
-          <label className="text-sm font-medium text-app-text md:hidden">
-            {t("sort.label")}
-            <Select
+          <div className="text-sm font-medium text-app-text md:hidden">
+            <label htmlFor="member-sort">{t("sort.label")}</label>
+            <SelectMenu
+              id="member-sort"
               value={params.sort}
-              onChange={(event) => setParams({ sort: event.target.value })}
-              className="mt-1.5 min-h-11"
-            >
-              {SORT_OPTIONS.map((option) => (
-                <option key={option || "default"} value={option}>
-                  {t(`sort.${option || "default"}`)}
-                </option>
-              ))}
-            </Select>
-          </label>
+              onChange={(sort) => setParams({ sort })}
+              options={sortOptions}
+              className="mt-1.5"
+            />
+          </div>
         </div>
       )}
     </div>

@@ -1,11 +1,11 @@
 "use client";
 
-import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Controller, type Control, type FieldErrors, type UseFormRegister } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { SelectMenu } from "@/components/ui/select-menu";
 
 import { toDhakaDateString } from "@/lib/dhaka-date";
 
@@ -13,16 +13,22 @@ import type { CreateMemberInput } from "../schemas";
 
 type MemberFormFieldsProps = {
   register: UseFormRegister<CreateMemberInput>;
+  control: Control<CreateMemberInput>;
   errors: FieldErrors<CreateMemberInput>;
   /** True while saving: fields can't be edited. */
   readOnly: boolean;
 };
 
 // The admission-form fields. Required: name (Bangla), mobile, NID, join date.
-export function MemberFormFields({ register, errors, readOnly }: MemberFormFieldsProps) {
+export function MemberFormFields({ register, control, errors, readOnly }: MemberFormFieldsProps) {
   const t = useTranslations("MemberForm");
   const optional = t("optional");
   const today = toDhakaDateString();
+  const relationOptions = [
+    { value: "", label: t("relation.none") },
+    { value: "father", label: t("relation.father") },
+    { value: "spouse", label: t("relation.spouse") },
+  ];
   const errorId = (name: keyof CreateMemberInput) => (errors[name] ? `${name}-error` : undefined);
   const inputProps = (name: keyof CreateMemberInput) => ({
     id: name,
@@ -69,17 +75,21 @@ export function MemberFormFields({ register, errors, readOnly }: MemberFormField
         labelHint={optional}
         error={errors.guardianRelation?.message}
       >
-        <Select
-          id="guardianRelation"
-          disabled={readOnly}
-          error={!!errors.guardianRelation}
-          className="min-h-11"
-          {...register("guardianRelation")}
-        >
-          <option value="">{t("relation.none")}</option>
-          <option value="father">{t("relation.father")}</option>
-          <option value="spouse">{t("relation.spouse")}</option>
-        </Select>
+        <Controller
+          control={control}
+          name="guardianRelation"
+          render={({ field }) => (
+            <SelectMenu
+              id="guardianRelation"
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              options={relationOptions}
+              disabled={readOnly}
+              error={!!errors.guardianRelation}
+            />
+          )}
+        />
       </FormField>
 
       <FormField id="phone" label={t("fields.phone")} error={errors.phone?.message}>

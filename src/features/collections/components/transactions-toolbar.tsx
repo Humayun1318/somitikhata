@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { cn } from "@/lib/cn";
 
 import { typeName } from "../transaction-effects";
@@ -49,6 +49,13 @@ export function TransactionsToolbar({
   const regularTypes = shownTypes.filter((type) => type.typeGroup !== "reversal");
   const reversalTypes = shownTypes.filter((type) => type.typeGroup === "reversal");
 
+  const typeOptions = [
+    { value: "", label: t("filters.allTypes") },
+    ...regularTypes.map((type) => ({ value: type._id, label: typeName(type, locale), group: t("filters.types") })),
+    ...reversalTypes.map((type) => ({ value: type._id, label: typeName(type, locale), group: t("filters.reversalTypes") })),
+  ];
+  const sortOptions = SORT_OPTIONS.map((option) => ({ value: option, label: t(`sort.${option || "default"}`) }));
+
   const toggleFilters = () => setIsFiltersOpen((open) => !open);
   const handleSearchChange = (search: string) => setParams({ search });
 
@@ -62,30 +69,15 @@ export function TransactionsToolbar({
           search={params.search}
           onSearchChange={handleSearchChange}
         />
-        <div className="sm:w-56">
-          <Select
-            aria-label={t("filters.type")}
-            value={params.transactionType}
-            onChange={(event) => setParams({ transactionType: event.target.value })}
-            className={cn("min-h-11", params.transactionType && "border-app-primary text-app-primary")}
-          >
-            <option value="">{t("filters.allTypes")}</option>
-            {regularTypes.map((type) => (
-              <option key={type._id} value={type._id}>
-                {typeName(type, locale)}
-              </option>
-            ))}
-            {reversalTypes.length > 0 && (
-              <optgroup label={t("filters.reversalTypes")}>
-                {reversalTypes.map((type) => (
-                  <option key={type._id} value={type._id}>
-                    {typeName(type, locale)}
-                  </option>
-                ))}
-              </optgroup>
-            )}
-          </Select>
-        </div>
+        <SelectMenu
+          aria-label={t("filters.type")}
+          value={params.transactionType}
+          onChange={(transactionType) => setParams({ transactionType })}
+          options={typeOptions}
+          searchable
+          highlighted={!!params.transactionType}
+          className="sm:w-60"
+        />
         <div className="flex gap-2.5">
           <Button
             type="button"
@@ -144,16 +136,16 @@ export function TransactionsToolbar({
             value={params.maxAmount}
             onCommit={(maxAmount) => setParams({ maxAmount })}
           />
-          <label className="text-sm font-medium text-app-text md:hidden">
-            {t("filters.sort")}
-            <Select value={params.sort} onChange={(event) => setParams({ sort: event.target.value })} className="mt-1.5 min-h-11">
-              {SORT_OPTIONS.map((option) => (
-                <option key={option || "default"} value={option}>
-                  {t(`sort.${option || "default"}`)}
-                </option>
-              ))}
-            </Select>
-          </label>
+          <div className="text-sm font-medium text-app-text md:hidden">
+            <label htmlFor={`${variant}-sort`}>{t("filters.sort")}</label>
+            <SelectMenu
+              id={`${variant}-sort`}
+              value={params.sort}
+              onChange={(sort) => setParams({ sort })}
+              options={sortOptions}
+              className="mt-1.5"
+            />
+          </div>
         </div>
       )}
     </div>

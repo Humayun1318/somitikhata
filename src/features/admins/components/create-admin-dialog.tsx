@@ -9,8 +9,8 @@ import { Info } from "lucide-react";
 import { FormAlert } from "@/components/shared/form-alert";
 import { PasswordRulesChecklist } from "@/components/shared/password-rules-checklist";
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -89,80 +89,79 @@ export function CreateAdminDialog({ open, onClose }: CreateAdminDialogProps) {
       closeLabel={t("close")}
       dismissible={!isBusy}
       size="lg"
+      onSubmit={submitForm}
+      busy={isBusy}
+      footer={
+        <DialogActions
+          cancelLabel={t("cancel")}
+          onCancel={onClose}
+          actionLabel={isBusy ? t("submitting") : t("submit")}
+          isBusy={isBusy}
+        />
+      }
     >
-      <form onSubmit={submitForm} noValidate aria-busy={isBusy} className="space-y-4">
-        {formError && <FormAlert message={formError} />}
+      {formError && <FormAlert message={formError} />}
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FormField id="admin-name" label={t("fields.name")} error={errors.name?.message}>
-            <Input {...fieldProps("name")} {...register("name")} autoComplete="off" placeholder={t("placeholders.name")} data-autofocus />
-          </FormField>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <FormField id="admin-name" label={t("fields.name")} error={errors.name?.message}>
+          <Input {...fieldProps("name")} {...register("name")} autoComplete="off" placeholder={t("placeholders.name")} data-autofocus />
+        </FormField>
 
-          <FormField id="admin-phone" label={t("fields.phone")} error={errors.phone?.message}>
+        <FormField id="admin-phone" label={t("fields.phone")} error={errors.phone?.message}>
+          <Input
+            {...fieldProps("phone")}
+            {...register("phone")}
+            type="tel"
+            inputMode="numeric"
+            autoComplete="off"
+            placeholder={t("placeholders.phone")}
+          />
+        </FormField>
+
+        <div className="sm:col-span-2">
+          <FormField id="admin-email" label={t("fields.email")} error={errors.email?.message}>
             <Input
-              {...fieldProps("phone")}
-              {...register("phone")}
-              type="tel"
-              inputMode="numeric"
+              {...fieldProps("email")}
+              {...register("email")}
+              type="email"
+              autoCapitalize="none"
               autoComplete="off"
-              placeholder={t("placeholders.phone")}
+              placeholder={t("placeholders.email")}
             />
           </FormField>
+        </div>
 
-          <div className="sm:col-span-2">
-            <FormField id="admin-email" label={t("fields.email")} error={errors.email?.message}>
-              <Input
-                {...fieldProps("email")}
-                {...register("email")}
-                type="email"
-                autoCapitalize="none"
-                autoComplete="off"
-                placeholder={t("placeholders.email")}
+        <div className="sm:col-span-2">
+          <FormField
+            id="admin-password"
+            label={t("fields.password")}
+            error={errors.password?.message}
+            footer={
+              <PasswordRulesChecklist
+                id="admin-password-rules"
+                title={t("rulesTitle")}
+                metLabel={tRules("met")}
+                notMetLabel={tRules("notMet")}
+                rules={passwordRules}
+                highlightUnmet={!!errors.password}
               />
-            </FormField>
-          </div>
-
-          <div className="sm:col-span-2">
-            <FormField
-              id="admin-password"
-              label={t("fields.password")}
-              error={errors.password?.message}
-              footer={
-                <PasswordRulesChecklist
-                  id="admin-password-rules"
-                  title={t("rulesTitle")}
-                  metLabel={tRules("met")}
-                  notMetLabel={tRules("notMet")}
-                  rules={passwordRules}
-                  highlightUnmet={!!errors.password}
-                />
-              }
-            >
-              <PasswordInput {...fieldProps("password")} {...register("password", { deps: ["confirmPassword"] })} autoComplete="new-password" />
-            </FormField>
-          </div>
-
-          <div className="sm:col-span-2">
-            <FormField id="admin-confirmPassword" label={t("fields.confirmPassword")} error={errors.confirmPassword?.message}>
-              <PasswordInput {...fieldProps("confirmPassword")} {...register("confirmPassword")} autoComplete="new-password" />
-            </FormField>
-          </div>
+            }
+          >
+            <PasswordInput {...fieldProps("password")} {...register("password", { deps: ["confirmPassword"] })} autoComplete="new-password" />
+          </FormField>
         </div>
 
-        <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">
-          <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          {t("loginNote")}
-        </p>
-
-        <div className="flex flex-col-reverse gap-2.5 sm:flex-row sm:justify-end">
-          <Button type="button" variant="outline" onClick={onClose} disabled={isBusy} className="w-full sm:w-auto">
-            {t("cancel")}
-          </Button>
-          <Button type="submit" isLoading={isBusy} className="w-full sm:w-auto">
-            {isBusy ? t("submitting") : t("submit")}
-          </Button>
+        <div className="sm:col-span-2">
+          <FormField id="admin-confirmPassword" label={t("fields.confirmPassword")} error={errors.confirmPassword?.message}>
+            <PasswordInput {...fieldProps("confirmPassword")} {...register("confirmPassword")} autoComplete="new-password" />
+          </FormField>
         </div>
-      </form>
+      </div>
+
+      <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">
+        <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        {t("loginNote")}
+      </p>
     </Dialog>
   );
 }

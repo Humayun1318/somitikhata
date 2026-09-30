@@ -4,11 +4,12 @@ import { useState, type FormEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { CircleAlert, Info, TriangleAlert } from "lucide-react";
+import { Info, TriangleAlert } from "lucide-react";
 
+import { FormAlert } from "@/components/shared/form-alert";
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { DialogActions } from "@/components/ui/dialog-actions";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getMemberFormErrors } from "../member-form-errors";
@@ -126,55 +127,41 @@ export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProp
       closeLabel={t("close")}
       dismissible={!isBusy}
       size="lg"
+      onSubmit={submitForm}
+      busy={isBusy}
+      footer={
+        <DialogActions
+          cancelLabel={t("cancel")}
+          onCancel={onClose}
+          actionLabel={submitLabel}
+          isBusy={isBusy}
+          actionDisabled={isSubmitDisabled}
+        />
+      }
     >
-      <form onSubmit={submitForm} noValidate aria-busy={isBusy} className="space-y-5">
-        {formError && (
-          <div
-            role="alert"
-            className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
-          >
-            <CircleAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-            <p>{formError}</p>
+      {formError && <FormAlert message={formError} />}
+
+      {isConfirmingDuplicate && (
+        <div
+          role="alert"
+          className="flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900"
+        >
+          <TriangleAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
+          <div>
+            <p className="font-semibold">{t("duplicate.title")}</p>
+            <p className="mt-0.5">{t("duplicate.body", { memberNos: duplicate.memberNos })}</p>
           </div>
-        )}
-
-        {isConfirmingDuplicate && (
-          <div
-            role="alert"
-            className="flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900"
-          >
-            <TriangleAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
-            <div>
-              <p className="font-semibold">{t("duplicate.title")}</p>
-              <p className="mt-0.5">{t("duplicate.body", { memberNos: duplicate.memberNos })}</p>
-            </div>
-          </div>
-        )}
-
-        <MemberFormFields register={register} errors={errors} readOnly={isBusy} />
-
-        {!isEdit && (
-          <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">
-            <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            {t("loginNote")}
-          </p>
-        )}
-
-        <div className="flex flex-col-reverse gap-2.5 sm:flex-row sm:justify-end">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onClose}
-            disabled={isBusy}
-            className="w-full sm:w-auto"
-          >
-            {t("cancel")}
-          </Button>
-          <Button type="submit" isLoading={isBusy} disabled={isSubmitDisabled} className="w-full sm:w-auto">
-            {submitLabel}
-          </Button>
         </div>
-      </form>
+      )}
+
+      <MemberFormFields register={register} control={control} errors={errors} readOnly={isBusy} />
+
+      {!isEdit && (
+        <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">
+          <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          {t("loginNote")}
+        </p>
+      )}
     </Dialog>
   );
 }

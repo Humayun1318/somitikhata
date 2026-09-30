@@ -6,6 +6,7 @@ import { Pencil, RefreshCw } from "lucide-react";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { DialogActions } from "@/components/ui/dialog-actions";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 
 import type { AuditUser, Member } from "../types";
@@ -69,45 +70,49 @@ export function MemberDetailsDialog({
   ];
 
   return (
-    <Dialog open={open} onClose={onClose} title={t("title")} closeLabel={t("close")} size="lg">
-      <div className="space-y-5">
-        <div className="flex items-center gap-4 rounded-2xl bg-app-surface-muted/60 p-4">
-          <UserAvatar name={member.nameEn || member.nameBn} size="md" className="bg-app-surface" />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-base font-semibold text-app-text">{member.nameBn}</p>
-            {member.nameEn && <p className="truncate text-sm text-app-text-muted">{member.nameEn}</p>}
-            <p className="mt-1 font-mono text-sm font-medium text-app-text">{member.memberNo}</p>
-          </div>
-          <MemberStatusBadge status={member.status} />
-        </div>
-
-        <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
-          {rows.map(({ key, label, value, mono }) => (
-            <div key={key} className="min-w-0 border-b border-app-border pb-3">
-              <dt className="text-xs font-medium text-app-text-muted">{label}</dt>
-              <dd
-                className={`mt-1 break-words text-sm ${value === empty ? "text-app-text-muted" : "text-app-text"} ${mono ? "font-mono" : ""}`}
-              >
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-
-        <div className="flex flex-col-reverse gap-2.5 sm:flex-row sm:justify-end">
-          <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto">
-            {t("close")}
-          </Button>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={t("title")}
+      closeLabel={t("close")}
+      size="lg"
+      footer={
+        <DialogActions
+          cancelLabel={t("close")}
+          onCancel={onClose}
+          actionLabel={t("edit")}
+          actionIcon={Pencil}
+          onAction={onEdit}
+        >
           <Button type="button" variant="outline" onClick={onChangeStatus} className="w-full gap-2 sm:w-auto">
             <RefreshCw aria-hidden="true" className="h-4 w-4" />
             {t("changeStatus")}
           </Button>
-          <Button type="button" onClick={onEdit} className="w-full gap-2 sm:w-auto">
-            <Pencil aria-hidden="true" className="h-4 w-4" />
-            {t("edit")}
-          </Button>
+        </DialogActions>
+      }
+    >
+      <div className="flex items-center gap-4 rounded-2xl bg-app-surface-muted/60 p-4">
+        <UserAvatar name={member.nameEn || member.nameBn} size="md" className="bg-app-surface" />
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-base font-semibold text-app-text">{member.nameBn}</p>
+          {member.nameEn && <p className="truncate text-sm text-app-text-muted">{member.nameEn}</p>}
+          <p className="mt-1 font-mono text-sm font-medium text-app-text">{member.memberNo}</p>
         </div>
+        <MemberStatusBadge status={member.status} />
       </div>
+
+      <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
+        {rows.map(({ key, label, value, mono }) => (
+          <div key={key} className="min-w-0 border-b border-app-border pb-3">
+            <dt className="text-xs font-medium text-app-text-muted">{label}</dt>
+            <dd
+              className={`mt-1 break-words text-sm ${value === empty ? "text-app-text-muted" : "text-app-text"} ${mono ? "font-mono" : ""}`}
+            >
+              {value}
+            </dd>
+          </div>
+        ))}
+      </dl>
     </Dialog>
   );
 }

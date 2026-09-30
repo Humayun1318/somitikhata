@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 
 import type { MemberStatus } from "../types";
 
-const STATUS_STYLES: Record<MemberStatus, { badge: string; dot: string }> = {
+export const STATUS_STYLES: Record<MemberStatus, { badge: string; dot: string }> = {
   active: { badge: "bg-emerald-50 text-emerald-700", dot: "bg-emerald-500" },
   inactive: { badge: "bg-slate-100 text-slate-700", dot: "bg-slate-400" },
   suspended: { badge: "bg-amber-50 text-amber-800", dot: "bg-amber-500" },

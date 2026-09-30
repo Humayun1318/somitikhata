@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
 import { Info } from "lucide-react";
 
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { toDhakaDateString } from "@/lib/dhaka-date";
 import { formatPaisa, takaToPaisa, TAKA_INPUT_PATTERN } from "@/lib/money";
@@ -164,8 +164,17 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
     "aria-invalid": !!errors[name],
     "aria-describedby": errors[name] ? `record-${name}-error` : undefined,
   });
-  const typeLabel = (code: string, name: string) =>
-    code === SHARE_DEPOSIT_CODE && member?.hasShareDeposit ? t("shareTaken", { type: name }) : name;
+  const isShareTaken = (code: string) => code === SHARE_DEPOSIT_CODE && !!member?.hasShareDeposit;
+  const typeOptions = [
+    ...depositTypes.map((type) => ({
+      value: type.code,
+      label: isShareTaken(type.code) ? t("shareTaken", { type: typeName(type, locale) }) : typeName(type, locale),
+      group: t("groups.deposit"),
+      disabled: isShareTaken(type.code),
+    })),
+    ...withdrawalTypes.map((type) => ({ value: type.code, label: typeName(type, locale), group: t("groups.withdrawal") })),
+  ];
+  const accountOptions = activeAccounts.map((account) => ({ value: account._id, label: account.name }));
 
   return (
     <Dialog
@@ -176,115 +185,121 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
       closeLabel={t("close")}
       dismissible={!isBusy}
       size="lg"
+      onSubmit={submitForm}
+      busy={isBusy}
+      footer={
+        <DialogActions
+          cancelLabel={t("cancel")}
+          onCancel={onClose}
+          actionLabel={isBusy ? t("submitting") : t("submit")}
+          isBusy={isBusy}
+          actionDisabled={isMemberBlocked}
+        />
+      }
     >
-      <form onSubmit={submitForm} noValidate aria-busy={isBusy} className="space-y-4">
-        {formError && <FormAlert message={formError} />}
+      {formError && <FormAlert message={formError} />}
 
-        <FormField id="record-memberNo" label={t("fields.memberNo")} error={errors.memberNo?.message}>
-          <Input
-            {...fieldProps("memberNo")}
-            {...register("memberNo")}
-            autoComplete="off"
-            autoCapitalize="characters"
-            readOnly={isBusy}
-            placeholder={t("fields.memberNoPlaceholder")}
-            className="min-h-11 font-mono"
-            data-autofocus
+      <FormField id="record-memberNo" label={t("fields.memberNo")} error={errors.memberNo?.message}>
+        <Input
+          {...fieldProps("memberNo")}
+          {...register("memberNo")}
+          autoComplete="off"
+          autoCapitalize="characters"
+          readOnly={isBusy}
+          placeholder={t("fields.memberNoPlaceholder")}
+          className="min-h-11 font-mono"
+          data-autofocus
+        />
+        <MemberPreview isLooking={isLooking} isNotFound={isNotFound} member={member} balances={balances.data} />
+      </FormField>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <FormField id="record-typeCode" label={t("fields.type")} error={errors.typeCode?.message}>
+          <Controller
+            control={control}
+            name="typeCode"
+            render={({ field }) => (
+              <SelectMenu
+                id="record-typeCode"
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                options={typeOptions}
+                placeholder={t("fields.typePlaceholder")}
+                searchable={false}
+                disabled={isBusy}
+                error={!!errors.typeCode}
+                aria-describedby={errors.typeCode ? "record-typeCode-error" : undefined}
+              />
+            )}
           />
-          <MemberPreview isLooking={isLooking} isNotFound={isNotFound} member={member} balances={balances.data} />
         </FormField>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FormField id="record-typeCode" label={t("fields.type")} error={errors.typeCode?.message}>
-            <Select {...fieldProps("typeCode")} {...register("typeCode")} disabled={isBusy} className="min-h-11">
-              <option value="">{t("fields.typePlaceholder")}</option>
-              <optgroup label={t("groups.deposit")}>
-                {depositTypes.map((type) => (
-                  <option
-                    key={type.code}
-                    value={type.code}
-                    disabled={type.code === SHARE_DEPOSIT_CODE && !!member?.hasShareDeposit}
-                  >
-                    {typeLabel(type.code, typeName(type, locale))}
-                  </option>
-                ))}
-              </optgroup>
-              <optgroup label={t("groups.withdrawal")}>
-                {withdrawalTypes.map((type) => (
-                  <option key={type.code} value={type.code}>
-                    {typeName(type, locale)}
-                  </option>
-                ))}
-              </optgroup>
-            </Select>
-          </FormField>
+        <FormField id="record-cashAccountId" label={t("fields.account")} error={errors.cashAccountId?.message}>
+          <Controller
+            control={control}
+            name="cashAccountId"
+            render={({ field }) => (
+              <SelectMenu
+                id="record-cashAccountId"
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                options={accountOptions}
+                placeholder={t("fields.accountPlaceholder")}
+                disabled={isBusy}
+                error={!!errors.cashAccountId}
+                aria-describedby={errors.cashAccountId ? "record-cashAccountId-error" : undefined}
+              />
+            )}
+          />
+        </FormField>
 
-          <FormField id="record-cashAccountId" label={t("fields.account")} error={errors.cashAccountId?.message}>
-            <Select {...fieldProps("cashAccountId")} {...register("cashAccountId")} disabled={isBusy} className="min-h-11">
-              <option value="">{t("fields.accountPlaceholder")}</option>
-              {activeAccounts.map((account) => (
-                <option key={account._id} value={account._id}>
-                  {account.name}
-                </option>
-              ))}
-            </Select>
-          </FormField>
+        <FormField id="record-amount" label={t("fields.amount")} error={errors.amount?.message}>
+          <Input
+            {...fieldProps("amount")}
+            {...register("amount")}
+            inputMode="decimal"
+            autoComplete="off"
+            readOnly={isBusy}
+            placeholder={t("fields.amountPlaceholder")}
+            className="min-h-11 text-right text-base font-semibold tabular-nums"
+          />
+        </FormField>
 
-          <FormField id="record-amount" label={t("fields.amount")} error={errors.amount?.message}>
-            <Input
-              {...fieldProps("amount")}
-              {...register("amount")}
-              inputMode="decimal"
-              autoComplete="off"
-              readOnly={isBusy}
-              placeholder={t("fields.amountPlaceholder")}
-              className="min-h-11 text-right text-base font-semibold tabular-nums"
-            />
-          </FormField>
+        <FormField id="record-transactionDate" label={t("fields.date")} error={errors.transactionDate?.message}>
+          <Input
+            {...fieldProps("transactionDate")}
+            {...register("transactionDate")}
+            type="date"
+            max={toDhakaDateString()}
+            readOnly={isBusy}
+            className="min-h-11"
+          />
+        </FormField>
+      </div>
 
-          <FormField id="record-transactionDate" label={t("fields.date")} error={errors.transactionDate?.message}>
-            <Input
-              {...fieldProps("transactionDate")}
-              {...register("transactionDate")}
-              type="date"
-              max={toDhakaDateString()}
-              readOnly={isBusy}
-              className="min-h-11"
-            />
-          </FormField>
-        </div>
+      {withdrawalNotes.map(({ bucket, text }) => (
+        <p key={bucket} className="flex items-start gap-2 rounded-xl bg-sky-50 p-3 text-xs text-sky-900">
+          <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+          {text}
+        </p>
+      ))}
 
-        {withdrawalNotes.map(({ bucket, text }) => (
-          <p key={bucket} className="flex items-start gap-2 rounded-xl bg-sky-50 p-3 text-xs text-sky-900">
-            <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            {text}
-          </p>
-        ))}
+      <div className="grid gap-4 sm:grid-cols-[1fr_2fr]">
+        <FormField id="record-voucherNo" label={t("fields.voucherNo")} labelHint={t("fields.optional")} error={errors.voucherNo?.message}>
+          <Input {...fieldProps("voucherNo")} {...register("voucherNo")} maxLength={30} readOnly={isBusy} className="min-h-11" />
+        </FormField>
+        <FormField id="record-description" label={t("fields.description")} labelHint={t("fields.optional")} error={errors.description?.message}>
+          <Textarea {...fieldProps("description")} {...register("description")} rows={1} maxLength={200} readOnly={isBusy} className="min-h-11" />
+        </FormField>
+      </div>
 
-        <div className="grid gap-4 sm:grid-cols-[1fr_2fr]">
-          <FormField id="record-voucherNo" label={t("fields.voucherNo")} labelHint={t("fields.optional")} error={errors.voucherNo?.message}>
-            <Input {...fieldProps("voucherNo")} {...register("voucherNo")} maxLength={30} readOnly={isBusy} className="min-h-11" />
-          </FormField>
-          <FormField id="record-description" label={t("fields.description")} labelHint={t("fields.optional")} error={errors.description?.message}>
-            <Textarea {...fieldProps("description")} {...register("description")} rows={1} maxLength={200} readOnly={isBusy} className="min-h-11" />
-          </FormField>
-        </div>
-
-        {showSummary && (
-          <p className="rounded-xl border border-app-primary/30 bg-app-primary/5 p-3 text-sm font-medium text-app-text">
-            {summary}
-          </p>
-        )}
-
-        <div className="flex flex-col-reverse gap-2.5 pt-1 sm:flex-row sm:justify-end">
-          <Button type="button" variant="outline" onClick={onClose} disabled={isBusy} className="w-full sm:w-auto">
-            {t("cancel")}
-          </Button>
-          <Button type="submit" isLoading={isBusy} disabled={isMemberBlocked} className="w-full sm:w-auto">
-            {isBusy ? t("submitting") : t("submit")}
-          </Button>
-        </div>
-      </form>
+      {showSummary && (
+        <p className="rounded-xl border border-app-primary/30 bg-app-primary/5 p-3 text-sm font-medium text-app-text">
+          {summary}
+        </p>
+      )}
     </Dialog>
   );
 }

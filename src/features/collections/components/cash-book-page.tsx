@@ -6,7 +6,7 @@ import { CirclePlus } from "lucide-react";
 import { ListError, ListLoading } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
 import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { cn } from "@/lib/cn";
 
 import { useCashAccounts, useCashBalance, useCashBook, useTransactionTypes } from "../hooks/use-collection-queries";
@@ -31,6 +31,12 @@ export function CashBookPage() {
   const cashBook = useCashBook(accountId, list.params);
   const catalog = useTransactionTypes();
   const dialogs = useTransactionDialogs();
+
+  const accountOptions = accountList.map((item) => ({
+    value: item._id,
+    label: item.status === "closed" ? `${item.name} ${t("closed")}` : item.name,
+    dot: item.status === "closed" ? "bg-slate-400" : "bg-emerald-500",
+  }));
 
   const isClosed = account?.status === "closed";
   const retryAccounts = () => void accounts.refetch();
@@ -58,20 +64,16 @@ export function CashBookPage() {
 
       {account && (
         <section className="grid gap-4 rounded-2xl border border-app-border bg-app-surface p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:p-5">
-          <label className="text-sm font-medium text-app-text">
-            {t("account")}
-            <Select
+          <div className="text-sm font-medium text-app-text">
+            <label htmlFor="cash-book-account">{t("account")}</label>
+            <SelectMenu
+              id="cash-book-account"
               value={accountId}
-              onChange={(event) => list.setScope(event.target.value)}
-              className="mt-1.5 min-h-11"
-            >
-              {accountList.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.name} {item.status === "closed" ? t("closed") : ""}
-                </option>
-              ))}
-            </Select>
-          </label>
+              onChange={list.setScope}
+              options={accountOptions}
+              className="mt-1.5"
+            />
+          </div>
           <div className="sm:text-right">
             <p className="text-xs font-medium text-app-text-muted">{t("currentBalance")}</p>
             {balance.data && (

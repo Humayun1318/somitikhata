@@ -4,11 +4,11 @@ import { useState, type FormEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { CircleAlert } from "lucide-react";
 
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Button } from "@/components/ui/button";
+import { FormAlert } from "@/components/shared/form-alert";
 import { Dialog } from "@/components/ui/dialog";
+import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
 import { PasswordInput } from "@/components/ui/password-input";
 import { PasswordRulesChecklist } from "@/components/shared/password-rules-checklist";
@@ -108,95 +108,75 @@ export function ChangePasswordDialog({ open, onClose }: ChangePasswordDialogProp
       description={t("description")}
       closeLabel={t("close")}
       dismissible={!isBusy}
+      onSubmit={submitForm}
+      busy={isBusy}
+      footer={
+        <DialogActions
+          cancelLabel={t("cancel")}
+          onCancel={onClose}
+          actionLabel={submitLabel}
+          isBusy={isBusy}
+        />
+      }
     >
-      <form
-        onSubmit={submitForm}
-        noValidate
-        aria-busy={isBusy}
-        className="space-y-4"
+      {formError && <FormAlert message={formError} />}
+
+      <FormField id="currentPassword" label={t("currentPassword")} error={errors.currentPassword?.message}>
+        <PasswordInput
+          id="currentPassword"
+          data-autofocus
+          autoComplete="current-password"
+          enterKeyHint="next"
+          placeholder={t("currentPasswordPlaceholder")}
+          error={!!errors.currentPassword}
+          aria-invalid={!!errors.currentPassword}
+          aria-describedby={errorId("currentPassword")}
+          readOnly={isBusy}
+          {...register("currentPassword")}
+        />
+      </FormField>
+
+      <FormField
+        id="newPassword"
+        label={t("newPassword")}
+        error={errors.newPassword?.message}
+        footer={
+          <PasswordRulesChecklist
+            id="newPassword-rules"
+            title={t("rules.title")}
+            metLabel={tRules("met")}
+            notMetLabel={tRules("notMet")}
+            rules={passwordRules}
+            highlightUnmet={!!errors.newPassword}
+          />
+        }
       >
-        {formError && (
-          <div
-            role="alert"
-            className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
-          >
-            <CircleAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-            <p>{formError}</p>
-          </div>
-        )}
-
-        <FormField id="currentPassword" label={t("currentPassword")} error={errors.currentPassword?.message}>
-          <PasswordInput
-            id="currentPassword"
-            data-autofocus
-            autoComplete="current-password"
-            enterKeyHint="next"
-            placeholder={t("currentPasswordPlaceholder")}
-            error={!!errors.currentPassword}
-            aria-invalid={!!errors.currentPassword}
-            aria-describedby={errorId("currentPassword")}
-            readOnly={isBusy}
-            {...register("currentPassword")}
-          />
-        </FormField>
-
-        <FormField
+        <PasswordInput
           id="newPassword"
-          label={t("newPassword")}
-          error={errors.newPassword?.message}
-          footer={
-            <PasswordRulesChecklist
-              id="newPassword-rules"
-              title={t("rules.title")}
-              metLabel={tRules("met")}
-              notMetLabel={tRules("notMet")}
-              rules={passwordRules}
-              highlightUnmet={!!errors.newPassword}
-            />
-          }
-        >
-          <PasswordInput
-            id="newPassword"
-            autoComplete="new-password"
-            enterKeyHint="next"
-            placeholder={t("newPasswordPlaceholder")}
-            error={!!errors.newPassword}
-            aria-invalid={!!errors.newPassword}
-            aria-describedby={newPasswordDescribedBy}
-            readOnly={isBusy}
-            {...register("newPassword", { deps: ["confirmPassword"] })}
-          />
-        </FormField>
+          autoComplete="new-password"
+          enterKeyHint="next"
+          placeholder={t("newPasswordPlaceholder")}
+          error={!!errors.newPassword}
+          aria-invalid={!!errors.newPassword}
+          aria-describedby={newPasswordDescribedBy}
+          readOnly={isBusy}
+          {...register("newPassword", { deps: ["confirmPassword"] })}
+        />
+      </FormField>
 
-        <FormField id="confirmPassword" label={t("confirmPassword")} error={errors.confirmPassword?.message}>
-          <PasswordInput
-            id="confirmPassword"
-            autoComplete="new-password"
-            enterKeyHint="done"
-            placeholder={t("confirmPasswordPlaceholder")}
-            error={!!errors.confirmPassword}
-            aria-invalid={!!errors.confirmPassword}
-            aria-describedby={errorId("confirmPassword")}
-            readOnly={isBusy}
-            {...register("confirmPassword")}
-          />
-        </FormField>
-
-        <div className="flex flex-col-reverse gap-2.5 pt-2 sm:flex-row sm:justify-end">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onClose}
-            disabled={isBusy}
-            className="w-full sm:w-auto"
-          >
-            {t("cancel")}
-          </Button>
-          <Button type="submit" isLoading={isBusy} className="w-full sm:w-auto">
-            {submitLabel}
-          </Button>
-        </div>
-      </form>
+      <FormField id="confirmPassword" label={t("confirmPassword")} error={errors.confirmPassword?.message}>
+        <PasswordInput
+          id="confirmPassword"
+          autoComplete="new-password"
+          enterKeyHint="done"
+          placeholder={t("confirmPasswordPlaceholder")}
+          error={!!errors.confirmPassword}
+          aria-invalid={!!errors.confirmPassword}
+          aria-describedby={errorId("confirmPassword")}
+          readOnly={isBusy}
+          {...register("confirmPassword")}
+        />
+      </FormField>
     </Dialog>
   );
 }

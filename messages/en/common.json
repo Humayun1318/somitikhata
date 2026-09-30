@@ -69,5 +69,9 @@
     "special": "One special character (@ $ ! % * ? &)",
     "met": "met",
     "notMet": "not met"
+  },
+  "SelectMenu": {
+    "search": "Search…",
+    "noResults": "No matches"
   }
 }

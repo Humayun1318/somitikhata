@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 import { Spinner } from './spinner';
 
 type ButtonProps = ComponentPropsWithoutRef<'button'> & {
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger';
   isLoading?: boolean;
 };
 
@@ -25,6 +25,8 @@ export function Button({
       'bg-app-secondary text-white hover:bg-app-secondary/90 active:scale-[0.99]',
     outline:
       'border border-app-border bg-app-surface text-app-text hover:bg-app-surface-muted active:scale-[0.99]',
+    danger:
+      'bg-red-600 text-white hover:bg-red-700 focus:ring-red-600/30 active:scale-[0.99]',
   };
 
   return (

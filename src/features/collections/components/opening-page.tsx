@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
 import { CircleCheck, Info, ShieldAlert } from "lucide-react";
@@ -11,7 +11,7 @@ import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { useMe } from "@/features/auth/hooks/use-me";
 import { toDhakaDateString } from "@/lib/dhaka-date";
@@ -112,6 +112,8 @@ function OpeningForm() {
   const isNotFound = !isLooking && (lookup.error?.status === 404 || lookup.error?.status === 400);
   const isBusy = isSubmitting || createOpening.isPending;
   const accountList = accounts.data ?? [];
+  const typeOptions = openingTypes.map((type) => ({ value: type.code, label: typeName(type, locale) }));
+  const accountOptions = accountList.map((account) => ({ value: account._id, label: account.name }));
 
   const save = async (values: OpeningInput) => {
     setFormError(null);
@@ -158,14 +160,23 @@ function OpeningForm() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField id="opening-typeCode" label={t("type")} error={errors.typeCode?.message}>
-            <Select {...fieldProps("typeCode")} {...register("typeCode")} disabled={isBusy} className="min-h-11">
-              <option value="">{t("typePlaceholder")}</option>
-              {openingTypes.map((type) => (
-                <option key={type.code} value={type.code}>
-                  {typeName(type, locale)}
-                </option>
-              ))}
-            </Select>
+            <Controller
+              control={control}
+              name="typeCode"
+              render={({ field }) => (
+                <SelectMenu
+                  id="opening-typeCode"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  options={typeOptions}
+                  placeholder={t("typePlaceholder")}
+                  disabled={isBusy}
+                  error={!!errors.typeCode}
+                  aria-describedby={errors.typeCode ? "opening-typeCode-error" : undefined}
+                />
+              )}
+            />
           </FormField>
 
           {isMemberType && (
@@ -185,14 +196,23 @@ function OpeningForm() {
 
           {showAccount && (
             <FormField id="opening-cashAccountId" label={t("account")} error={errors.cashAccountId?.message}>
-              <Select {...fieldProps("cashAccountId")} {...register("cashAccountId")} disabled={isBusy} className="min-h-11">
-                <option value="">{t("accountPlaceholder")}</option>
-                {accountList.map((account) => (
-                  <option key={account._id} value={account._id}>
-                    {account.name}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="cashAccountId"
+                render={({ field }) => (
+                  <SelectMenu
+                    id="opening-cashAccountId"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    options={accountOptions}
+                    placeholder={t("accountPlaceholder")}
+                    disabled={isBusy}
+                    error={!!errors.cashAccountId}
+                    aria-describedby={errors.cashAccountId ? "opening-cashAccountId-error" : undefined}
+                  />
+                )}
+              />
             </FormField>
           )}
 

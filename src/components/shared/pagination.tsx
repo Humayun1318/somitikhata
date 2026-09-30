@@ -1,10 +1,10 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
+import { SelectMenu } from "@/components/ui/select-menu";
 
 import type { PaginationMeta } from "@/types/api";
 
@@ -20,10 +20,13 @@ type PaginationProps = {
 // Shared by every list page. Everything comes from the backend meta.
 export function Pagination({ meta, onPageChange, onLimitChange }: PaginationProps) {
   const t = useTranslations("Pagination");
+  const format = useFormatter();
 
   const from = meta.total === 0 ? 0 : meta.skip + 1;
   const to = Math.min(meta.skip + meta.limit, meta.total);
   const totalPages = Math.max(meta.totalPages, 1);
+
+  const sizeOptions = PAGE_SIZE_OPTIONS.map((size) => ({ value: String(size), label: format.number(size) }));
 
   const goPrevious = () => meta.previousPage && onPageChange(meta.previousPage);
   const goNext = () => meta.nextPage && onPageChange(meta.nextPage);
@@ -35,20 +38,19 @@ export function Pagination({ meta, onPageChange, onLimitChange }: PaginationProp
     >
       <div className="flex items-center justify-between gap-4 sm:justify-start">
         <p>{t("showing", { from, to, total: meta.total })}</p>
-        <label className="flex items-center gap-2">
-          <span className="whitespace-nowrap">{t("perPage")}</span>
-          <Select
-            value={meta.limit}
-            onChange={(event) => onLimitChange(Number(event.target.value))}
-            className="min-h-9 w-20 py-1.5"
-          >
-            {PAGE_SIZE_OPTIONS.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </Select>
-        </label>
+        <div className="flex items-center gap-2">
+          <span aria-hidden="true" className="whitespace-nowrap">
+            {t("perPage")}
+          </span>
+          <SelectMenu
+            aria-label={t("perPage")}
+            value={String(meta.limit)}
+            onChange={(limit) => onLimitChange(Number(limit))}
+            options={sizeOptions}
+            size="sm"
+            className="w-20"
+          />
+        </div>
       </div>
 
       <div className="flex items-center justify-between gap-2 sm:justify-end">

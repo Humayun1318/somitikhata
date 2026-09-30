@@ -8,15 +8,16 @@ import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-stat
 import { Pagination } from "@/components/shared/pagination";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
+import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { useMe } from "@/features/auth/hooks/use-me";
-import { cn } from "@/lib/cn";
 
 import { useAdminListParams } from "../hooks/use-admin-list-params";
 import { useAdmins } from "../hooks/use-admins";
 import { ACCOUNT_STATUSES, type AccountStatus } from "../types";
 
+import { STATUS_STYLES } from "./account-status-badge";
 import { AdminsTable } from "./admins-table";
 import { CreateAdminDialog } from "./create-admin-dialog";
 
@@ -40,6 +41,12 @@ export function AdminsPage() {
   const showEmpty = !!data && admins.length === 0;
   const isFilteredEmpty = hasFilters || (meta?.total ?? 0) > 0;
   const isUpdating = isFetching && (isPlaceholderData || !isPending);
+
+  const statusOptions = [
+    { value: "", label: t("filters.allStatuses") },
+    ...ACCOUNT_STATUSES.map((status) => ({ value: status, label: t(`status.${status}`), dot: STATUS_STYLES[status].dot })),
+  ];
+  const sortOptions = SORT_OPTIONS.map((option) => ({ value: option, label: t(`sort.${option || "default"}`) }));
 
   const openCreate = () => {
     setCreateKey((key) => key + 1);
@@ -68,44 +75,37 @@ export function AdminsPage() {
         )}
       </header>
 
-      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
-        <SearchInput
-          id="admin-search"
-          label={t("search.label")}
-          placeholder={t("search.placeholder")}
-          search={params.search}
-          onSearchChange={changeSearch}
-        />
-        <div className="sm:w-44">
-          <Select
+      <div className="space-y-3">
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+          <SearchInput
+            id="admin-search"
+            label={t("search.label")}
+            placeholder={t("search.placeholder")}
+            search={params.search}
+            onSearchChange={changeSearch}
+          />
+          {hasFilters && (
+            <Button type="button" variant="outline" onClick={clearFilters} className="gap-2 px-4">
+              <X aria-hidden="true" className="h-4 w-4" />
+              {t("filters.clear")}
+            </Button>
+          )}
+        </div>
+        <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
+          <SegmentedControl
             aria-label={t("filters.status")}
             value={params.status}
-            onChange={(event) => changeStatus(event.target.value)}
-            className={cn("min-h-11", params.status && "border-app-primary text-app-primary")}
-          >
-            <option value="">{t("filters.allStatuses")}</option>
-            {ACCOUNT_STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {t(`status.${status}`)}
-              </option>
-            ))}
-          </Select>
+            onChange={changeStatus}
+            options={statusOptions}
+          />
+          <SelectMenu
+            aria-label={t("sort.label")}
+            value={params.sort}
+            onChange={changeSort}
+            options={sortOptions}
+            className="md:hidden"
+          />
         </div>
-        <div className="md:hidden">
-          <Select aria-label={t("sort.label")} value={params.sort} onChange={(event) => changeSort(event.target.value)} className="min-h-11">
-            {SORT_OPTIONS.map((option) => (
-              <option key={option || "default"} value={option}>
-                {t(`sort.${option || "default"}`)}
-              </option>
-            ))}
-          </Select>
-        </div>
-        {hasFilters && (
-          <Button type="button" variant="outline" onClick={clearFilters} className="gap-2 px-4">
-            <X aria-hidden="true" className="h-4 w-4" />
-            {t("filters.clear")}
-          </Button>
-        )}
       </div>
 
       <section className="relative space-y-4">

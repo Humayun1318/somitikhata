@@ -21,7 +21,8 @@ src/
   features/<name>/     api.ts, query-keys.ts, types.ts, schemas.ts,
                        hooks/, components/  — everything for one feature
   components/ui/       small primitives: Button, Input, PasswordInput,
-                       Select, Textarea, Dialog, Spinner, FormField
+                       Textarea, Dialog, DialogActions, SelectMenu,
+                       SegmentedControl, Spinner, FormField
   components/shared/   app-wide pieces: PageHeader, UserAvatar, Money,
                        SearchInput, Pagination, SortableHeader,
                        list-states, toast/
@@ -124,7 +125,23 @@ or page change would be noise.
   A plain `2026-03-01` is read as UTC midnight and misses the first 6 hours.
 - Transaction dates follow the same rule.
 
-## 0.8 Money
+## 0.8 Dialogs and dropdowns (one design everywhere)
+
+- Every modal uses `Dialog` (`components/ui/dialog.tsx`): sticky header
+  (title + short description + close), a body that is the only part that
+  scrolls, and a sticky footer. Phones: bottom sheet.
+- Forms pass `onSubmit` + `busy` to `Dialog` (it renders the `<form>`) and put
+  `<DialogActions>` in `footer`: Cancel + the primary button (`tone="danger"`
+  for destructive actions like Reverse). Don't build button rows by hand.
+- Every dropdown is `SelectMenu` (filters and form fields; with RHF use a
+  `Controller`). Its panel is a native popover: never clipped, flips up near
+  the bottom, becomes a bottom sheet on phones, scrolls inside (max 320px),
+  and shows a search box for long lists (`searchable`).
+- A few visible choices (status filters, Cash / Bank) use `SegmentedControl`
+  instead of a dropdown.
+- No native `<select>`; no new UI package.
+
+## 0.9 Money
 
 - The backend **stores and returns paisa** (integer). It **accepts taka**
   (number, max 2 decimals) in request bodies. Amount range filters
@@ -140,7 +157,7 @@ or page change would be noise.
   recomputes a balance or a withdrawal limit; the server is the check.
 - A wrong entry is never edited: it is reversed (a new opposite entry).
 
-## 0.9 System Profile vs Member Profile
+## 0.10 System Profile vs Member Profile
 
 - **System Profile** (`/admin/profile`, `/member/profile`, `features/profile`):
   the login account from `GET /user/me` — name, phone, email, role, status,

@@ -13,7 +13,8 @@
       "phone": "Mobile",
       "status": "Status",
       "lastLogin": "Last login",
-      "added": "Added"
+      "added": "Added",
+      "actions": "Actions"
     },
     "sortBy": "Sort by {column}",
     "sort": {
@@ -44,6 +45,11 @@
       "status": "Status",
       "allStatuses": "All statuses",
       "clear": "Clear"
+    },
+    "actions": {
+      "changeStatus": "Change status",
+      "resetPassword": "Reset password",
+      "forAdmin": "{action}: {name}"
     }
   },
   "AdminForm": {

@@ -13,7 +13,8 @@
       "phone": "মোবাইল",
       "status": "অবস্থা",
       "lastLogin": "সর্বশেষ লগইন",
-      "added": "যোগ হয়েছে"
+      "added": "যোগ হয়েছে",
+      "actions": "কার্যক্রম"
     },
     "sortBy": "{column} অনুযায়ী সাজান",
     "sort": {
@@ -44,6 +45,11 @@
       "status": "অবস্থা",
       "allStatuses": "সব অবস্থা",
       "clear": "মুছুন"
+    },
+    "actions": {
+      "changeStatus": "অবস্থা পরিবর্তন",
+      "resetPassword": "পাসওয়ার্ড রিসেট",
+      "forAdmin": "{action}: {name}"
     }
   },
   "AdminForm": {

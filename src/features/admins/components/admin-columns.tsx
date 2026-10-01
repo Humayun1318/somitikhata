@@ -8,7 +8,7 @@ import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 
 import type { AdminSortField, StaffUser } from "../types";
 
-import { AccountStatusBadge } from "./account-status-badge";
+import { AccountStatusBadge } from "@/features/users/components/account-status-badge";
 
 type CellProps = { admin: StaffUser };
 

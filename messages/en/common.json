@@ -55,7 +55,9 @@
     "createAdmin": "Creating admin…",
     "createNominee": "Adding nominee…",
     "updateNominee": "Saving nominee…",
-    "deleteNominee": "Deleting nominee…"
+    "deleteNominee": "Deleting nominee…",
+    "updateAccountStatus": "Updating account status…",
+    "resetPassword": "Resetting password…"
   },
   "Pagination": {
     "showing": "Showing {from, number}–{to, number} of {total, number}",

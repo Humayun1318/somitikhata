@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
 import { MemberNomineesSection } from "@/features/nominees/components/member-nominees-section";
+import { MemberLoginSection } from "@/features/users/components/member-login-section";
 import { formatAddress } from "@/lib/address";
 import { cn } from "@/lib/cn";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
@@ -149,6 +150,8 @@ export function MemberDetailsDialog({ open, onClose, member, onEdit, onChangeSta
       ))}
 
       <MemberNomineesSection memberNo={member.memberNo} memberLabel={memberLabel} enabled={open} />
+
+      <MemberLoginSection memberId={member._id} memberNo={member.memberNo} name={member.nameBn} enabled={open} />
 
       <DetailsGroup group={recordGroup} empty={empty} />
     </Dialog>

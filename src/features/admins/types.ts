@@ -1,10 +1,9 @@
+import type { AccountStatus } from "@/features/users/types";
 import type { PaginatedResult } from "@/types/api";
 
 export type { PaginatedResult };
-
-// Same values as AccountStatus in the backend (user.interface.ts).
-export const ACCOUNT_STATUSES = ["active", "inactive", "suspended"] as const;
-export type AccountStatus = (typeof ACCOUNT_STATUSES)[number];
+// Account statuses are shared with members' login accounts (features/users).
+export { ACCOUNT_STATUSES, type AccountStatus } from "@/features/users/types";
 
 // A staff login account from GET /user (password is never sent).
 export type StaffUser = {

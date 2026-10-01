@@ -1,0 +1,66 @@
+{
+  "UserAccount": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
+    },
+    "statusForm": {
+      "title": "Change account status",
+      "description": "Login account of {name}.",
+      "current": "Current",
+      "effects": {
+        "active": "Can sign in and use the system.",
+        "inactive": "Turned off. Use this when the person has left the society. They can't sign in.",
+        "suspended": "Blocked for now. They can't sign in until set back to Active."
+      },
+      "blockWarning": "{name} will lose access right away and can't sign in until the account is set back to Active.",
+      "submit": {
+        "active": "Activate account",
+        "inactive": "Deactivate account",
+        "suspended": "Suspend account"
+      },
+      "submitting": "Saving…",
+      "success": "{name}'s account is now {status}."
+    },
+    "reset": {
+      "open": "Reset password",
+      "title": "Reset password",
+      "description": "Login account of {name}.",
+      "whatHappens": "What happens",
+      "steps": {
+        "password": "The password is set back to the mobile number registered on this account.",
+        "change": "They must choose a new password right after signing in.",
+        "signOut": "They are signed out everywhere, and a lock from wrong passwords is cleared."
+      },
+      "signInHint": {
+        "member": "Tell them to sign in with their member number and their registered mobile number as the password.",
+        "admin": "Tell them to sign in with their staff ID or email and their registered mobile number as the password."
+      },
+      "notActive": "This account is {status}, so they still can't sign in until it is Active.",
+      "confirm": "I have checked that this request really comes from {name}.",
+      "submit": "Reset password",
+      "submitting": "Resetting…",
+      "success": "Password reset for {name}. They can now sign in with their registered mobile number."
+    },
+    "login": {
+      "title": "Login account",
+      "status": "Sign-in status",
+      "lastLogin": "Last sign-in",
+      "never": "Never signed in",
+      "password": "Password",
+      "firstPassword": "Still the first password (mobile number); must change it after signing in",
+      "ownPassword": "Changed by the member",
+      "none": "No login account is linked to this member.",
+      "error": "Couldn't load the login account.",
+      "retry": "Try again"
+    },
+    "errors": {
+      "network": "Could not reach the server. Check your connection and try again.",
+      "statusGeneric": "Couldn't change the status. Please try again.",
+      "resetGeneric": "Couldn't reset the password. Please try again."
+    }
+  }
+}

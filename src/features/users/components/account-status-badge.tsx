@@ -10,9 +10,9 @@ export const STATUS_STYLES: Record<AccountStatus, { badge: string; dot: string }
   suspended: { badge: "bg-amber-50 text-amber-800", dot: "bg-amber-500" },
 };
 
-// Login account status (active / inactive / suspended).
+// Login account status (active / inactive / suspended). Used for admins and members' login accounts.
 export function AccountStatusBadge({ status }: { status: AccountStatus }) {
-  const t = useTranslations("Admins.status");
+  const t = useTranslations("UserAccount.status");
   const styles = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
   const label = t.has(status) ? t(status) : status;
 

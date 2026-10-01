@@ -55,7 +55,9 @@
     "createAdmin": "অ্যাডমিন তৈরি হচ্ছে…",
     "createNominee": "নমিনি যোগ করা হচ্ছে…",
     "updateNominee": "নমিনির তথ্য সংরক্ষণ হচ্ছে…",
-    "deleteNominee": "নমিনি মুছে ফেলা হচ্ছে…"
+    "deleteNominee": "নমিনি মুছে ফেলা হচ্ছে…",
+    "updateAccountStatus": "অ্যাকাউন্টের অবস্থা হালনাগাদ হচ্ছে…",
+    "resetPassword": "পাসওয়ার্ড রিসেট হচ্ছে…"
   },
   "Pagination": {
     "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",

@@ -191,6 +191,23 @@ or page change would be noise.
 - The update APIs cannot empty a saved optional value (no "unset"). Forms find
   such fields first and show "can't be emptied" instead of sending.
 
+## 0.12 Login accounts: status and password reset
+
+- `features/users` holds the actions on someone else's login account:
+  `PATCH /user/update-status/:id` (active / inactive / suspended) and
+  `PATCH /user/reset-password/:id` (no body). Backend rules: an admin may act on
+  members only, the super admin on members and admins, nobody on their own account.
+- Admins list: the Actions column (change status, reset password) is shown to
+  the super admin only. Inactive/suspended blocks sign-in on the next request.
+- Members: account status follows the member status (Change status), so the
+  only member account action is **Reset password**, in Member details →
+  Login account (`GET /user?member=<Member _id>&role=member` finds the account).
+- Reset never shows or sends a password: it sets the password back to the
+  registered mobile number and forces a change after sign-in. The dialog
+  explains this and needs "I checked who is asking" ticked before it runs.
+- All login-account queries live under `userKeys.all` (`["users"]`, the admin
+  list too), so one invalidation refreshes them after any account action.
+
 ------------------------------------------------------------------------
 
 # 1. Purpose

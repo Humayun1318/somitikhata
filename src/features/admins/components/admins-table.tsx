@@ -7,6 +7,7 @@ import { cn } from "@/lib/cn";
 
 import type { StaffUser } from "../types";
 
+import { AdminActions, type AdminAction } from "./admin-actions";
 import { ADMIN_COLUMNS, LastLoginCell, NameCell, PhoneCell, StaffNoCell, StatusCell } from "./admin-columns";
 
 type AdminsTableProps = {
@@ -14,10 +15,12 @@ type AdminsTableProps = {
   sort: string;
   onSortChange: (sort: string) => void;
   isUpdating: boolean;
+  /** Given only to the super admin (the backend lets only them manage admins). */
+  onAction?: (action: AdminAction, admin: StaffUser) => void;
 };
 
 // Desktop: a table. Mobile: one card per admin.
-export function AdminsTable({ admins, sort, onSortChange, isUpdating }: AdminsTableProps) {
+export function AdminsTable({ admins, sort, onSortChange, isUpdating, onAction }: AdminsTableProps) {
   const t = useTranslations("Admins");
   const columns = ADMIN_COLUMNS.map((column) => {
     const label = t(`columns.${column.headerKey}`);
@@ -36,6 +39,11 @@ export function AdminsTable({ admins, sort, onSortChange, isUpdating }: AdminsTa
                   {!sortField && label}
                 </th>
               ))}
+              {onAction && (
+                <th scope="col" className="w-px px-4 py-3 text-right font-semibold">
+                  {t("columns.actions")}
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-app-border">
@@ -46,6 +54,11 @@ export function AdminsTable({ admins, sort, onSortChange, isUpdating }: AdminsTa
                     <Cell admin={admin} />
                   </td>
                 ))}
+                {onAction && (
+                  <td className="px-4 py-3 text-right align-middle">
+                    <AdminActions admin={admin} onAction={onAction} variant="icons" />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -66,6 +79,11 @@ export function AdminsTable({ admins, sort, onSortChange, isUpdating }: AdminsTa
             <p className="mt-2 text-xs text-app-text-muted">
               {t("columns.lastLogin")}: <LastLoginCell admin={admin} />
             </p>
+            {onAction && (
+              <div className="mt-3 border-t border-app-border pt-3">
+                <AdminActions admin={admin} onAction={onAction} variant="buttons" />
+              </div>
+            )}
           </li>
         ))}
       </ul>

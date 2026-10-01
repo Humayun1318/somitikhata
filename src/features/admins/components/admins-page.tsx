@@ -13,18 +13,34 @@ import { SelectMenu } from "@/components/ui/select-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { useMe } from "@/features/auth/hooks/use-me";
 
+import { AccountStatusDialog } from "@/features/users/components/account-status-dialog";
+import { ResetPasswordDialog } from "@/features/users/components/reset-password-dialog";
+import type { AccountTarget } from "@/features/users/types";
+
 import { useAdminListParams } from "../hooks/use-admin-list-params";
 import { useAdmins } from "../hooks/use-admins";
-import { ACCOUNT_STATUSES, type AccountStatus } from "../types";
+import { ACCOUNT_STATUSES, type AccountStatus, type StaffUser } from "../types";
 
-import { STATUS_STYLES } from "./account-status-badge";
+import { STATUS_STYLES } from "@/features/users/components/account-status-badge";
+import type { AdminAction } from "./admin-actions";
 import { AdminsTable } from "./admins-table";
 import { CreateAdminDialog } from "./create-admin-dialog";
 
 // Mobile has no clickable table headers, so it gets a sort dropdown.
 const SORT_OPTIONS = ["", "name", "-name", "-lastLogin", "status"];
 
-// Admins list (GET /user?role=admin). Only a super admin can add an admin.
+type AccountDialog = { action: AdminAction; account: AccountTarget; key: number };
+
+const toAccountTarget = (admin: StaffUser): AccountTarget => ({
+  id: admin._id,
+  name: admin.name,
+  identifier: admin.staffNo,
+  status: admin.status,
+  kind: "admin",
+});
+
+// Admins list (GET /user?role=admin). Only a super admin can add an admin,
+// change an admin's status or reset an admin's password (backend rule).
 export function AdminsPage() {
   const t = useTranslations("Admins");
   const { data: user } = useMe();
@@ -34,6 +50,9 @@ export function AdminsPage() {
   // New key per open remounts the dialog, so its form starts empty.
   const [createKey, setCreateKey] = useState(0);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  // Kept after closing, so the dialog doesn't change while it animates out.
+  const [accountDialog, setAccountDialog] = useState<AccountDialog | null>(null);
+  const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false);
 
   const admins = data?.data ?? [];
   const meta = data?.meta;
@@ -53,6 +72,12 @@ export function AdminsPage() {
     setIsCreateOpen(true);
   };
   const closeCreate = () => setIsCreateOpen(false);
+  const openAccountDialog = (action: AdminAction, admin: StaffUser) => {
+    setAccountDialog((current) => ({ action, account: toAccountTarget(admin), key: (current?.key ?? 0) + 1 }));
+    setIsAccountDialogOpen(true);
+  };
+  const closeAccountDialog = () => setIsAccountDialogOpen(false);
+  const handleAction = isSuperAdmin ? openAccountDialog : undefined;
   const retry = () => void refetch();
   const changeSearch = (search: string) => setParams({ search });
   const changeStatus = (status: string) => setParams({ status: status as AccountStatus | "" });
@@ -127,11 +152,35 @@ export function AdminsPage() {
             body={isFilteredEmpty ? t("empty.filteredBody") : t("empty.body")}
           />
         )}
-        {admins.length > 0 && <AdminsTable admins={admins} sort={params.sort} onSortChange={changeSort} isUpdating={isUpdating} />}
+        {admins.length > 0 && (
+          <AdminsTable
+            admins={admins}
+            sort={params.sort}
+            onSortChange={changeSort}
+            isUpdating={isUpdating}
+            onAction={handleAction}
+          />
+        )}
         {meta && meta.total > 0 && <Pagination meta={meta} onPageChange={changePage} onLimitChange={changeLimit} />}
       </section>
 
       {isSuperAdmin && <CreateAdminDialog key={createKey} open={isCreateOpen} onClose={closeCreate} />}
+      {accountDialog?.action === "changeStatus" && (
+        <AccountStatusDialog
+          key={`status-${accountDialog.key}`}
+          open={isAccountDialogOpen}
+          onClose={closeAccountDialog}
+          account={accountDialog.account}
+        />
+      )}
+      {accountDialog?.action === "resetPassword" && (
+        <ResetPasswordDialog
+          key={`reset-${accountDialog.key}`}
+          open={isAccountDialogOpen}
+          onClose={closeAccountDialog}
+          account={accountDialog.account}
+        />
+      )}
     </div>
   );
 }

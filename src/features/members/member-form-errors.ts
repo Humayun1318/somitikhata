@@ -21,6 +21,9 @@ const FORM_FIELDS: (keyof CreateMemberInput)[] = [
   "dob",
   "joinDate",
   "admissionFormNo",
+  "businessName",
+  "marketOrRoad",
+  "businessType",
 ];
 
 // Backend 409 text: "This NID already has: LBKS-0001, LBKS-0007. To add another ..."
@@ -45,7 +48,9 @@ export function getMemberFormErrors(
     return { ...none, duplicateMemberNos: memberNos || error.message };
   }
 
-  // Zod errors: { errorSources: [{ path: "phone", message: "..." }] }
+  // Zod errors: { errorSources: [{ path: "phone", message: "..." }] }. The backend
+  // sends only the last part of a nested path ("district", "name"), so address and
+  // nominee errors can't be matched to a field; they show as the form message.
   const sources = (error.details as ErrorBody | undefined)?.errorSources ?? [];
   const fieldErrors = sources.flatMap(({ path, message }) => {
     const field = FORM_FIELDS.find((name) => name === path);

@@ -30,7 +30,7 @@ export type MemberColumn = {
 // ── Cells ──────────────────────────────────────────────
 
 function MemberNoCell({ member }: CellProps) {
-  return <span className="font-mono text-sm font-medium text-app-text">{member.memberNo}</span>;
+  return <span className="whitespace-nowrap font-mono text-sm font-medium text-app-text">{member.memberNo}</span>;
 }
 
 function NameCell({ member }: CellProps) {
@@ -44,6 +44,16 @@ function NameCell({ member }: CellProps) {
 
 function PhoneCell({ member }: CellProps) {
   return <span className="whitespace-nowrap text-app-text">{member.phone}</span>;
+}
+
+// Business name with its type under it (admission form fields).
+function BusinessCell({ member }: CellProps) {
+  return (
+    <div className="min-w-0">
+      <p className="truncate text-app-text">{member.businessName || "—"}</p>
+      {member.businessType && <p className="truncate text-xs text-app-text-muted">{member.businessType}</p>}
+    </div>
+  );
 }
 
 function NidCell({ member }: CellProps) {
@@ -73,13 +83,15 @@ function ActionsCell({ member, onAction }: CellProps) {
 
 export const MEMBER_COLUMNS: MemberColumn[] = [
   { id: "memberNo", headerKey: "memberNo", sortField: "memberNo", Cell: MemberNoCell },
-  { id: "name", headerKey: "name", sortField: "nameBn", className: "w-[30%]", Cell: NameCell },
+  { id: "name", headerKey: "name", sortField: "nameBn", className: "w-[26%]", Cell: NameCell },
   { id: "phone", headerKey: "phone", Cell: PhoneCell },
-  { id: "nid", headerKey: "nid", className: "hidden xl:table-cell", Cell: NidCell },
+  { id: "business", headerKey: "business", className: "hidden max-w-56 xl:table-cell", Cell: BusinessCell },
+  // NID only on very wide screens, so the Business column fits next to the sidebar.
+  { id: "nid", headerKey: "nid", className: "hidden 2xl:table-cell", Cell: NidCell },
   { id: "joinDate", headerKey: "joinDate", sortField: "joinDate", Cell: JoinDateCell },
   { id: "status", headerKey: "status", sortField: "status", Cell: StatusCell },
   { id: "actions", headerKey: "actions", className: "w-px text-right", Cell: ActionsCell },
 ];
 
 // Reused by the mobile cards.
-export { JoinDateCell, MemberNoCell, NameCell, PhoneCell, StatusCell };
+export { BusinessCell, JoinDateCell, MemberNoCell, NameCell, PhoneCell, StatusCell };

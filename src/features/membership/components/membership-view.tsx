@@ -1,12 +1,15 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
-import { ArrowRight, BadgeCheck, CircleDashed, Landmark, UserRound, UsersRound } from "lucide-react";
+import { ArrowRight, BadgeCheck, Briefcase, CircleDashed, Landmark, UserRound, UsersRound } from "lucide-react";
 
 import { ListError, ListLoading } from "@/components/shared/list-states";
 import { UserAvatar } from "@/components/shared/user-avatar";
 import { MemberStatusBadge } from "@/features/members/components/member-status-badge";
+import { NomineeCard } from "@/features/nominees/components/nominee-card";
+import { useMyNominees } from "@/features/nominees/hooks/use-my-nominees";
 import { Link } from "@/i18n/navigation";
+import { formatAddress } from "@/lib/address";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 
 import { useMyMembership } from "../hooks/use-my-membership";
@@ -20,6 +23,7 @@ export function MembershipView() {
   const t = useTranslations("Membership");
   const format = useFormatter();
   const { data: member, error, isPending, isFetching, refetch } = useMyMembership();
+  const nominees = useMyNominees();
 
   const notProvided = t("notProvided");
   const day = (value?: string) =>
@@ -70,6 +74,18 @@ export function MembershipView() {
       ]
     : [];
 
+  const businessRows: InfoRow[] = member
+    ? [
+        row("businessName", member.businessName),
+        row("businessType", member.businessType),
+        row("marketOrRoad", member.marketOrRoad),
+        row("presentAddress", formatAddress(member.presentAddress)),
+        row("permanentAddress", formatAddress(member.permanentAddress)),
+      ]
+    : [];
+  const nomineeList = nominees.data ?? [];
+  const retryNominees = () => void nominees.refetch();
+
   return (
     <div className="w-full space-y-4 sm:space-y-6">
       <header className="flex flex-col gap-3 motion-safe:animate-fade-in-up sm:flex-row sm:items-end sm:justify-between">
@@ -108,9 +124,21 @@ export function MembershipView() {
         <div className="grid gap-4 sm:gap-6 xl:grid-cols-2 xl:items-start">
           <InfoSection id="membership-member" icon={UserRound} title={t("memberInfo")} hint={t("memberInfoHint")} rows={memberRows} />
           <InfoSection id="membership-society" icon={Landmark} title={t("societyInfo")} rows={societyRows} />
-          {/* Nominee: the backend has no nominee data yet. The section is kept so it can be filled in later. */}
-          <InfoSection id="membership-nominee" icon={UsersRound} title={t("nominee.title")} rows={[]}>
-            <p className="text-sm text-app-text-muted">{t("nominee.notAvailable")}</p>
+          <InfoSection id="membership-business" icon={Briefcase} title={t("businessInfo")} rows={businessRows} />
+          {/* GET /nominee/my-nominees: read only. Changes go through the society office. */}
+          <InfoSection id="membership-nominee" icon={UsersRound} title={t("nominee.title")} hint={t("nominee.hint")} rows={[]}>
+            {nominees.isPending && <div aria-busy="true" className="h-24 animate-pulse rounded-2xl bg-app-surface-muted" />}
+            {nominees.isError && (
+              <ListError title={t("nominee.error")} retryLabel={t("retry")} onRetry={retryNominees} isRetrying={nominees.isFetching} />
+            )}
+            {nominees.data && nomineeList.length === 0 && <p className="text-sm text-app-text-muted">{t("nominee.empty")}</p>}
+            {nomineeList.length > 0 && (
+              <div className="space-y-3">
+                {nomineeList.map((nominee, index) => (
+                  <NomineeCard key={nominee._id} nominee={nominee} index={index} />
+                ))}
+              </div>
+            )}
           </InfoSection>
         </div>
       )}

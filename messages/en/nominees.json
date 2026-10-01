@@ -1,0 +1,117 @@
+{
+  "Nominees": {
+    "optional": "optional",
+    "close": "Close",
+    "cancel": "Cancel",
+    "relation": {
+      "spouse": "Spouse",
+      "son": "Son",
+      "daughter": "Daughter",
+      "father": "Father",
+      "mother": "Mother",
+      "brother": "Brother",
+      "sister": "Sister",
+      "other": "Other"
+    },
+    "idType": {
+      "none": "No ID",
+      "nid": "NID",
+      "birth_certificate": "Birth certificate",
+      "passport": "Passport"
+    },
+    "fields": {
+      "name": "Nominee's name",
+      "relation": "Relation with member",
+      "relationNote": "Write the relation",
+      "phone": "Mobile number",
+      "dob": "Date of birth",
+      "idType": "ID type",
+      "idNumber": "ID number",
+      "id": "ID",
+      "address": "Address",
+      "guardian": "Guardian (nominee is under 18)",
+      "guardianName": "Guardian's name",
+      "guardianRelation": "Guardian's relation with nominee",
+      "guardianPhone": "Guardian's mobile"
+    },
+    "placeholders": {
+      "name": "e.g. ফাতেমা বেগম",
+      "relationNote": "e.g. Nephew",
+      "phone": "01XXXXXXXXX",
+      "guardianName": "e.g. আব্দুল করিম",
+      "guardianRelation": "e.g. Mother",
+      "idNumber_nid": "10, 13 or 17 digits",
+      "idNumber_birth_certificate": "17 digits",
+      "idNumber_passport": "6–12 letters or digits"
+    },
+    "form": {
+      "select": "Select",
+      "detailsTitle": "Nominee",
+      "guardianTitle": "Guardian",
+      "guardianHint": "The nominee is under 18, so a guardian is required.",
+      "guardianNote": "The guardian looks after the nominee's share until they turn 18.",
+      "addressTitle": "Nominee's address",
+      "addressHint": "Optional. Fill in what is on the admission form.",
+      "addTitle": "Add nominee",
+      "editTitle": "Edit nominee",
+      "description": "Nominee of {member}.",
+      "addSubmit": "Add nominee",
+      "editSubmit": "Save changes",
+      "saving": "Saving…",
+      "addSuccess": "Nominee {name} added.",
+      "editSuccess": "Nominee {name} updated."
+    },
+    "validation": {
+      "nameRequired": "Enter the nominee's name.",
+      "nameMin": "Name must be 2 to 50 characters.",
+      "nameMax": "Name can be at most 50 characters.",
+      "relationRequired": "Choose the relation.",
+      "relationNoteRequired": "Write the relation (e.g. Nephew).",
+      "relationNoteMax": "Too long (max 30 characters).",
+      "phoneInvalid": "Enter a valid mobile number (e.g. 01712345678).",
+      "dateInFuture": "Date cannot be in the future.",
+      "idTypeRequired": "Choose the ID type for this number.",
+      "idNumberRequired": "Enter the ID number.",
+      "idNumberInvalid": "ID number is too long.",
+      "idNumberInvalid_nid": "NID must be 10, 13 or 17 digits.",
+      "idNumberInvalid_birth_certificate": "Birth certificate number must be 17 digits.",
+      "idNumberInvalid_passport": "Passport number must be 6–12 letters or digits.",
+      "guardianNameRequired": "Enter the guardian's name.",
+      "guardianRelationRequired": "Write the guardian's relation with the nominee.",
+      "cannotClear": "This can't be emptied once saved. Enter a value."
+    },
+    "errors": {
+      "network": "Could not reach the server. Check your connection and try again.",
+      "addGeneric": "Could not add the nominee. Please try again.",
+      "editGeneric": "Could not save the changes. Please try again.",
+      "deleteGeneric": "Could not delete the nominee. Please try again."
+    },
+    "card": {
+      "main": "Main nominee",
+      "alternative": "Alternative nominee",
+      "minor": "Under 18",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editFor": "Edit nominee {name}",
+      "deleteFor": "Delete nominee {name}"
+    },
+    "section": {
+      "title": "Nominees",
+      "count": "{count, number} of {max, number}",
+      "add": "Add nominee",
+      "error": "Couldn't load the nominees.",
+      "retry": "Try again",
+      "empty": "No nominee yet. Every member needs one — add it now.",
+      "keepOne": "A member must keep at least one nominee",
+      "keepOneHint": "A member must always have at least one nominee. To change this one, edit it, or add another first."
+    },
+    "delete": {
+      "title": "Delete nominee",
+      "description": "Remove {name} as a nominee?",
+      "warning": "This can't be undone. The member's other nominee stays.",
+      "submit": "Delete",
+      "submitting": "Deleting…",
+      "success": "Nominee {name} deleted."
+    }
+  }
+}

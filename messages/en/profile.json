@@ -84,7 +84,12 @@
       "joinDate": "Joined on",
       "exitDate": "Exit date",
       "admissionFormNo": "Admission form no.",
-      "share": "Share"
+      "share": "Share",
+      "businessName": "Business name",
+      "businessType": "Type of business",
+      "marketOrRoad": "Market / road name",
+      "presentAddress": "Present address",
+      "permanentAddress": "Permanent address"
     },
     "relation": {
       "father": "father",
@@ -93,11 +98,14 @@
     "shareDone": "Share deposited",
     "shareMissing": "No share deposit yet",
     "nominee": {
-      "title": "Nominee",
-      "notAvailable": "Nominee details will be shown here. This isn't available yet."
+      "title": "Nominees",
+      "hint": "To change a nominee, please contact the society office.",
+      "error": "Couldn't load your nominees.",
+      "empty": "No nominee is recorded yet. Please contact the society office."
     },
     "notLinked": "No society membership is linked to this account. Please contact the society office.",
     "error": "Couldn't load your membership details.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "businessInfo": "Business and address"
   }
 }

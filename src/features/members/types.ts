@@ -1,3 +1,5 @@
+import type { CreateNomineePayload } from "@/features/nominees/types";
+import type { Address } from "@/types/address";
 import type { PaginatedResult, PaginationMeta } from "@/types/api";
 
 export type { PaginatedResult, PaginationMeta };
@@ -23,6 +25,13 @@ export type Member = {
   status: MemberStatus;
   exitDate?: string;
   admissionFormNo?: string;
+  // Business (admission form). Required for every member.
+  businessName: string;
+  marketOrRoad: string;
+  businessType: string;
+  /** Upazila + district are always set. */
+  presentAddress?: Address;
+  permanentAddress?: Address;
   /** Set by the transaction service once the one-time Share Deposit is recorded. */
   hasShareDeposit?: boolean;
   createdAt?: string;
@@ -61,13 +70,22 @@ export type CreateMemberPayload = {
   dob?: string;
   joinDate: string;
   admissionFormNo?: string;
+  businessName: string;
+  marketOrRoad: string;
+  businessType: string;
+  /** Upazila + district required. */
+  presentAddress: Address;
+  permanentAddress?: Address;
+  /** The first nominee, saved in the same transaction as the member. */
+  nominee: CreateNomineePayload;
   /** Needed when the NID already has a membership (backend answers 409). */
   confirmExtraMembership?: boolean;
 };
 
 // PATCH /member/update/:memberNo (backend updateMemberZodSchema: strict,
-// every field optional, at least one field required).
-export type UpdateMemberPayload = Partial<Omit<CreateMemberPayload, "confirmExtraMembership">>;
+// every field optional, at least one field required). Nominees have their own API.
+// An address is replaced as a whole, so {} empties the permanent address.
+export type UpdateMemberPayload = Partial<Omit<CreateMemberPayload, "confirmExtraMembership" | "nominee">>;
 
 // PATCH /member/update-status/:memberNo. exitDate is required for "exited"
 // and must be left out for every other status.

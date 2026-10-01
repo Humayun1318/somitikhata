@@ -9,6 +9,7 @@ import type { Member } from "../types";
 import { MemberActions, type MemberAction } from "./member-actions";
 
 import {
+  BusinessCell,
   JoinDateCell,
   MEMBER_COLUMNS,
   MemberNoCell,
@@ -82,6 +83,9 @@ export function MembersTable({ members, sort, onSortChange, isUpdating, onAction
             <div className="flex items-start justify-between gap-3">
               <NameCell member={member} onAction={onAction} />
               <StatusCell member={member} onAction={onAction} />
+            </div>
+            <div className="mt-2 text-sm">
+              <BusinessCell member={member} onAction={onAction} />
             </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
               <MemberNoCell member={member} onAction={onAction} />

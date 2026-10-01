@@ -52,7 +52,10 @@
     "createOpening": "Saving opening entry…",
     "createCashAccount": "Adding account…",
     "updateCashAccountStatus": "Updating account…",
-    "createAdmin": "Creating admin…"
+    "createAdmin": "Creating admin…",
+    "createNominee": "Adding nominee…",
+    "updateNominee": "Saving nominee…",
+    "deleteNominee": "Deleting nominee…"
   },
   "Pagination": {
     "showing": "Showing {from, number}–{to, number} of {total, number}",
@@ -73,5 +76,27 @@
   "SelectMenu": {
     "search": "Search…",
     "noResults": "No matches"
+  },
+  "Address": {
+    "optional": "optional",
+    "fields": {
+      "village": "Village / area",
+      "postOffice": "Post office",
+      "union": "Union / ward",
+      "upazila": "Upazila / thana",
+      "district": "District"
+    },
+    "placeholders": {
+      "village": "e.g. চুনতি",
+      "postOffice": "e.g. চুনতি",
+      "union": "e.g. চুনতি",
+      "upazila": "e.g. লোহাগাড়া",
+      "district": "e.g. চট্টগ্রাম"
+    },
+    "validation": {
+      "tooLong": "Too long (max 50 characters).",
+      "upazilaRequired": "Enter the upazila / thana.",
+      "districtRequired": "Enter the district."
+    }
   }
 }

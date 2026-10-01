@@ -41,6 +41,8 @@ type Duplicate = { nid: string; memberNos: string };
 // The parent passes a new `key` each time it opens, so the form starts fresh.
 export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProps) {
   const t = useTranslations("MemberForm");
+  const tAddress = useTranslations("Address");
+  const tNominee = useTranslations("Nominees");
   const toast = useToast();
   const createMember = useCreateMember();
   const updateMember = useUpdateMember();
@@ -53,10 +55,13 @@ export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProp
     register,
     handleSubmit,
     setError,
+    getValues,
+    setValue,
     control,
     formState: { errors, isSubmitting, isDirty, dirtyFields },
   } = useForm<CreateMemberInput>({
-    resolver: zodResolver(createMemberSchema(t)),
+    // Add: the first nominee is part of the form. Edit: nominees have their own dialog.
+    resolver: zodResolver(createMemberSchema({ t, tAddress, tNominee, withNominee: !isEdit })),
     defaultValues: toMemberFormValues(member ?? undefined),
     mode: "onTouched",
   });
@@ -67,6 +72,9 @@ export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProp
   // The warning only applies to the NID it was about. Edit the NID and it goes away.
   const currentNid = useWatch({ control, name: "nid" }).trim();
   const isConfirmingDuplicate = !!duplicate && duplicate.nid === currentNid;
+
+  const copyPresentAddress = () =>
+    setValue("permanentAddress", getValues("presentAddress"), { shouldDirty: true, shouldValidate: true });
 
   const saveMember = (values: CreateMemberInput) => {
     if (member) {
@@ -154,7 +162,14 @@ export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProp
         </div>
       )}
 
-      <MemberFormFields register={register} control={control} errors={errors} readOnly={isBusy} />
+      <MemberFormFields
+        register={register}
+        control={control}
+        errors={errors}
+        readOnly={isBusy}
+        showNominee={!isEdit}
+        onCopyPresentAddress={copyPresentAddress}
+      />
 
       {!isEdit && (
         <p className="flex items-start gap-2 rounded-xl bg-app-surface-muted/70 p-3 text-xs text-app-text-muted">

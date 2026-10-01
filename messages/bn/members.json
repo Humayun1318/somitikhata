@@ -5,7 +5,7 @@
     "addMember": "সদস্য যোগ করুন",
     "search": {
       "label": "সদস্য খুঁজুন",
-      "placeholder": "সদস্য নং, নাম, মোবাইল বা এনআইডি দিয়ে খুঁজুন"
+      "placeholder": "সদস্য নং, নাম, মোবাইল, এনআইডি বা ব্যবসা দিয়ে খুঁজুন"
     },
     "filters": {
       "toggle": "ফিল্টার",
@@ -30,6 +30,7 @@
       "memberNo": "সদস্য নং",
       "name": "নাম",
       "phone": "মোবাইল",
+      "business": "ব্যবসা",
       "nid": "এনআইডি",
       "joinDate": "যোগদানের তারিখ",
       "status": "অবস্থা",
@@ -79,7 +80,10 @@
       "nid": "এনআইডি নম্বর",
       "dob": "জন্ম তারিখ",
       "joinDate": "যোগদানের তারিখ",
-      "admissionFormNo": "ভর্তি ফরম নং"
+      "admissionFormNo": "ভর্তি ফরম নং",
+      "businessName": "ব্যবসা প্রতিষ্ঠানের নাম",
+      "marketOrRoad": "মার্কেট / রোডের নাম",
+      "businessType": "ব্যবসার ধরন"
     },
     "placeholders": {
       "nameBn": "যেমন: মোহাম্মদ রহিম উদ্দিন",
@@ -87,7 +91,10 @@
       "guardianName": "যেমন: আব্দুল করিম",
       "phone": "01XXXXXXXXX",
       "nid": "১০, ১৩ বা ১৭ অঙ্ক",
-      "admissionFormNo": "যেমন: ১২৫"
+      "admissionFormNo": "যেমন: ১২৫",
+      "businessName": "যেমন: রহিম স্টোর",
+      "marketOrRoad": "যেমন: লোহাগাড়া বাজার",
+      "businessType": "যেমন: মুদি দোকান"
     },
     "relation": {
       "none": "নির্বাচন করুন",
@@ -109,7 +116,13 @@
       "joinDateRequired": "যোগদানের তারিখ বেছে নিন।",
       "dateInFuture": "ভবিষ্যতের তারিখ দেওয়া যাবে না।",
       "formNoMax": "ভর্তি ফরম নং অনেক বড় (সর্বোচ্চ ৩০ অক্ষর)।",
-      "cannotClear": "একবার সংরক্ষণের পর এটি খালি রাখা যাবে না। একটি মান দিন।"
+      "cannotClear": "একবার সংরক্ষণের পর এটি খালি রাখা যাবে না। একটি মান দিন।",
+      "businessNameRequired": "ব্যবসা প্রতিষ্ঠানের নাম লিখুন।",
+      "businessNameMax": "অনেক বড় (সর্বোচ্চ ১০০ অক্ষর)।",
+      "marketOrRoadRequired": "মার্কেট বা রোডের নাম লিখুন।",
+      "marketOrRoadMax": "অনেক বড় (সর্বোচ্চ ১০০ অক্ষর)।",
+      "businessTypeRequired": "ব্যবসার ধরন লিখুন।",
+      "businessTypeMax": "অনেক বড় (সর্বোচ্চ ৫০ অক্ষর)।"
     },
     "duplicate": {
       "title": "এই এনআইডিতে ইতিমধ্যে সদস্যপদ আছে",
@@ -127,7 +140,17 @@
     "editDescription": "সদস্যের তথ্য হালনাগাদ করুন। শুধু পরিবর্তিত তথ্য সংরক্ষণ হবে।",
     "editSubmit": "পরিবর্তন সংরক্ষণ করুন",
     "editSubmitting": "সংরক্ষণ হচ্ছে…",
-    "editSuccess": "সদস্য {memberNo} হালনাগাদ হয়েছে।"
+    "editSuccess": "সদস্য {memberNo} হালনাগাদ হয়েছে।",
+    "sections": {
+      "member": "সদস্যের তথ্য",
+      "business": "ব্যবসা",
+      "presentAddress": "বর্তমান ঠিকানা",
+      "presentAddressHint": "উপজেলা ও জেলা দিতে হবে।",
+      "permanentAddress": "স্থায়ী ঠিকানা",
+      "permanentAddressHint": "ঐচ্ছিক।",
+      "nomineeHint": "সদস্যের অবর্তমানে যিনি পাওনা পাবেন। দ্বিতীয় (বিকল্প) নমিনি পরে সদস্যের বিস্তারিত থেকে যোগ করা যাবে।"
+    },
+    "sameAsPresent": "বর্তমান ঠিকানার মতো"
   },
   "MemberStatusForm": {
     "title": "অবস্থা পরিবর্তন",
@@ -171,7 +194,18 @@
       "exitDate": "সদস্যপদ ত্যাগের তারিখ",
       "admissionFormNo": "ভর্তি ফরম নং",
       "createdAt": "যোগ করা হয়েছে",
-      "updatedAt": "সর্বশেষ হালনাগাদ"
+      "updatedAt": "সর্বশেষ হালনাগাদ",
+      "businessName": "ব্যবসা প্রতিষ্ঠানের নাম",
+      "businessType": "ব্যবসার ধরন",
+      "marketOrRoad": "মার্কেট / রোডের নাম",
+      "presentAddress": "বর্তমান ঠিকানা",
+      "permanentAddress": "স্থায়ী ঠিকানা"
+    },
+    "sections": {
+      "member": "সদস্যের তথ্য",
+      "business": "ব্যবসা",
+      "address": "ঠিকানা",
+      "record": "রেকর্ড"
     }
   }
 }

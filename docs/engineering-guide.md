@@ -25,7 +25,8 @@ src/
                        SegmentedControl, Spinner, FormField
   components/shared/   app-wide pieces: PageHeader, UserAvatar, Money,
                        SearchInput, Pagination, SortableHeader,
-                       list-states, toast/
+                       list-states, FormSection, AddressFields, toast/
+  types/               shared shapes (api envelope, Address)
   lib/                 http (axios + refresh), query (TanStack setup),
                        env, cn, small helpers
   providers/           AppProviders (query client, toasts, listeners)
@@ -164,8 +165,31 @@ or page change would be noise.
   password. Same for staff and members.
 - **Member Profile** (`/member/membership`, `features/membership`): the
   society's member record from `GET /member/me` — member info, society info,
-  and later nominee. Each part is one `InfoSection`; a new part (nominee) is
-  one more section.
+  business & address, and the member's nominees (`GET /nominee/my-nominees`,
+  read only). Each part is one `InfoSection`.
+
+## 0.11 Members, addresses and nominees
+
+- A member has business fields (`businessName`, `marketOrRoad`,
+  `businessType`, all required) and two addresses with the backend's shared
+  shape (`types/address.ts`). Present address: upazila + district required.
+  Permanent address: optional.
+- Addresses are always edited with `AddressFields` and checked with
+  `addressSchema()` (`lib/address.ts`). `toAddressPayload()` sends only
+  filled parts; on edit a changed address is sent whole (the backend replaces
+  it), and an emptied one is sent as `{}`.
+- Nominees live in `features/nominees` (own api, keys, hooks). Every member has
+  1–2 nominees: the first is part of **Add member** (`nominee` in the same
+  request, saved in one transaction); after that they are managed in
+  **Member details** (add / edit / delete dialogs open on top of it).
+  The backend refuses a 3rd nominee and deleting the last one; the UI hides /
+  disables those actions too.
+- `NomineeFormFields` is one set of fields for both forms: the values always
+  live under `nominee` (`{ nominee: … }` in the standalone dialog). Relation
+  "other" needs a note, ID type and number go together, and a nominee under 18
+  needs a guardian (`isMinorDob`, Dhaka date) — same rules as the backend.
+- The update APIs cannot empty a saved optional value (no "unset"). Forms find
+  such fields first and show "can't be emptied" instead of sending.
 
 ------------------------------------------------------------------------
 

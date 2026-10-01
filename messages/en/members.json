@@ -5,7 +5,7 @@
     "addMember": "Add member",
     "search": {
       "label": "Search members",
-      "placeholder": "Search by member no., name, phone or NID"
+      "placeholder": "Search by member no., name, phone, NID or business"
     },
     "filters": {
       "toggle": "Filters",
@@ -30,6 +30,7 @@
       "memberNo": "Member no.",
       "name": "Name",
       "phone": "Mobile",
+      "business": "Business",
       "nid": "NID",
       "joinDate": "Join date",
       "status": "Status",
@@ -79,7 +80,10 @@
       "nid": "NID number",
       "dob": "Date of birth",
       "joinDate": "Join date",
-      "admissionFormNo": "Admission form no."
+      "admissionFormNo": "Admission form no.",
+      "businessName": "Business name",
+      "marketOrRoad": "Market / road name",
+      "businessType": "Type of business"
     },
     "placeholders": {
       "nameBn": "e.g. মোহাম্মদ রহিম উদ্দিন",
@@ -87,7 +91,10 @@
       "guardianName": "e.g. Abdul Karim",
       "phone": "01XXXXXXXXX",
       "nid": "10, 13 or 17 digits",
-      "admissionFormNo": "e.g. 125"
+      "admissionFormNo": "e.g. 125",
+      "businessName": "e.g. রহিম স্টোর",
+      "marketOrRoad": "e.g. লোহাগাড়া বাজার",
+      "businessType": "e.g. মুদি দোকান"
     },
     "relation": {
       "none": "Select",
@@ -109,7 +116,13 @@
       "joinDateRequired": "Choose the join date.",
       "dateInFuture": "Date cannot be in the future.",
       "formNoMax": "Admission form number is too long (max 30 characters).",
-      "cannotClear": "This can't be emptied once saved. Enter a value."
+      "cannotClear": "This can't be emptied once saved. Enter a value.",
+      "businessNameRequired": "Enter the business name.",
+      "businessNameMax": "Too long (max 100 characters).",
+      "marketOrRoadRequired": "Enter the market or road name.",
+      "marketOrRoadMax": "Too long (max 100 characters).",
+      "businessTypeRequired": "Enter the type of business.",
+      "businessTypeMax": "Too long (max 50 characters)."
     },
     "duplicate": {
       "title": "This NID already has a membership",
@@ -127,7 +140,17 @@
     "editDescription": "Update this member's details. Only changed fields are saved.",
     "editSubmit": "Save changes",
     "editSubmitting": "Saving…",
-    "editSuccess": "Member {memberNo} updated."
+    "editSuccess": "Member {memberNo} updated.",
+    "sections": {
+      "member": "Member information",
+      "business": "Business",
+      "presentAddress": "Present address",
+      "presentAddressHint": "Upazila and district are required.",
+      "permanentAddress": "Permanent address",
+      "permanentAddressHint": "Optional.",
+      "nomineeHint": "The person who receives the member's dues. A second (alternative) nominee can be added later from member details."
+    },
+    "sameAsPresent": "Same as present address"
   },
   "MemberStatusForm": {
     "title": "Change status",
@@ -171,7 +194,18 @@
       "exitDate": "Exit date",
       "admissionFormNo": "Admission form no.",
       "createdAt": "Added",
-      "updatedAt": "Last updated"
+      "updatedAt": "Last updated",
+      "businessName": "Business name",
+      "businessType": "Type of business",
+      "marketOrRoad": "Market / road name",
+      "presentAddress": "Present address",
+      "permanentAddress": "Permanent address"
+    },
+    "sections": {
+      "member": "Member information",
+      "business": "Business",
+      "address": "Address",
+      "record": "Record"
     }
   }
 }

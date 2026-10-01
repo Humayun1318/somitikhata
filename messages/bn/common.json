@@ -52,7 +52,10 @@
     "createOpening": "প্রারম্ভিক জের সংরক্ষণ হচ্ছে…",
     "createCashAccount": "হিসাব যোগ করা হচ্ছে…",
     "updateCashAccountStatus": "হিসাব হালনাগাদ হচ্ছে…",
-    "createAdmin": "অ্যাডমিন তৈরি হচ্ছে…"
+    "createAdmin": "অ্যাডমিন তৈরি হচ্ছে…",
+    "createNominee": "নমিনি যোগ করা হচ্ছে…",
+    "updateNominee": "নমিনির তথ্য সংরক্ষণ হচ্ছে…",
+    "deleteNominee": "নমিনি মুছে ফেলা হচ্ছে…"
   },
   "Pagination": {
     "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",
@@ -73,5 +76,27 @@
   "SelectMenu": {
     "search": "খুঁজুন…",
     "noResults": "কিছু পাওয়া যায়নি"
+  },
+  "Address": {
+    "optional": "ঐচ্ছিক",
+    "fields": {
+      "village": "গ্রাম / মহল্লা",
+      "postOffice": "ডাকঘর",
+      "union": "ইউনিয়ন / ওয়ার্ড",
+      "upazila": "উপজেলা / থানা",
+      "district": "জেলা"
+    },
+    "placeholders": {
+      "village": "যেমন: চুনতি",
+      "postOffice": "যেমন: চুনতি",
+      "union": "যেমন: চুনতি",
+      "upazila": "যেমন: লোহাগাড়া",
+      "district": "যেমন: চট্টগ্রাম"
+    },
+    "validation": {
+      "tooLong": "অনেক বড় (সর্বোচ্চ ৫০ অক্ষর)।",
+      "upazilaRequired": "উপজেলা / থানা লিখুন।",
+      "districtRequired": "জেলা লিখুন।"
+    }
   }
 }

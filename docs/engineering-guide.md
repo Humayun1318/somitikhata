@@ -208,6 +208,37 @@ or page change would be noise.
 - All login-account queries live under `userKeys.all` (`["users"]`, the admin
   list too), so one invalidation refreshes them after any account action.
 
+## 0.13 Samiti accounts (settings, ledger heads, samiti entries, loans)
+
+- **Settings** (`features/settings`, `/admin/settings`): `GET /settings` returns
+  `{ key, value, effectiveFrom, changedAt, upcoming }` per key. Values are strings:
+  percents `"95"`, money in **paisa** (`"192800"`), the lock as an ISO date.
+  `setting-keys.ts` groups the keys and says each one's format; `setting-values.ts`
+  converts for display and input. Only the super admin edits (a new version from a
+  chosen date). `fiscal_year_start_month` is shown read-only (the backend still
+  uses a fixed July). Any single key: `useSetting(key)`.
+- **Ledger heads** (`features/ledger-heads`, `/admin/collections/heads?kind=`):
+  heads are read with their balance from `GET /transactions/head-balances`
+  (`useHeadBalances`, collections). Income/expense tabs show this fiscal year
+  (`?from=` = `fiscalYearStart()`, `lib/fiscal-year.ts`); the rest all-time.
+  The kind never changes; only asset/liability heads have a section.
+- **Samiti entries** (`/admin/collections/society?head=`): one list for income,
+  expense, asset, liability, transfer rows, head openings and their reversals
+  (`TransactionList variant="society"`, head + account filters). Entry dialogs:
+  `SocietyEntryDialog` (the head list follows the type's `headKinds`) and
+  `TransferDialog` (two linked rows; reversing one reverses both).
+- **Opening balances**: tabs Member / Cash & bank / Head; the go-live check card
+  (`GET /transactions/opening-summary`) shows assets vs liabilities and the difference.
+- **Closed books** (`backdate_lock_until`): the backend refuses entries dated on or
+  before it, and reversing any row of a closed year. Details hides Reverse for
+  those rows and for loan rows, and says why. Errors are mapped in `collection-errors.ts`.
+- **Refunds**: Share / Fixed Amanot refunds are member withdrawals. The record
+  dialog shows the balance and offers "use full balance"; a Share Refund is only
+  offered when the member has a share (and always for the whole share).
+- **Loans** (`features/loans`, `/admin/loans`): list with status / member / loan no.
+  filters; details dialog with the schedule and the next step (approve, reject,
+  disburse, collect next installment). Disburse/collect refresh the collections views.
+
 ------------------------------------------------------------------------
 
 # 1. Purpose

@@ -1,0 +1,72 @@
+{
+  "LedgerHeads": {
+    "title": "Ledger heads",
+    "subtitle": "The samiti's own accounts (খাত): income, expenses, assets, liabilities and funds, each with its balance.",
+    "addHead": "Add head",
+    "kindFilter": "Head kind",
+    "kinds": {
+      "income": "Income",
+      "expense": "Expense",
+      "asset": "Asset",
+      "liability": "Liability",
+      "fund": "Fund"
+    },
+    "sections": {
+      "fixed_asset": "Fixed asset",
+      "current_asset": "Current asset",
+      "current_liability": "Current liability",
+      "non_current_liability": "Non-current liability"
+    },
+    "totalOf": "Total {kind}",
+    "thisYear": "This fiscal year",
+    "thisYearHint": "Since {date} (fiscal year start)",
+    "balance": "Balance",
+    "balanceHint": "Current balance of the open heads",
+    "error": "Couldn't load the heads.",
+    "retry": "Try again",
+    "empty": {
+      "title": "No {kind} heads yet",
+      "body": "A super admin adds the heads.",
+      "bodySuperAdmin": "Add the first one with “Add head”."
+    },
+    "closed": "Closed",
+    "orderValue": "Order {order}",
+    "entries": "Entries",
+    "edit": "Edit",
+    "closeHead": "Close",
+    "reopenHead": "Reopen",
+    "closedToast": "{name} closed. It takes no new entries.",
+    "reopenedToast": "{name} reopened.",
+    "addTitle": "Add ledger head",
+    "editTitle": "Edit ledger head",
+    "addDescription": "Its kind decides which entries can use it. It can't be changed later.",
+    "editDescription": "Rename it or change its place in reports.",
+    "close": "Close",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "add": "Add head",
+    "created": "{name} added.",
+    "updated": "{name} saved.",
+    "fields": {
+      "kind": "Kind",
+      "nameBn": "Name (Bangla)",
+      "nameBnPlaceholder": "e.g. ভাড়া",
+      "nameEn": "Name (English)",
+      "section": "Section",
+      "sectionPlaceholder": "Choose a section",
+      "displayOrder": "Order in reports"
+    },
+    "kindFixed": "The kind can't change after the head is created.",
+    "optional": "optional",
+    "orderHint": "Lower numbers come first in reports. Heads with the same number are sorted by name.",
+    "validation": {
+      "nameBnShort": "At least 2 characters",
+      "nameTooLong": "Up to 60 characters",
+      "kind": "Choose a kind",
+      "order": "A whole number from 0 to 9999",
+      "section": "Choose a section",
+      "nameTaken": "A head with this Bangla name already exists"
+    }
+  }
+}

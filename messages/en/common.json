@@ -57,7 +57,17 @@
     "updateNominee": "Saving nominee…",
     "deleteNominee": "Deleting nominee…",
     "updateAccountStatus": "Updating account status…",
-    "resetPassword": "Resetting password…"
+    "resetPassword": "Resetting password…",
+    "updateSetting": "Saving setting…",
+    "createLedgerHead": "Adding head…",
+    "updateLedgerHead": "Saving head…",
+    "updateLedgerHeadStatus": "Updating head…",
+    "createSocietyEntry": "Saving entry…",
+    "createTransfer": "Saving transfer…",
+    "applyLoan": "Saving application…",
+    "decideLoan": "Saving decision…",
+    "disburseLoan": "Disbursing loan…",
+    "repayInstallment": "Collecting installment…"
   },
   "Pagination": {
     "showing": "Showing {from, number}–{to, number} of {total, number}",

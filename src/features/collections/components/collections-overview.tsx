@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { BookOpenText, CirclePlus, History, Plus, Wallet, type LucideIcon } from "lucide-react";
+import { BookOpenText, CirclePlus, FolderTree, History, Landmark, Plus, Wallet, type LucideIcon } from "lucide-react";
 
 import { ListError } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
@@ -27,6 +27,8 @@ type Shortcut = { href: string; icon: LucideIcon; titleKey: string; bodyKey: str
 const SHORTCUTS: Shortcut[] = [
   { href: "/admin/collections/cash-book", icon: BookOpenText, titleKey: "cashBook", bodyKey: "cashBookBody" },
   { href: "/admin/collections/passbook", icon: Wallet, titleKey: "passbook", bodyKey: "passbookBody" },
+  { href: "/admin/collections/society", icon: Landmark, titleKey: "society", bodyKey: "societyBody" },
+  { href: "/admin/collections/heads", icon: FolderTree, titleKey: "heads", bodyKey: "headsBody" },
   { href: "/admin/collections/opening", icon: History, titleKey: "opening", bodyKey: "openingBody" },
 ];
 
@@ -57,7 +59,7 @@ export function CollectionsOverview() {
   const total = activeBalances.reduce((sum, balance) => sum + (balance?.data?.balance ?? 0), 0);
   const firstActive = accountList.find((account) => account.status === "active");
   const togglingId = updateStatus.isPending ? updateStatus.variables?.id : undefined;
-  const shortcuts = isSuperAdmin ? SHORTCUTS : SHORTCUTS.slice(0, 2);
+  const shortcuts = SHORTCUTS;
 
   const openRecord = () => dialogs.openRecord({ cashAccountId: firstActive?._id });
   const openAddAccount = () => {

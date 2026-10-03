@@ -9,7 +9,7 @@ import { MemberStatusBadge } from "@/features/members/components/member-status-b
 import type { Member } from "@/features/members/types";
 
 import { balanceOf } from "../transaction-effects";
-import type { BucketBalance } from "../types";
+import type { Bucket, BucketBalance } from "../types";
 
 type MemberPreviewProps = {
   isLooking: boolean;
@@ -45,6 +45,8 @@ export function MemberPreview({ isLooking, isNotFound, member, balances, require
   if (!member) return null;
 
   const isActive = member.status === "active";
+  // Fixed Amanot only when the member has some (most refunds are Share or Amanot)
+  const buckets: Bucket[] = balanceOf(balances, "stayi") !== 0 ? ["share", "amanot", "stayi"] : ["share", "amanot"];
 
   return (
     <div className="mt-2 space-y-2 rounded-xl border border-app-border bg-app-surface-muted/40 p-3">
@@ -58,7 +60,7 @@ export function MemberPreview({ isLooking, isNotFound, member, balances, require
       {requireActive && !isActive && <p className="text-xs text-red-600">{t("notActive")}</p>}
       {isActive && balances && (
         <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-app-text-muted">
-          {(["share", "amanot"] as const).map((bucket) => (
+          {buckets.map((bucket) => (
             <span key={bucket}>
               {t("balance", { bucket: tBucket(bucket) })}:{" "}
               <Money paisa={balanceOf(balances, bucket)} className="font-semibold text-app-text" />

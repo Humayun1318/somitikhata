@@ -1,5 +1,5 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { SettingsPage } from "@/features/settings/components/settings-page";
 
 export default function AdminSettingsPage() {
-  return <PageHeader titleKey="settings" />;
+  return <SettingsPage />;
 }

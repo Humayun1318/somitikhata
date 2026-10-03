@@ -57,7 +57,17 @@
     "updateNominee": "নমিনির তথ্য সংরক্ষণ হচ্ছে…",
     "deleteNominee": "নমিনি মুছে ফেলা হচ্ছে…",
     "updateAccountStatus": "অ্যাকাউন্টের অবস্থা হালনাগাদ হচ্ছে…",
-    "resetPassword": "পাসওয়ার্ড রিসেট হচ্ছে…"
+    "resetPassword": "পাসওয়ার্ড রিসেট হচ্ছে…",
+    "updateSetting": "সেটিং সংরক্ষণ হচ্ছে…",
+    "createLedgerHead": "খাত যোগ হচ্ছে…",
+    "updateLedgerHead": "খাত সংরক্ষণ হচ্ছে…",
+    "updateLedgerHeadStatus": "খাত হালনাগাদ হচ্ছে…",
+    "createSocietyEntry": "এন্ট্রি সংরক্ষণ হচ্ছে…",
+    "createTransfer": "ট্রান্সফার সংরক্ষণ হচ্ছে…",
+    "applyLoan": "আবেদন সংরক্ষণ হচ্ছে…",
+    "decideLoan": "সিদ্ধান্ত সংরক্ষণ হচ্ছে…",
+    "disburseLoan": "ঋণ প্রদান হচ্ছে…",
+    "repayInstallment": "কিস্তি আদায় হচ্ছে…"
   },
   "Pagination": {
     "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",

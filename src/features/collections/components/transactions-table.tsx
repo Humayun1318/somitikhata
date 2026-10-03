@@ -14,14 +14,18 @@ import {
   CASH_BOOK_COLUMNS,
   DateCell,
   EffectCell,
+  HeadCell,
   LEDGER_COLUMNS,
   MemberCell,
   SignedCashCell,
+  SOCIETY_COLUMNS,
   TransactionNoCell,
   TypeCell,
 } from "./transaction-cells";
 
-export type TransactionListVariant = "cashBook" | "ledger";
+export type TransactionListVariant = "cashBook" | "ledger" | "society";
+
+const COLUMNS = { cashBook: CASH_BOOK_COLUMNS, ledger: LEDGER_COLUMNS, society: SOCIETY_COLUMNS };
 
 type TransactionsTableProps = {
   variant: TransactionListVariant;
@@ -44,8 +48,10 @@ export function TransactionsTable({
   onView,
 }: TransactionsTableProps) {
   const t = useTranslations("Collections");
-  const isCashBook = variant === "cashBook";
-  const columns = (isCashBook ? CASH_BOOK_COLUMNS : LEDGER_COLUMNS).map((column) => {
+  // Cash book and samiti entries show cash In / Out; the passbook the member effect.
+  const isCashBook = variant !== "ledger";
+  const isSociety = variant === "society";
+  const columns = COLUMNS[variant].map((column) => {
     const label = t(`columns.${column.headerKey}`);
     return { ...column, label, sortLabel: t("sortBy", { column: label }) };
   });
@@ -117,7 +123,8 @@ export function TransactionsTable({
                 <TransactionNoCell transaction={transaction} byCode={byCode} onView={onView} />
               </span>
               <span className="mt-2 block text-sm">
-                {isCashBook && <MemberCell transaction={transaction} byCode={byCode} onView={onView} />}
+                {isSociety && <HeadCell transaction={transaction} byCode={byCode} onView={onView} />}
+                {isCashBook && !isSociety && <MemberCell transaction={transaction} byCode={byCode} onView={onView} />}
                 {!isCashBook && <AccountCell transaction={transaction} byCode={byCode} onView={onView} />}
               </span>
             </button>

@@ -8,7 +8,7 @@ import { Money } from "@/components/shared/money";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 import { cn } from "@/lib/cn";
 
-import { cashEffectOf, isReversalEntry, memberEffectsOf, typeName } from "../transaction-effects";
+import { cashEffectOf, isReversalEntry, memberEffectsOf, typeName, typeOf } from "../transaction-effects";
 import type { Transaction, TransactionType } from "../types";
 
 export type CellProps = {
@@ -60,7 +60,23 @@ export function TypeCell({ transaction, byCode }: CellProps) {
   );
 }
 
-export function MemberCell({ transaction }: CellProps) {
+// Samiti entry: which ledger head it posts to.
+export function HeadCell({ transaction }: CellProps) {
+  const t = useTranslations("LedgerHeads.kinds");
+  const locale = useLocale();
+  if (!transaction.head) return <span className="text-app-text-muted">—</span>;
+  return (
+    <div className="min-w-0">
+      <p className="truncate text-app-text">{typeName(transaction.head, locale)}</p>
+      <p className="text-xs text-app-text-muted">{t(transaction.head.kind)}</p>
+    </div>
+  );
+}
+
+// Cash book "who" column: the member, or for a samiti entry its head.
+export function MemberCell(props: CellProps) {
+  const { transaction } = props;
+  if (!transaction.member && transaction.head) return <HeadCell {...props} />;
   if (!transaction.member) return <span className="text-app-text-muted">—</span>;
   return (
     <div className="min-w-0">
@@ -100,11 +116,27 @@ export function SignedCashCell({ transaction, byCode }: CellProps) {
   return <Money paisa={paisa} signed={effect === "in"} className={cn("font-semibold", color)} />;
 }
 
-// Passbook: which member balance moved, and how much (+ / −).
+// Passbook: which member balance moved, and how much (+ / −). For a samiti
+// entry: the ledger head and which way it moved.
 export function EffectCell({ transaction, byCode }: CellProps) {
   const t = useTranslations("Collections.buckets");
+  const locale = useLocale();
   const effects = memberEffectsOf(transaction, byCode);
+  const headEffect = typeOf(transaction, byCode)?.headEffect;
+  const headPaisa = headEffect === "minus" ? -transaction.amount : transaction.amount;
 
+  if (effects.length === 0 && transaction.head && headEffect) {
+    return (
+      <span className="flex items-center gap-2">
+        <span className="text-xs text-app-text-muted">{typeName(transaction.head, locale)}</span>
+        <Money
+          paisa={headPaisa}
+          signed
+          className={cn("font-semibold", headEffect === "plus" ? "text-emerald-700" : "text-red-700")}
+        />
+      </span>
+    );
+  }
   if (effects.length === 0) return <Money paisa={transaction.amount} className="text-app-text" />;
 
   return (
@@ -151,6 +183,19 @@ export const CASH_BOOK_COLUMNS: TransactionColumn[] = [
   number,
   type,
   { id: "member", headerKey: "member", Cell: MemberCell },
+  voucher,
+  { id: "in", headerKey: "in", sortField: "amount", className: "text-right", Cell: InCell },
+  { id: "out", headerKey: "out", className: "text-right", Cell: OutCell },
+  view,
+];
+
+// Samiti entries: the head instead of a member, with the account it moved through.
+export const SOCIETY_COLUMNS: TransactionColumn[] = [
+  date,
+  number,
+  type,
+  { id: "head", headerKey: "head", Cell: HeadCell },
+  { id: "account", headerKey: "account", className: "hidden lg:table-cell", Cell: AccountCell },
   voucher,
   { id: "in", headerKey: "in", sortField: "amount", className: "text-right", Cell: InCell },
   { id: "out", headerKey: "out", className: "text-right", Cell: OutCell },

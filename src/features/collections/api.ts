@@ -10,11 +10,17 @@ import type {
   CashAccountStatus,
   CreateCashAccountPayload,
   CreateOpeningPayload,
+  CreateSocietyEntryPayload,
   CreateTransactionPayload,
+  CreateTransferPayload,
+  HeadBalance,
+  HeadBalanceRange,
+  OpeningSummary,
   ReversePayload,
   Transaction,
   TransactionListParams,
   TransactionType,
+  TransferResult,
 } from "./types";
 
 // The backend runs `search` as a regular expression; search literal text.
@@ -35,8 +41,13 @@ function toQueryParams(params: TransactionListParams) {
     ...(params.minAmount && { minAmount: takaToPaisa(params.minAmount) }),
     ...(params.maxAmount && { maxAmount: takaToPaisa(params.maxAmount) }),
     ...(params.sort && { sort: params.sort }),
+    // Samiti entries list only
+    ...(params.head && { head: params.head }),
+    ...(params.cashAccount && { cashAccount: params.cashAccount }),
   };
 }
+
+type Paginated = ApiEnvelope<PaginatedResult<Transaction>>;
 
 const data = <T>(response: { data: ApiEnvelope<T> }) => response.data.data;
 
@@ -79,14 +90,21 @@ export const transactionApi = {
       ),
     ),
 
+  // Samiti entries (income, expense, asset, liability, transfers, head openings).
+  society: async (params: TransactionListParams) =>
+    data(await httpKit.get<Paginated>("/transactions/society", { params: toQueryParams(params) })),
+
   // The entry that reversed this one, if any. The backend has no "reversed" flag,
-  // but its list endpoints can filter by reversalOf, in the same ledger/cash book.
+  // but its list endpoints can filter by reversalOf: the member's ledger, the
+  // account's cash book, or (a head opening, which has neither) the samiti list.
   findReversal: async (transaction: Transaction): Promise<Transaction | null> => {
     const params = { reversalOf: transaction._id, limit: 1 };
     const url = transaction.member
       ? `/transactions/ledger/${encodeURIComponent(transaction.member.memberNo)}`
-      : `/transactions/cash-book/${transaction.cashAccount?._id}`;
-    const result = data(await httpKit.get<ApiEnvelope<PaginatedResult<Transaction>>>(url, { params }));
+      : transaction.cashAccount
+        ? `/transactions/cash-book/${transaction.cashAccount._id}`
+        : "/transactions/society";
+    const result = data(await httpKit.get<Paginated>(url, { params }));
     return result.data[0] ?? null;
   },
 
@@ -101,10 +119,23 @@ export const transactionApi = {
 
   createOpening: async (payload: CreateOpeningPayload) =>
     data(await httpKit.post<ApiEnvelope<Transaction>>("/transactions/opening", payload)),
-};
 
-export const settingApi = {
-  // GET /settings/:key -> { key, value }
-  get: async (key: string) =>
-    data(await httpKit.get<ApiEnvelope<{ key: string; value: string | number | null }>>(`/settings/${key}`)),
+  createSociety: async (payload: CreateSocietyEntryPayload) =>
+    data(await httpKit.post<ApiEnvelope<Transaction>>("/transactions/society", payload)),
+
+  createTransfer: async (payload: CreateTransferPayload) =>
+    data(await httpKit.post<ApiEnvelope<TransferResult>>("/transactions/transfer", payload)),
+
+  // Every ledger head with its balance; a range limits the rows (e.g. this fiscal year).
+  headBalances: async (range: HeadBalanceRange = {}) =>
+    data(
+      await httpKit.get<ApiEnvelope<HeadBalance[]>>("/transactions/head-balances", {
+        params: {
+          ...(range.from && { from: range.from }),
+          ...(range.asOf && { asOf: range.asOf }),
+        },
+      }),
+    ),
+
+  openingSummary: async () => data(await httpKit.get<ApiEnvelope<OpeningSummary>>("/transactions/opening-summary")),
 };

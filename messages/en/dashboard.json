@@ -21,7 +21,9 @@
     "passbook": "Member Passbook",
     "openingBalances": "Opening Balances",
     "membership": "Membership",
-    "admins": "Admins"
+    "admins": "Admins",
+    "societyEntries": "Samiti Entries",
+    "ledgerHeads": "Ledger Heads"
   },
   "DashboardHeader": {
     "menuLabel": "Account menu",

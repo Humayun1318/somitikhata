@@ -11,9 +11,12 @@ import type {
   CashAccountStatus,
   CreateCashAccountPayload,
   CreateOpeningPayload,
+  CreateSocietyEntryPayload,
   CreateTransactionPayload,
+  CreateTransferPayload,
   ReversePayload,
   Transaction,
+  TransferResult,
 } from "../types";
 
 // Any money action can change balances, cash books and passbooks: refetch them all.
@@ -48,6 +51,26 @@ export function useCreateOpening() {
   return useMutation<Transaction, ApiError, CreateOpeningPayload>({
     meta: { loadingMessage: "createOpening" },
     mutationFn: transactionApi.createOpening,
+    onSuccess: refresh,
+  });
+}
+
+export function useCreateSocietyEntry() {
+  const refresh = useRefreshCollections();
+
+  return useMutation<Transaction, ApiError, CreateSocietyEntryPayload>({
+    meta: { loadingMessage: "createSocietyEntry" },
+    mutationFn: transactionApi.createSociety,
+    onSuccess: refresh,
+  });
+}
+
+export function useCreateTransfer() {
+  const refresh = useRefreshCollections();
+
+  return useMutation<TransferResult, ApiError, CreateTransferPayload>({
+    meta: { loadingMessage: "createTransfer" },
+    mutationFn: transactionApi.createTransfer,
     onSuccess: refresh,
   });
 }

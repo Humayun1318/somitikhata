@@ -30,7 +30,11 @@
       "passbook": "Member Passbook",
       "passbookBody": "A member's balances and full transaction history.",
       "opening": "Opening Balances",
-      "openingBody": "One-time entries carried over from the old books."
+      "openingBody": "Balances carried over from the old books, and the go-live check.",
+      "society": "Samiti entries",
+      "societyBody": "Income, expenses, assets, liabilities and transfers.",
+      "heads": "Ledger heads",
+      "headsBody": "Each income, expense, asset, liability and fund head with its balance."
     },
     "buckets": {
       "share": "Share",
@@ -49,7 +53,8 @@
       "in": "In (৳)",
       "out": "Out (৳)",
       "effect": "Effect",
-      "actions": "Actions"
+      "actions": "Actions",
+      "head": "Head"
     },
     "sortBy": "Sort by {column}",
     "viewDetails": "Details",
@@ -67,7 +72,11 @@
       "minAmount": "Min amount (৳)",
       "maxAmount": "Max amount (৳)",
       "sort": "Sort",
-      "types": "Types"
+      "types": "Types",
+      "allHeads": "All heads",
+      "allAccounts": "All accounts",
+      "head": "Ledger head",
+      "account": "Account"
     },
     "sort": {
       "default": "Newest date first",
@@ -85,7 +94,14 @@
       "filteredBody": "Try another search or clear the filters."
     },
     "listError": "Couldn't load the transactions.",
-    "typesError": "Couldn't load the transaction types. Some labels may be missing."
+    "typesError": "Couldn't load the transaction types. Some labels may be missing.",
+    "headKinds": {
+      "income": "Income",
+      "expense": "Expense",
+      "asset": "Asset",
+      "liability": "Liability",
+      "fund": "Fund"
+    }
   },
   "CashBook": {
     "title": "Cash Book",
@@ -133,7 +149,7 @@
     },
     "groups": {
       "deposit": "Deposit",
-      "withdrawal": "Withdrawal"
+      "withdrawal": "Withdrawal / refund"
     },
     "member": {
       "looking": "Finding member…",
@@ -157,7 +173,11 @@
       "dateFuture": "Date can't be in the future",
       "voucherTooLong": "Up to 30 characters",
       "descriptionTooLong": "Up to 200 characters"
-    }
+    },
+    "shareRefundInfo": "{bucket} balance: {balance}. The share is refunded in full.",
+    "refundInfo": "{bucket} balance: {balance}. Up to the full balance can be refunded.",
+    "useFullBalance": "Use full balance",
+    "noShare": "{type} (no share to refund)"
   },
   "TransactionDetails": {
     "title": "Transaction details",
@@ -172,7 +192,8 @@
       "description": "Description",
       "recordedBy": "Recorded by",
       "recordedAt": "Recorded at",
-      "effect": "Effect"
+      "effect": "Effect",
+      "head": "Ledger head"
     },
     "reversalOf": "This entry reverses {transactionNo}.",
     "reversedBy": "Reversed by {transactionNo} on {date}.",
@@ -180,7 +201,11 @@
     "notReversible": "This type can't be reversed automatically.",
     "cashIn": "Cash in",
     "cashOut": "Cash out",
-    "noCash": "No cash movement"
+    "noCash": "No cash movement",
+    "linked": "Part of a transfer with {transactionNo}.",
+    "linkedWithAccount": "Part of a transfer with {transactionNo} ({account}). Reversing one reverses both.",
+    "loanNotReversible": "Loan entries are corrected from the loan, not reversed here.",
+    "closedYear": "The books are closed up to {date}, so this entry can't be reversed. Record a correction in the current year."
   },
   "ReverseForm": {
     "title": "Reverse transaction",
@@ -203,7 +228,7 @@
     "rules": {
       "title": "Before you start",
       "once": "Each member (per type) or account gets one opening entry. A second one is refused.",
-      "fix": "To fix a wrong entry, reverse it from the passbook or cash book, then record it again.",
+      "fix": "To fix a wrong entry, reverse it (members: passbook; accounts: cash book; heads: samiti entries), then record it again.",
       "date": "Use the day the old books were closed."
     },
     "formTitle": "New opening entry",
@@ -225,7 +250,33 @@
     "validation": {
       "type": "Choose an opening type",
       "memberNo": "Enter the member number",
-      "account": "Choose an account"
+      "account": "Choose an account",
+      "head": "Choose a ledger head"
+    },
+    "tabsLabel": "Opening for",
+    "tabs": {
+      "member": "Members",
+      "account": "Cash & bank",
+      "head": "Ledger heads"
+    },
+    "formTitles": {
+      "member": "Member opening balance",
+      "account": "Cash / bank opening balance",
+      "head": "Ledger head opening balance"
+    },
+    "formHints": {
+      "member": "Share, Amanot or Fixed Amanot carried over, one entry per member and type.",
+      "account": "Cash in hand or a bank balance, one entry per account.",
+      "head": "Land, buildings, FDR, advance rent, funds… one entry per head. Income and expense heads start from zero."
+    },
+    "head": "Ledger head",
+    "headPlaceholder": "Choose a head",
+    "headsLoading": "Loading heads…",
+    "noHeads": "No open asset, liability or fund head yet. Add one on the Ledger heads page.",
+    "headKinds": {
+      "asset": "Assets",
+      "liability": "Liabilities",
+      "fund": "Funds"
     }
   },
   "CashAccountForm": {
@@ -263,6 +314,114 @@
     "reversalOfReversal": "A reversal entry can't be reversed.",
     "notReversible": "This transaction type can't be reversed automatically.",
     "openingExists": "An opening entry already exists ({transactionNo}). Reverse it first to correct it.",
-    "notFound": "Transaction not found."
+    "notFound": "Transaction not found.",
+    "closedYearReversal": "The books are closed up to {date}. {transactionNo} belongs to the closed year and can't be reversed. Record a correction in the current year.",
+    "booksClosed": "The books are closed up to {date}. Choose a later date.",
+    "shareRefundFull": "The share is refunded in full only ({balance}).",
+    "refundOverBalance": "The refund is more than the balance. Balance: {balance}, requested: {requested}.",
+    "noShareToRefund": "{memberNo} has no share to refund.",
+    "shareRelock": "This member already has a new Share Deposit. Reverse that one first.",
+    "reversalNegative": "Can't reverse {transactionNo}: the member's balance ({balance}) is less than this entry ({amount}).",
+    "loanNotReversible": "Loan entries can't be reversed here.",
+    "linkedReversed": "The other half of this transfer ({transactionNo}) is already reversed.",
+    "headBalance": "More than the head's balance. Balance: {balance}, requested: {requested}.",
+    "wrongHeadKind": "This head doesn't fit this kind of entry.",
+    "headClosed": "This ledger head is closed.",
+    "headNotFound": "This ledger head no longer exists.",
+    "sameAccount": "From and to account must be different.",
+    "invalidSocietyType": "This type can't be used for a samiti entry."
+  },
+  "OpeningSummary": {
+    "title": "Go-live check",
+    "subtitle": "Every opening entered so far, added up like the balance sheet. When all are in, assets equal liabilities.",
+    "error": "Couldn't load the opening totals.",
+    "retry": "Try again",
+    "memberCount": "{number} members",
+    "cash": "Cash and bank",
+    "assetHeads": "Asset heads",
+    "memberLoans": "Member loans outstanding",
+    "liabilityHeads": "Liability heads",
+    "fundHeads": "Fund heads",
+    "assets": "Assets",
+    "liabilities": "Liabilities",
+    "total": "Total",
+    "difference": "Difference",
+    "balanced": "Assets and liabilities match.",
+    "notBalanced": "Some opening balances are still missing (or one is wrong)."
+  },
+  "Society": {
+    "title": "Samiti entries",
+    "subtitle": "Money that isn't a member's: income, expenses, assets and receivables, liabilities, and transfers between the samiti's accounts.",
+    "actions": {
+      "income": "Income",
+      "expense": "Expense",
+      "asset": "Asset / receivable",
+      "liability": "Liability",
+      "transfer": "Transfer"
+    },
+    "headFilterTitle": "Showing one head",
+    "headBalance": "Balance (all entries)",
+    "allHeads": "All heads",
+    "headsHint": "Heads and their balances are on the",
+    "headsLink": "Ledger heads page"
+  },
+  "SocietyForm": {
+    "titles": {
+      "income": "Record income",
+      "expense": "Record expense",
+      "asset": "Asset or receivable",
+      "liability": "Liability"
+    },
+    "descriptions": {
+      "income": "Money received: rent, fees, bank profit… It adds to the head and to the account.",
+      "expense": "Money paid out: salary, electricity, audit fee… It adds to the head and leaves the account.",
+      "asset": "Money that turns into something the samiti owns or is owed (land, FDR, হাওলাদ), or comes back from it.",
+      "liability": "Money the samiti must give back later (advance rent), or paying it back."
+    },
+    "submit": "Save entry",
+    "noTypes": "No active type for this entry.",
+    "direction": "What happened",
+    "directions": {
+      "ASSET_INCREASE": "Money paid out (asset up)",
+      "ASSET_DECREASE": "Money back (asset down)",
+      "LIABILITY_RECEIVE": "Money received (liability up)",
+      "LIABILITY_PAY": "Money paid back (liability down)",
+      "SOCIETY_INCOME": "Income",
+      "SOCIETY_EXPENSE": "Expense"
+    },
+    "head": "Ledger head",
+    "headsLoading": "Loading heads…",
+    "headPlaceholder": "Choose a head",
+    "noHeads": {
+      "income": "No open income head yet. Add one on the Ledger heads page.",
+      "expense": "No open expense head yet. Add one on the Ledger heads page.",
+      "asset": "No open asset head yet. Add one on the Ledger heads page.",
+      "liability": "No open liability head yet. Add one on the Ledger heads page."
+    },
+    "headBalance": "Head balance now: {balance}. This entry can't take more.",
+    "summary": "{account} {cash} · {head} {headAmount}",
+    "success": "{transactionNo} saved.",
+    "assetNote": "Asset entries don't count as income or expense.",
+    "validation": {
+      "type": "Choose what happened",
+      "head": "Choose a ledger head"
+    }
+  },
+  "TransferForm": {
+    "title": "Transfer between accounts",
+    "description": "Move money between two of the samiti's accounts, e.g. cash to bank.",
+    "submit": "Save transfer",
+    "needTwoAccounts": "A transfer needs at least two open accounts.",
+    "from": "From account",
+    "to": "To account",
+    "fromBalance": "Balance now: {balance}",
+    "summary": "{amount} · {from} → {to}",
+    "success": "Transfer saved: {outNo} and {inNo}.",
+    "note": "Saved as two linked entries (out and in). The samiti's total stays the same; reversing one reverses both.",
+    "validation": {
+      "from": "Choose the account the money leaves",
+      "to": "Choose the account the money goes to",
+      "same": "Choose a different account"
+    }
   }
 }

@@ -1,0 +1,72 @@
+{
+  "LedgerHeads": {
+    "title": "খাত",
+    "subtitle": "সমিতির নিজস্ব হিসাব: আয়, ব্যয়, সম্পদ, দায় আর তহবিল, প্রতিটির জেরসহ।",
+    "addHead": "খাত যোগ করুন",
+    "kindFilter": "খাতের ধরন",
+    "kinds": {
+      "income": "আয়",
+      "expense": "ব্যয়",
+      "asset": "সম্পদ",
+      "liability": "দায়",
+      "fund": "তহবিল"
+    },
+    "sections": {
+      "fixed_asset": "স্থায়ী সম্পদ",
+      "current_asset": "চলতি সম্পদ",
+      "current_liability": "চলতি দায়",
+      "non_current_liability": "অচলতি দায়"
+    },
+    "totalOf": "মোট {kind}",
+    "thisYear": "এই অর্থবছর",
+    "thisYearHint": "{date} থেকে (অর্থবছরের শুরু)",
+    "balance": "জের",
+    "balanceHint": "চালু খাতগুলোর বর্তমান জের",
+    "error": "খাতগুলো লোড করা যায়নি।",
+    "retry": "আবার চেষ্টা করুন",
+    "empty": {
+      "title": "এখনো কোনো {kind} খাত নেই",
+      "body": "সুপার অ্যাডমিন খাত যোগ করেন।",
+      "bodySuperAdmin": "“খাত যোগ করুন” দিয়ে প্রথমটি যোগ করুন।"
+    },
+    "closed": "বন্ধ",
+    "orderValue": "ক্রম {order}",
+    "entries": "লেনদেন",
+    "edit": "সম্পাদনা",
+    "closeHead": "বন্ধ করুন",
+    "reopenHead": "আবার চালু করুন",
+    "closedToast": "{name} বন্ধ হয়েছে। এতে আর নতুন এন্ট্রি হবে না।",
+    "reopenedToast": "{name} আবার চালু হয়েছে।",
+    "addTitle": "খাত যোগ করুন",
+    "editTitle": "খাত সম্পাদনা",
+    "addDescription": "ধরন ঠিক করে কোন এন্ট্রি এই খাতে যাবে। পরে বদলানো যাবে না।",
+    "editDescription": "নাম বা রিপোর্টে এর ক্রম বদলান।",
+    "close": "বন্ধ করুন",
+    "cancel": "বাতিল",
+    "saving": "সংরক্ষণ হচ্ছে…",
+    "saveChanges": "পরিবর্তন সংরক্ষণ",
+    "add": "খাত যোগ করুন",
+    "created": "{name} যোগ হয়েছে।",
+    "updated": "{name} সংরক্ষণ হয়েছে।",
+    "fields": {
+      "kind": "ধরন",
+      "nameBn": "নাম (বাংলা)",
+      "nameBnPlaceholder": "যেমন ভাড়া",
+      "nameEn": "নাম (ইংরেজি)",
+      "section": "অংশ",
+      "sectionPlaceholder": "অংশ বেছে নিন",
+      "displayOrder": "রিপোর্টে ক্রম"
+    },
+    "kindFixed": "খাত তৈরির পর ধরন বদলানো যায় না।",
+    "optional": "ঐচ্ছিক",
+    "orderHint": "ছোট সংখ্যা রিপোর্টে আগে আসে। একই সংখ্যা হলে নাম অনুযায়ী সাজানো হয়।",
+    "validation": {
+      "nameBnShort": "কমপক্ষে ২ অক্ষর",
+      "nameTooLong": "সর্বোচ্চ ৬০ অক্ষর",
+      "kind": "ধরন বেছে নিন",
+      "order": "০ থেকে ৯৯৯৯-এর একটি পূর্ণ সংখ্যা",
+      "section": "অংশ বেছে নিন",
+      "nameTaken": "এই বাংলা নামে একটি খাত আগেই আছে"
+    }
+  }
+}

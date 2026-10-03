@@ -21,7 +21,9 @@
     "passbook": "সদস্য পাসবই",
     "openingBalances": "প্রারম্ভিক জের",
     "membership": "সদস্যপদ",
-    "admins": "অ্যাডমিন"
+    "admins": "অ্যাডমিন",
+    "societyEntries": "সমিতির লেনদেন",
+    "ledgerHeads": "খাত"
   },
   "DashboardHeader": {
     "menuLabel": "অ্যাকাউন্ট মেনু",

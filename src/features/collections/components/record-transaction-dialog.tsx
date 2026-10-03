@@ -20,11 +20,12 @@ import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getCollectionError } from "../collection-errors";
 import { useCreateTransaction } from "../hooks/use-collection-mutations";
+import { useSetting } from "@/features/settings/hooks/use-settings";
+
 import {
   useCashAccounts,
   useMemberBalances,
   useMemberLookup,
-  useSetting,
   type TransactionTypeCatalog,
 } from "../hooks/use-collection-queries";
 import type { RecordDefaults } from "../hooks/use-transaction-dialogs";
@@ -46,8 +47,10 @@ type RecordTransactionDialogProps = {
   defaults: RecordDefaults;
 };
 
-// Backend SYSTEM_TYPE_CODES.SHARE_DEPOSIT: allowed once per member.
+// Backend SYSTEM_TYPE_CODES. One share value per member: a Share Deposit only
+// without a share, a Share Refund only with one (and always in full).
 const SHARE_DEPOSIT_CODE = "SHARE_DEPOSIT";
+const SHARE_REFUND_CODE = "SHARE_REFUND";
 
 // POST /transactions/create: one member deposit or withdrawal.
 // The parent passes a new `key` each time it opens, so the form starts fresh.
@@ -65,6 +68,7 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
     register,
     handleSubmit,
     setError,
+    setValue,
     control,
     formState: { errors, isSubmitting },
   } = useForm<RecordTransactionInput>({
@@ -112,15 +116,22 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
     : [];
 
   const numberFormat = new Intl.NumberFormat(locale === "bn" ? "bn-BD" : "en-IN");
-  // Information only: the server applies the exact limit when saving.
-  const withdrawalNotes = withdrawnBuckets.map((bucket) => ({
-    bucket,
-    text: t("withdrawalInfo", {
-      bucket: tBucket(bucket),
-      balance: balances.data ? formatPaisa(balanceOf(balances.data, bucket), locale) : "…",
-      percent: limit.data?.value ? numberFormat.format(Number(limit.data.value)) : "…",
-    }),
-  }));
+  // Information only: the server applies the exact rule when saving.
+  // Amanot: the % limit. Share and Fixed Amanot are refunds: up to the
+  // balance, Share only in full, so those notes offer to fill the balance.
+  const withdrawalNotes = withdrawnBuckets.map((bucket) => {
+    const balance = balances.data ? balanceOf(balances.data, bucket) : undefined;
+    const values = { bucket: tBucket(bucket), balance: balance === undefined ? "…" : formatPaisa(balance, locale) };
+    const text =
+      bucket === "amanot"
+        ? t("withdrawalInfo", {
+            ...values,
+            percent: limit.data?.value ? numberFormat.format(Number(limit.data.value)) : "…",
+          })
+        : t(bucket === "share" ? "shareRefundInfo" : "refundInfo", values);
+    const fillAmount = bucket !== "amanot" && balance !== undefined && balance > 0 ? String(balance / 100) : "";
+    return { bucket, text, fillAmount };
+  });
 
   const isLooking = !!lookupNo && (lookup.isPending || lookupNo !== memberNoInput.trim());
   // 404: no such member. 400: not a valid member number at all.
@@ -165,6 +176,8 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
     "aria-describedby": errors[name] ? `record-${name}-error` : undefined,
   });
   const isShareTaken = (code: string) => code === SHARE_DEPOSIT_CODE && !!member?.hasShareDeposit;
+  const isNoShare = (code: string) => code === SHARE_REFUND_CODE && !!member && !member.hasShareDeposit;
+  const fillAmount = (value: string) => setValue("amount", value, { shouldValidate: true, shouldDirty: true });
   const typeOptions = [
     ...depositTypes.map((type) => ({
       value: type.code,
@@ -172,7 +185,12 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
       group: t("groups.deposit"),
       disabled: isShareTaken(type.code),
     })),
-    ...withdrawalTypes.map((type) => ({ value: type.code, label: typeName(type, locale), group: t("groups.withdrawal") })),
+    ...withdrawalTypes.map((type) => ({
+      value: type.code,
+      label: isNoShare(type.code) ? t("noShare", { type: typeName(type, locale) }) : typeName(type, locale),
+      group: t("groups.withdrawal"),
+      disabled: isNoShare(type.code),
+    })),
   ];
   const accountOptions = activeAccounts.map((account) => ({ value: account._id, label: account.name }));
 
@@ -279,11 +297,21 @@ export function RecordTransactionDialog({ open, onClose, catalog, defaults }: Re
         </FormField>
       </div>
 
-      {withdrawalNotes.map(({ bucket, text }) => (
-        <p key={bucket} className="flex items-start gap-2 rounded-xl bg-sky-50 p-3 text-xs text-sky-900">
+      {withdrawalNotes.map(({ bucket, text, fillAmount: amountText }) => (
+        <div key={bucket} className="flex flex-wrap items-start gap-2 rounded-xl bg-sky-50 p-3 text-xs text-sky-900">
           <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          {text}
-        </p>
+          <span className="min-w-0 flex-1">{text}</span>
+          {amountText && (
+            <button
+              type="button"
+              onClick={() => fillAmount(amountText)}
+              disabled={isBusy}
+              className="font-semibold text-sky-800 underline underline-offset-2 hover:text-sky-950 disabled:opacity-50"
+            >
+              {t("useFullBalance")}
+            </button>
+          )}
+        </div>
       ))}
 
       <div className="grid gap-4 sm:grid-cols-[1fr_2fr]">

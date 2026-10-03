@@ -1,0 +1,108 @@
+{
+  "Settings": {
+    "title": "Settings",
+    "subtitle": "The rules the app calculates with. A change applies from the date you choose; earlier entries keep the old value.",
+    "readOnlyNote": "Only a super admin can change settings.",
+    "error": "Couldn't load the settings.",
+    "retry": "Try again",
+    "fromStart": "Since the start",
+    "since": "Since {date}",
+    "upcoming": "{value} from {date}",
+    "change": "Change",
+    "editTitle": "Change: {name}",
+    "editDescription": "Saved as a new version. Nothing already recorded is changed.",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "{name} updated.",
+    "currentValue": "Current value",
+    "newValue": "New value",
+    "effectiveFrom": "Applies from",
+    "versionNote": "From this date the app uses the new value. Anything dated before it keeps the old one.",
+    "lockWarning": "Closing the books blocks every new entry and every reversal dated on or before this day, for everyone. Choose the last day of the closed year.",
+    "groups": {
+      "limits": {
+        "title": "Withdrawal and loan limits",
+        "body": "Checked by the server on every withdrawal and loan application."
+      },
+      "yearEnd": {
+        "title": "Year end: service charge and dividend",
+        "body": "Used by the year-end runs (service charge and dividend)."
+      },
+      "funds": {
+        "title": "Net profit to funds",
+        "body": "What is left after the funds goes to undistributed profit."
+      },
+      "books": {
+        "title": "Fiscal year and closed books",
+        "body": "Which days can still take entries."
+      }
+    },
+    "keys": {
+      "withdrawal_limit_percent": {
+        "label": "Amanot withdrawal limit",
+        "help": "The most of a member's Amanot balance that can be withdrawn at once.",
+        "unset": "Not set"
+      },
+      "loan_limit_percent": {
+        "label": "Loan limit",
+        "help": "A member can borrow up to this part of their Amanot balance.",
+        "unset": "Not set"
+      },
+      "service_charge_amount": {
+        "label": "Service charge",
+        "help": "Taken from every member's Amanot at the end of the year.",
+        "unset": "Not set"
+      },
+      "profit_cap_threshold": {
+        "label": "Small-saver threshold",
+        "help": "A member who deposited less than this during the year gets at most the small-saver dividend.",
+        "unset": "Not set"
+      },
+      "profit_cap_amount": {
+        "label": "Small-saver dividend limit",
+        "help": "The most a member below the threshold gets as dividend.",
+        "unset": "Not set"
+      },
+      "profit_max_amount": {
+        "label": "Maximum dividend",
+        "help": "The most any member gets as dividend; what is above it goes to the others.",
+        "unset": "Not set"
+      },
+      "reserve_fund_percent": {
+        "label": "Reserve fund",
+        "help": "Part of the net profit put into the reserve fund.",
+        "unset": "Not set"
+      },
+      "coop_dev_fund_percent": {
+        "label": "Cooperative development fund",
+        "help": "Part of the net profit put into the cooperative development fund.",
+        "unset": "Not set"
+      },
+      "welfare_fund_percent": {
+        "label": "Welfare fund",
+        "help": "Part of the net profit put into the welfare fund.",
+        "unset": "Not set"
+      },
+      "fiscal_year_start_month": {
+        "label": "Fiscal year starts",
+        "help": "The samiti's year runs from July to June.",
+        "unset": "Not set",
+        "readOnly": "Fixed in the app for now; changing it would have no effect yet."
+      },
+      "backdate_lock_until": {
+        "label": "Books closed up to",
+        "help": "Nothing can be added or reversed on or before this day.",
+        "unset": "Not closed"
+      }
+    },
+    "validation": {
+      "required": "Enter a value",
+      "percentFormat": "Use a number with up to 2 decimals",
+      "percentRange": "Must be between {min} and 100",
+      "moneyFormat": "Use taka with up to 2 decimals",
+      "effectiveFrom": "Choose the date it applies from"
+    }
+  }
+}

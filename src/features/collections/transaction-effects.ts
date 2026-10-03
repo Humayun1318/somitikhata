@@ -16,6 +16,17 @@ export function memberEffectsOf(transaction: Transaction, byCode: Catalog): Memb
   return typeOf(transaction, byCode)?.memberEffects ?? [];
 }
 
+// Samiti entries page types: income, expense, asset, liability, transfer,
+// head openings, and the reversal of each (its code is "<code>_REVERSAL").
+const SOCIETY_GROUPS = ["income", "expense", "asset", "liability", "transfer"];
+const OPENING_HEAD_CODE = "OPENING_HEAD";
+const REVERSAL_SUFFIX = "_REVERSAL";
+
+export function isSocietyType(type: TransactionType, byCode: Catalog): boolean {
+  const base = type.typeGroup === "reversal" ? byCode.get(type.code.replace(REVERSAL_SUFFIX, "")) : type;
+  return !!base && (SOCIETY_GROUPS.includes(base.typeGroup) || base.code === OPENING_HEAD_CODE);
+}
+
 export const isReversalEntry = (transaction: Transaction, byCode: Catalog) =>
   !!transaction.reversalOf || typeOf(transaction, byCode)?.typeGroup === "reversal";
 

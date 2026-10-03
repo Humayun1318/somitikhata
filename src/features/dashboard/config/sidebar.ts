@@ -137,6 +137,20 @@ export class DashboardSidebarConfig {
           roles: ['ADMIN'],
         },
         {
+          id: 'admin-society-entries',
+          titleKey: 'DashboardSidebar.societyEntries',
+          href: '/admin/collections/society',
+          iconName: 'Landmark',
+          roles: ['ADMIN'],
+        },
+        {
+          id: 'admin-ledger-heads',
+          titleKey: 'DashboardSidebar.ledgerHeads',
+          href: '/admin/collections/heads',
+          iconName: 'FolderTree',
+          roles: ['ADMIN'],
+        },
+        {
           id: 'admin-opening-balances',
           titleKey: 'DashboardSidebar.openingBalances',
           href: '/admin/collections/opening',

@@ -19,6 +19,8 @@ const DEFAULTS: TransactionListParams = {
   minAmount: "",
   maxAmount: "",
   sort: "",
+  head: "",
+  cashAccount: "",
 };
 
 const FILTER_KEYS = [
@@ -28,6 +30,8 @@ const FILTER_KEYS = [
   "endTransactionDate",
   "minAmount",
   "maxAmount",
+  "head",
+  "cashAccount",
 ] as const;
 
 function toPositiveInt(value: string | null, fallback: number) {
@@ -36,16 +40,16 @@ function toPositiveInt(value: string | null, fallback: number) {
 }
 
 /**
- * Cash book / passbook view state, kept in the URL like the members list.
- * `scopeKey` is the URL key of what the list belongs to: ?account=<id> or ?member=<no>.
- * Changing the scope starts a fresh view (filters are per account/member).
+ * Cash book / passbook / samiti entries view state, kept in the URL like the members list.
+ * `scopeKey` is the URL key of what the list belongs to: ?account=<id> or ?member=<no>
+ * (none for the samiti entries list). Changing the scope starts a fresh view.
  */
-export function useTransactionListParams(scopeKey: "account" | "member") {
+export function useTransactionListParams(scopeKey?: "account" | "member") {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const scope = searchParams.get(scopeKey) ?? "";
+  const scope = scopeKey ? (searchParams.get(scopeKey) ?? "") : "";
   const limit = toPositiveInt(searchParams.get("limit"), DEFAULT_LIMIT);
   const text = (key: keyof TransactionListParams) => searchParams.get(key) ?? "";
 
@@ -59,11 +63,13 @@ export function useTransactionListParams(scopeKey: "account" | "member") {
     minAmount: text("minAmount"),
     maxAmount: text("maxAmount"),
     sort: text("sort"),
+    head: text("head"),
+    cashAccount: text("cashAccount"),
   };
 
   const writeUrl = (nextScope: string, next: TransactionListParams) => {
     const query = new URLSearchParams();
-    if (nextScope) query.set(scopeKey, nextScope);
+    if (scopeKey && nextScope) query.set(scopeKey, nextScope);
     for (const [key, value] of Object.entries(next)) {
       const isDefault = value === DEFAULTS[key as keyof TransactionListParams];
       if (!isDefault && value !== "") query.set(key, String(value));

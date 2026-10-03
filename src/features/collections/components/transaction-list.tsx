@@ -10,7 +10,7 @@ import type { ApiError } from "@/lib/api-errors";
 import type { PaginatedResult } from "@/types/api";
 
 import type { TransactionTypeCatalog } from "../hooks/use-collection-queries";
-import type { Transaction, TransactionListParams } from "../types";
+import type { CashAccount, HeadBalance, Transaction, TransactionListParams } from "../types";
 
 import { TransactionsTable, type TransactionListVariant } from "./transactions-table";
 import { TransactionsToolbar } from "./transactions-toolbar";
@@ -31,9 +31,12 @@ type TransactionListProps = {
   onClearFilters: () => void;
   catalog: TransactionTypeCatalog;
   onView: (transaction: Transaction) => void;
+  /** Samiti entries only: head and account filters. */
+  heads?: HeadBalance[];
+  accounts?: CashAccount[];
 };
 
-// Toolbar + table + pagination, shared by the cash book and the passbook.
+// Toolbar + table + pagination, shared by the cash book, the passbook and the samiti entries.
 export function TransactionList({
   variant,
   query,
@@ -43,6 +46,8 @@ export function TransactionList({
   onClearFilters,
   catalog,
   onView,
+  heads,
+  accounts,
 }: TransactionListProps) {
   const t = useTranslations("Collections");
   const { data, error, isPending, isFetching, isPlaceholderData } = query;
@@ -69,6 +74,8 @@ export function TransactionList({
         types={catalog.all}
         hasFilters={hasFilters}
         onClearFilters={onClearFilters}
+        heads={heads}
+        accounts={accounts}
       />
 
       {catalog.isError && <p className="text-xs text-amber-700">{t("typesError")}</p>}

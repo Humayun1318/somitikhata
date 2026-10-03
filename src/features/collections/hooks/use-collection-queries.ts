@@ -7,12 +7,15 @@ import type { Member } from "@/features/members/types";
 import { ApiError } from "@/lib/api-errors";
 import type { PaginatedResult } from "@/types/api";
 
-import { cashAccountApi, settingApi, transactionApi, transactionTypeApi } from "../api";
+import { cashAccountApi, transactionApi, transactionTypeApi } from "../api";
 import { collectionKeys } from "../query-keys";
 import type {
   BucketBalance,
   CashAccount,
   CashAccountBalance,
+  HeadBalance,
+  HeadBalanceRange,
+  OpeningSummary,
   Transaction,
   TransactionListParams,
   TransactionType,
@@ -97,11 +100,32 @@ export function useReversalOf(transaction: Transaction | null) {
   });
 }
 
-export function useSetting(key: string) {
-  return useQuery({
-    queryKey: collectionKeys.setting(key),
-    queryFn: () => settingApi.get(key),
-    enabled: !!key,
+export function useSocietyEntries(params: TransactionListParams) {
+  return useQuery<PaginatedResult<Transaction>, ApiError>({
+    queryKey: collectionKeys.society(params),
+    queryFn: () => transactionApi.society(params),
+    placeholderData: keepPreviousData,
+    staleTime: MONEY_STALE_TIME,
+  });
+}
+
+// Every ledger head with its balance (all-time, or for a period). Also the
+// head list for forms: it carries kind, section and status.
+export function useHeadBalances(range: HeadBalanceRange = {}) {
+  return useQuery<HeadBalance[], ApiError>({
+    queryKey: collectionKeys.headBalances(range),
+    queryFn: () => transactionApi.headBalances(range),
+    placeholderData: keepPreviousData,
+    staleTime: MONEY_STALE_TIME,
+  });
+}
+
+export function useOpeningSummary(enabled = true) {
+  return useQuery<OpeningSummary, ApiError>({
+    queryKey: collectionKeys.openingSummary(),
+    queryFn: transactionApi.openingSummary,
+    enabled,
+    staleTime: MONEY_STALE_TIME,
   });
 }
 

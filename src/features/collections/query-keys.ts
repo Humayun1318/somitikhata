@@ -1,4 +1,4 @@
-import type { TransactionListParams } from "./types";
+import type { HeadBalanceRange, TransactionListParams } from "./types";
 
 // Everything under "collections" is refetched after any money action,
 // so balances, cash books and passbooks never disagree.
@@ -11,7 +11,10 @@ export const collectionKeys = {
     [...collectionKeys.all, "ledger", memberNo, params] as const,
   memberBalances: (memberNo: string) => [...collectionKeys.all, "member-balances", memberNo] as const,
   reversal: (transactionId: string) => [...collectionKeys.all, "reversal", transactionId] as const,
+  society: (params: TransactionListParams) => [...collectionKeys.all, "society", params] as const,
+  // Ledger head changes (add, rename, close) refresh only these.
+  headBalances: (range: HeadBalanceRange = {}) => [...collectionKeys.all, "head-balances", range] as const,
+  openingSummary: () => [...collectionKeys.all, "opening-summary"] as const,
   member: (memberNo: string) => [...collectionKeys.all, "member", memberNo] as const,
   types: () => ["transaction-types"] as const,
-  setting: (key: string) => ["settings", key] as const,
 };

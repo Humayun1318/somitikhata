@@ -3,7 +3,12 @@ import { z } from "zod";
 import { toDhakaDateString } from "@/lib/dhaka-date";
 import { TAKA_INPUT_PATTERN } from "@/lib/money";
 
-import type { CreateOpeningPayload, CreateTransactionPayload } from "./types";
+import type {
+  CreateOpeningPayload,
+  CreateSocietyEntryPayload,
+  CreateTransactionPayload,
+  CreateTransferPayload,
+} from "./types";
 
 // Mirrors transaction.validation.ts in the backend. The backend is the real
 // check; this gives instant feedback. `t` is useTranslations("TransactionForm").
@@ -69,25 +74,39 @@ export function toCreateTransactionPayload(values: RecordTransactionInput): Crea
   };
 }
 
-// Opening entry: member OR account, depending on the chosen type.
-// `tOpening` is useTranslations("OpeningForm"); `needsMember(code)` reads the type's memberRule.
-export function openingSchema(t: Translate, tOpening: Translate, needsMember: (typeCode: string) => boolean) {
+// What an opening type is entered against: a member, a ledger head or a
+// cash/bank account (read from the type: memberRule, headEffect).
+export type OpeningTarget = "member" | "head" | "account";
+
+export function openingTargetOf(type: { memberRule: string; headEffect?: string } | undefined): OpeningTarget {
+  if (type?.memberRule === "required") return "member";
+  return type?.headEffect ? "head" : "account";
+}
+
+// Opening entry: one target, depending on the chosen type.
+// `tOpening` is useTranslations("OpeningForm"); `targetOf(code)` reads the type.
+export function openingSchema(t: Translate, tOpening: Translate, targetOf: (typeCode: string) => OpeningTarget) {
   return z
     .object({
       typeCode: z.string().min(1, tOpening("validation.type")),
       memberNo: z.string().trim(),
       cashAccountId: z.string(),
+      headId: z.string(),
       amount: amountField(t),
       transactionDate: dateField(t),
       description: optionalText(200, t("validation.descriptionTooLong")),
     })
     .superRefine((values, context) => {
       if (!values.typeCode) return;
-      if (needsMember(values.typeCode) && !values.memberNo) {
+      const target = targetOf(values.typeCode);
+      if (target === "member" && !values.memberNo) {
         context.addIssue({ code: "custom", path: ["memberNo"], message: tOpening("validation.memberNo") });
       }
-      if (!needsMember(values.typeCode) && !values.cashAccountId) {
+      if (target === "account" && !values.cashAccountId) {
         context.addIssue({ code: "custom", path: ["cashAccountId"], message: tOpening("validation.account") });
+      }
+      if (target === "head" && !values.headId) {
+        context.addIssue({ code: "custom", path: ["headId"], message: tOpening("validation.head") });
       }
     });
 }
@@ -98,17 +117,96 @@ export const OPENING_FIELDS: (keyof OpeningInput)[] = [
   "typeCode",
   "memberNo",
   "cashAccountId",
+  "headId",
   "amount",
   "transactionDate",
   "description",
 ];
 
-export function toOpeningPayload(values: OpeningInput, needsMember: boolean): CreateOpeningPayload {
+export function toOpeningPayload(values: OpeningInput, target: OpeningTarget): CreateOpeningPayload {
   return {
     typeCode: values.typeCode,
-    ...(needsMember ? { memberNo: values.memberNo.trim() } : { cashAccountId: values.cashAccountId }),
+    ...(target === "member" && { memberNo: values.memberNo.trim() }),
+    ...(target === "account" && { cashAccountId: values.cashAccountId }),
+    ...(target === "head" && { headId: values.headId }),
     amount: Number(values.amount),
     transactionDate: values.transactionDate,
+    ...(values.description.trim() && { description: values.description.trim() }),
+  };
+}
+
+// Samiti entry (POST /transactions/society). `tSociety` is useTranslations("SocietyForm").
+export function societyEntrySchema(t: Translate, tSociety: Translate) {
+  return z.object({
+    typeCode: z.string().min(1, tSociety("validation.type")),
+    headId: z.string().min(1, tSociety("validation.head")),
+    cashAccountId: z.string().min(1, t("validation.account")),
+    amount: amountField(t),
+    transactionDate: dateField(t),
+    voucherNo: optionalText(30, t("validation.voucherTooLong")),
+    description: optionalText(200, t("validation.descriptionTooLong")),
+  });
+}
+
+export type SocietyEntryInput = z.infer<ReturnType<typeof societyEntrySchema>>;
+
+export const SOCIETY_FIELDS: (keyof SocietyEntryInput)[] = [
+  "typeCode",
+  "headId",
+  "cashAccountId",
+  "amount",
+  "transactionDate",
+  "voucherNo",
+  "description",
+];
+
+export function toSocietyEntryPayload(values: SocietyEntryInput): CreateSocietyEntryPayload {
+  return {
+    typeCode: values.typeCode,
+    headId: values.headId,
+    cashAccountId: values.cashAccountId,
+    amount: Number(values.amount),
+    transactionDate: values.transactionDate,
+    ...(values.voucherNo.trim() && { voucherNo: values.voucherNo.trim() }),
+    ...(values.description.trim() && { description: values.description.trim() }),
+  };
+}
+
+// Transfer between two samiti accounts (POST /transactions/transfer).
+export function transferSchema(t: Translate, tTransfer: Translate) {
+  return z
+    .object({
+      fromAccountId: z.string().min(1, tTransfer("validation.from")),
+      toAccountId: z.string().min(1, tTransfer("validation.to")),
+      amount: amountField(t),
+      transactionDate: dateField(t),
+      voucherNo: optionalText(30, t("validation.voucherTooLong")),
+      description: optionalText(200, t("validation.descriptionTooLong")),
+    })
+    .refine((values) => !values.toAccountId || values.fromAccountId !== values.toAccountId, {
+      path: ["toAccountId"],
+      message: tTransfer("validation.same"),
+    });
+}
+
+export type TransferInput = z.infer<ReturnType<typeof transferSchema>>;
+
+export const TRANSFER_FIELDS: (keyof TransferInput)[] = [
+  "fromAccountId",
+  "toAccountId",
+  "amount",
+  "transactionDate",
+  "voucherNo",
+  "description",
+];
+
+export function toTransferPayload(values: TransferInput): CreateTransferPayload {
+  return {
+    fromAccountId: values.fromAccountId,
+    toAccountId: values.toAccountId,
+    amount: Number(values.amount),
+    transactionDate: values.transactionDate,
+    ...(values.voucherNo.trim() && { voucherNo: values.voucherNo.trim() }),
     ...(values.description.trim() && { description: values.description.trim() }),
   };
 }

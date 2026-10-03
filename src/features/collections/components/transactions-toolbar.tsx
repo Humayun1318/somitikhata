@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { SelectMenu } from "@/components/ui/select-menu";
 import { cn } from "@/lib/cn";
 
-import { typeName } from "../transaction-effects";
-import type { TransactionListParams, TransactionType } from "../types";
+import { isSocietyType, typeName } from "../transaction-effects";
+import type { CashAccount, HeadBalance, TransactionListParams, TransactionType } from "../types";
 
 import { AmountFilterInput } from "./amount-filter-input";
 import type { TransactionListVariant } from "./transactions-table";
@@ -26,11 +26,17 @@ type TransactionsToolbarProps = {
   types: TransactionType[];
   hasFilters: boolean;
   onClearFilters: () => void;
+  /** Samiti entries only: filter by ledger head and by account. */
+  heads?: HeadBalance[];
+  accounts?: CashAccount[];
 };
 
-// A cash book lists only entries that move cash; a passbook only member entries.
-const fitsVariant = (type: TransactionType, variant: TransactionListVariant) =>
-  variant === "cashBook" ? type.cashEffect !== "none" : type.memberRule !== "none";
+// A cash book lists only entries that move cash; a passbook only member
+// entries; the samiti list its own types.
+function fitsVariant(type: TransactionType, variant: TransactionListVariant, byCode: Map<string, TransactionType>) {
+  if (variant === "society") return isSocietyType(type, byCode);
+  return variant === "cashBook" ? type.cashEffect !== "none" : type.memberRule !== "none";
+}
 
 export function TransactionsToolbar({
   variant,
@@ -39,13 +45,22 @@ export function TransactionsToolbar({
   types,
   hasFilters,
   onClearFilters,
+  heads,
+  accounts,
 }: TransactionsToolbarProps) {
   const t = useTranslations("Collections");
   const locale = useLocale();
-  const hasPanelFilter = !!(params.startTransactionDate || params.endTransactionDate || params.minAmount || params.maxAmount);
+  const hasPanelFilter = !!(
+    params.startTransactionDate ||
+    params.endTransactionDate ||
+    params.minAmount ||
+    params.maxAmount ||
+    params.cashAccount
+  );
   const [isFiltersOpen, setIsFiltersOpen] = useState(hasPanelFilter);
 
-  const shownTypes = types.filter((type) => fitsVariant(type, variant));
+  const byCode = new Map(types.map((type) => [type.code, type]));
+  const shownTypes = types.filter((type) => fitsVariant(type, variant, byCode));
   const regularTypes = shownTypes.filter((type) => type.typeGroup !== "reversal");
   const reversalTypes = shownTypes.filter((type) => type.typeGroup === "reversal");
 
@@ -55,6 +70,15 @@ export function TransactionsToolbar({
     ...reversalTypes.map((type) => ({ value: type._id, label: typeName(type, locale), group: t("filters.reversalTypes") })),
   ];
   const sortOptions = SORT_OPTIONS.map((option) => ({ value: option, label: t(`sort.${option || "default"}`) }));
+  const headOptions = heads
+    ? [
+        { value: "", label: t("filters.allHeads") },
+        ...heads.map((head) => ({ value: head._id, label: typeName(head, locale), group: t(`headKinds.${head.kind}`) })),
+      ]
+    : [];
+  const accountOptions = accounts
+    ? [{ value: "", label: t("filters.allAccounts") }, ...accounts.map((account) => ({ value: account._id, label: account.name }))]
+    : [];
 
   const toggleFilters = () => setIsFiltersOpen((open) => !open);
   const handleSearchChange = (search: string) => setParams({ search });
@@ -78,6 +102,17 @@ export function TransactionsToolbar({
           highlighted={!!params.transactionType}
           className="sm:w-60"
         />
+        {heads && (
+          <SelectMenu
+            aria-label={t("filters.head")}
+            value={params.head}
+            onChange={(head) => setParams({ head })}
+            options={headOptions}
+            searchable
+            highlighted={!!params.head}
+            className="sm:w-56"
+          />
+        )}
         <div className="flex gap-2.5">
           <Button
             type="button"
@@ -124,6 +159,19 @@ export function TransactionsToolbar({
               className="mt-1.5 min-h-11"
             />
           </label>
+          {accounts && (
+            <div className="text-sm font-medium text-app-text">
+              <label htmlFor={`${variant}-account`}>{t("filters.account")}</label>
+              <SelectMenu
+                id={`${variant}-account`}
+                value={params.cashAccount}
+                onChange={(cashAccount) => setParams({ cashAccount })}
+                options={accountOptions}
+                highlighted={!!params.cashAccount}
+                className="mt-1.5"
+              />
+            </div>
+          )}
           <AmountFilterInput
             key={`min-${params.minAmount}`}
             label={t("filters.minAmount")}

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { HeadKind, HeadSection } from "@/features/collections/types";
+import type { HeadKind, HeadRole, HeadSection } from "@/features/collections/types";
 
 import { SECTIONS_BY_KIND, type CreateLedgerHeadPayload, type LedgerHead, type UpdateLedgerHeadPayload } from "./types";
 
@@ -14,6 +14,8 @@ export function ledgerHeadSchema(t: Translate) {
       nameEn: z.string().trim().max(60, t("validation.nameTooLong")),
       kind: z.string().min(1, t("validation.kind")),
       section: z.string(),
+      // "" = no role. Only offered for a fund head.
+      role: z.string(),
       displayOrder: z
         .string()
         .trim()
@@ -29,7 +31,7 @@ export function ledgerHeadSchema(t: Translate) {
 
 export type LedgerHeadInput = z.infer<ReturnType<typeof ledgerHeadSchema>>;
 
-export const LEDGER_HEAD_FIELDS: (keyof LedgerHeadInput)[] = ["nameBn", "nameEn", "kind", "section", "displayOrder"];
+export const LEDGER_HEAD_FIELDS: (keyof LedgerHeadInput)[] = ["nameBn", "nameEn", "kind", "section", "role", "displayOrder"];
 
 export function toCreateLedgerHeadPayload(values: LedgerHeadInput): CreateLedgerHeadPayload {
   const kind = values.kind as HeadKind;
@@ -39,6 +41,7 @@ export function toCreateLedgerHeadPayload(values: LedgerHeadInput): CreateLedger
     kind,
     ...(SECTIONS_BY_KIND[kind] && { section: values.section as HeadSection }),
     ...(values.displayOrder.trim() && { displayOrder: Number(values.displayOrder) }),
+    ...(kind === "fund" && values.role && { role: values.role as HeadRole }),
   };
 }
 
@@ -54,5 +57,8 @@ export function toUpdateLedgerHeadPayload(values: LedgerHeadInput, head: LedgerH
   if (nameEn !== (head.nameEn ?? "")) payload.nameEn = nameEn;
   if (SECTIONS_BY_KIND[head.kind] && values.section !== head.section) payload.section = values.section as HeadSection;
   if (order !== head.displayOrder) payload.displayOrder = order;
+  if (head.kind === "fund" && values.role !== (head.role ?? "")) {
+    payload.role = values.role ? (values.role as HeadRole) : null;
+  }
   return payload;
 }

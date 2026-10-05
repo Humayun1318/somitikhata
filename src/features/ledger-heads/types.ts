@@ -1,4 +1,4 @@
-import type { HeadBalance, HeadKind, HeadSection } from "@/features/collections/types";
+import type { HeadBalance, HeadKind, HeadRole, HeadSection } from "@/features/collections/types";
 
 // Shapes from the backend ledgerHead module. A head never stores a balance:
 // the list comes from GET /transactions/head-balances (head + its balance).
@@ -13,6 +13,10 @@ export const SECTIONS_BY_KIND: Partial<Record<HeadKind, HeadSection[]>> = {
   liability: ["current_liability", "non_current_liability"],
 };
 
+// A role marks a fund head as a year-end appropriation target. Only fund
+// heads take one, and each role sits on one head at most.
+export const HEAD_ROLES: HeadRole[] = ["reserve_fund", "coop_dev_fund", "welfare_fund", "undistributed_profit"];
+
 // POST /ledger-heads/create (super admin)
 export type CreateLedgerHeadPayload = {
   nameBn: string;
@@ -20,7 +24,11 @@ export type CreateLedgerHeadPayload = {
   kind: HeadKind;
   section?: HeadSection;
   displayOrder?: number;
+  role?: HeadRole;
 };
 
-// PATCH /ledger-heads/update/:id (super admin). The kind never changes.
-export type UpdateLedgerHeadPayload = Partial<Omit<CreateLedgerHeadPayload, "kind">>;
+// PATCH /ledger-heads/update/:id (super admin). The kind never changes;
+// role: null takes the role off.
+export type UpdateLedgerHeadPayload = Partial<Omit<CreateLedgerHeadPayload, "kind" | "role">> & {
+  role?: HeadRole | null;
+};

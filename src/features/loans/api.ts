@@ -15,9 +15,6 @@ import type {
 const data = <T>(response: { data: ApiEnvelope<T> }) => response.data.data;
 const loanUrl = (loanNo: string) => `/loans/${encodeURIComponent(loanNo)}`;
 
-// The backend runs `search` as a regular expression; search literal text.
-const escapeRegex = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
 // Only params loan.builder.config.ts (and ?memberNo=) understand.
 function toQueryParams(params: LoanListParams) {
   const search = params.search.trim();
@@ -25,7 +22,7 @@ function toQueryParams(params: LoanListParams) {
   return {
     page: params.page,
     limit: params.limit,
-    ...(search && { search: escapeRegex(search) }),
+    ...(search && { search }),
     ...(params.status && { status: params.status }),
     ...(memberNo && { memberNo }),
     ...(params.sort && { sort: params.sort }),

@@ -24,7 +24,7 @@ import {
   toUpdateLedgerHeadPayload,
   type LedgerHeadInput,
 } from "../schemas";
-import { HEAD_KINDS, SECTIONS_BY_KIND, type LedgerHead } from "../types";
+import { HEAD_KINDS, HEAD_ROLES, SECTIONS_BY_KIND, type LedgerHead } from "../types";
 
 type LedgerHeadDialogProps = {
   open: boolean;
@@ -64,6 +64,7 @@ export function LedgerHeadDialog({ open, onClose, head, defaultKind }: LedgerHea
       nameEn: head?.nameEn ?? "",
       kind: head?.kind ?? defaultKind,
       section: head?.section ?? "",
+      role: head?.role ?? "",
       displayOrder: head ? String(head.displayOrder) : "",
     },
     mode: "onTouched",
@@ -74,6 +75,11 @@ export function LedgerHeadDialog({ open, onClose, head, defaultKind }: LedgerHea
   const isBusy = isSubmitting || createHead.isPending || updateHead.isPending;
   const kindOptions = HEAD_KINDS.map((value) => ({ value, label: t(`kinds.${value}`) }));
   const sectionOptions = sections.map((value) => ({ value, label: t(`sections.${value}`) }));
+  const isFund = kind === "fund";
+  const roleOptions = [
+    { value: "", label: t("roles.none") },
+    ...HEAD_ROLES.map((value) => ({ value, label: t(`roles.${value}`) })),
+  ];
 
   const showError = (error: unknown) => {
     if (error instanceof Error && DUPLICATE.test(error.message)) {
@@ -208,6 +214,27 @@ export function LedgerHeadDialog({ open, onClose, head, defaultKind }: LedgerHea
         </FormField>
       </div>
       <p className="text-xs text-app-text-muted">{t("orderHint")}</p>
+
+      {isFund && (
+        <FormField id="head-role" label={t("fields.role")} labelHint={t("optional")} error={errors.role?.message}>
+          <Controller
+            control={control}
+            name="role"
+            render={({ field }) => (
+              <SelectMenu
+                id="head-role"
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                options={roleOptions}
+                disabled={isBusy}
+                error={!!errors.role}
+              />
+            )}
+          />
+          <p className="mt-1.5 text-xs text-app-text-muted">{t("roleHint")}</p>
+        </FormField>
+      )}
     </Dialog>
   );
 }

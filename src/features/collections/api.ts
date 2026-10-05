@@ -23,9 +23,6 @@ import type {
   TransferResult,
 } from "./types";
 
-// The backend runs `search` as a regular expression; search literal text.
-const escapeRegex = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
 // Only params transaction.builder.config.ts understands. Empty values are left out.
 function toQueryParams(params: TransactionListParams) {
   const search = params.search.trim();
@@ -33,7 +30,7 @@ function toQueryParams(params: TransactionListParams) {
   return {
     page: params.page,
     limit: params.limit,
-    ...(search && { search: escapeRegex(search) }),
+    ...(search && { search }),
     ...(params.transactionType && { transactionType: params.transactionType }),
     ...(params.startTransactionDate && { startTransactionDate: dhakaDayStart(params.startTransactionDate) }),
     ...(params.endTransactionDate && { endTransactionDate: dhakaDayEnd(params.endTransactionDate) }),

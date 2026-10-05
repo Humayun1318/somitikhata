@@ -202,10 +202,11 @@
     "cashIn": "Cash in",
     "cashOut": "Cash out",
     "noCash": "No cash movement",
-    "linked": "Part of a transfer with {transactionNo}.",
-    "linkedWithAccount": "Part of a transfer with {transactionNo} ({account}). Reversing one reverses both.",
+    "linked": "Linked with {transactionNo}. Reversing one reverses both.",
+    "linkedWithAccount": "Linked with {transactionNo} ({account}). Reversing one reverses both.",
     "loanNotReversible": "Loan entries are corrected from the loan, not reversed here.",
-    "closedYear": "The books are closed up to {date}, so this entry can't be reversed. Record a correction in the current year."
+    "closedYear": "The books are closed up to {date}, so this entry can't be reversed. Record a correction in the current year.",
+    "yearEndNotReversible": "Posted by the year-end run, so it can't be reversed on its own. A service charge recovered from a deposit is undone by reversing that deposit."
   },
   "ReverseForm": {
     "title": "Reverse transaction",
@@ -323,13 +324,16 @@
     "shareRelock": "This member already has a new Share Deposit. Reverse that one first.",
     "reversalNegative": "Can't reverse {transactionNo}: the member's balance ({balance}) is less than this entry ({amount}).",
     "loanNotReversible": "Loan entries can't be reversed here.",
-    "linkedReversed": "The other half of this transfer ({transactionNo}) is already reversed.",
+    "linkedReversed": "The linked entry ({transactionNo}) is already reversed.",
     "headBalance": "More than the head's balance. Balance: {balance}, requested: {requested}.",
     "wrongHeadKind": "This head doesn't fit this kind of entry.",
     "headClosed": "This ledger head is closed.",
     "headNotFound": "This ledger head no longer exists.",
     "sameAccount": "From and to account must be different.",
-    "invalidSocietyType": "This type can't be used for a samiti entry."
+    "invalidSocietyType": "This type can't be used for a samiti entry.",
+    "serviceChargeNotReversible": "A service charge entry can't be reversed on its own. If it was recovered from a deposit, reverse that deposit.",
+    "yearEndNotReversible": "Dividend and profit appropriation entries are posted by the year-end run and can't be reversed one by one.",
+    "roleTaken": "“{name}” already has this role. Take it off that head first."
   },
   "OpeningSummary": {
     "title": "Go-live check",

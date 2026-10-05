@@ -11,10 +11,6 @@ import type {
   UpdateMemberStatusPayload,
 } from "./types";
 
-// The backend runs `search` as a regular expression. Escape it so a user
-// typing "(" or "+" searches for that text instead of breaking the query.
-const escapeRegex = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
 // Only params the backend QueryBuilder understands (member.builder.config.ts).
 // Empty values are left out so the backend uses its defaults.
 function toQueryParams(params: MemberListParams) {
@@ -23,7 +19,7 @@ function toQueryParams(params: MemberListParams) {
   return {
     page: params.page,
     limit: params.limit,
-    ...(search && { search: escapeRegex(search) }),
+    ...(search && { search }),
     ...(params.status && { status: params.status }),
     ...(params.sort && { sort: params.sort }),
     // Whole Dhaka days, so the first/last day of the range is fully included.

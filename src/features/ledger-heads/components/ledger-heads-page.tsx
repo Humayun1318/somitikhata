@@ -159,6 +159,7 @@ export function LedgerHeadsPage() {
                 <p className="mt-0.5 flex flex-wrap gap-x-3 text-xs text-app-text-muted">
                   {head.nameEn && <span>{head.nameEn}</span>}
                   {sectionText && <span>{sectionText}</span>}
+                  {head.role && <span>{t(`roles.${head.role}`)}</span>}
                   <span>{t("orderValue", { order: format.number(head.displayOrder) })}</span>
                 </p>
               </div>

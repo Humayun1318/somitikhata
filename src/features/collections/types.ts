@@ -145,6 +145,8 @@ export type TransferResult = { transferOut: Transaction; transferIn: Transaction
 
 // GET /transactions/head-balances: every head with its balance (paisa)
 export type HeadSection = "fixed_asset" | "current_asset" | "current_liability" | "non_current_liability";
+// The fund heads the year-end profit appropriation posts to (one head each)
+export type HeadRole = "reserve_fund" | "coop_dev_fund" | "welfare_fund" | "undistributed_profit";
 export type HeadBalance = {
   _id: string;
   nameBn: string;
@@ -152,6 +154,7 @@ export type HeadBalance = {
   kind: HeadKind;
   section?: HeadSection;
   displayOrder: number;
+  role?: HeadRole;
   status: CashAccountStatus;
   balance: number;
 };

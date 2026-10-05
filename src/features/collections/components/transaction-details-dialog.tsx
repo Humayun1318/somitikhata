@@ -45,6 +45,8 @@ export function TransactionDetailsDialog({ open, onClose, transaction, catalog, 
   // Loan rows are corrected from the loan, and a closed year's rows never
   // change (backend rules); the button only shows when the reversal can work.
   const isLoanEntry = type?.typeGroup === "loan";
+  // Service charge, dividend and appropriation rows belong to a year-end run
+  const isYearEndEntry = type?.typeGroup === "member_charge" || type?.typeGroup === "distribution";
   const lockDay = lock.data?.value ? toDhakaDateString(lock.data.value) : "";
   const isClosedYear = !!lockDay && toDhakaDateString(transaction.transactionDate) <= lockDay;
   const isLockKnown = !lock.isPending;
@@ -52,12 +54,14 @@ export function TransactionDetailsDialog({ open, onClose, transaction, catalog, 
     !isReversal &&
     !!type?.reversalTypeCode &&
     !isLoanEntry &&
+    !isYearEndEntry &&
     !isClosedYear &&
     isLockKnown &&
     reversal.isSuccess &&
     !reversedBy;
   const showNotReversible = !isReversal && !!type && !type.reversalTypeCode;
   const showLoanNote = !isReversal && isLoanEntry;
+  const showYearEndNote = !isReversal && isYearEndEntry;
   const showClosedYearNote = !isReversal && !reversedBy && isClosedYear;
   const linked = transaction.linkedTransaction;
   const linkedAccount = linked?.cashAccount
@@ -170,6 +174,12 @@ export function TransactionDetailsDialog({ open, onClose, transaction, catalog, 
         <p className="flex items-center gap-2 text-xs text-app-text-muted">
           <Info aria-hidden="true" className="h-3.5 w-3.5" />
           {t("loanNotReversible")}
+        </p>
+      )}
+      {showYearEndNote && (
+        <p className="flex items-center gap-2 text-xs text-app-text-muted">
+          <Info aria-hidden="true" className="h-3.5 w-3.5" />
+          {t("yearEndNotReversible")}
         </p>
       )}
       {showClosedYearNote && (

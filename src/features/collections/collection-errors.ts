@@ -43,6 +43,8 @@ const KNOWN_MESSAGES: { pattern: RegExp; key: string; values?: string[] }[] = [
     values: ["transactionNo", "balance", "amount"],
   },
   { pattern: /Loan entries cannot be reversed here/i, key: "loanNotReversible" },
+  { pattern: /service charge entry cannot be reversed on its own/i, key: "serviceChargeNotReversible" },
+  { pattern: /posted by the year-end run and cannot be reversed/i, key: "yearEndNotReversible" },
   { pattern: /linked entry #(\S+) is already reversed/i, key: "linkedReversed", values: ["transactionNo"] },
   // Samiti entries and ledger heads
   {
@@ -51,6 +53,7 @@ const KNOWN_MESSAGES: { pattern: RegExp; key: string; values?: string[] }[] = [
     values: ["balance", "requested"],
   },
   { pattern: /cannot be used for a \w+ head/i, key: "wrongHeadKind" },
+  { pattern: /^"([^"]+)" already has the role/i, key: "roleTaken", values: ["name"] },
   { pattern: /^Ledger head is closed/i, key: "headClosed" },
   { pattern: /^Ledger head not found/i, key: "headNotFound" },
   { pattern: /From and to account must be different/i, key: "sameAccount" },

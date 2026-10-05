@@ -3,9 +3,6 @@ import type { ApiEnvelope } from "@/types/api";
 
 import type { AdminListParams, CreateAdminPayload, PaginatedResult, StaffUser } from "./types";
 
-// The backend runs `search` as a regular expression; search literal text.
-const escapeRegex = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
 export const adminApi = {
   // GET /user with role=admin. role and status are filterable enum fields in
   // user.builder.config.ts; search covers name, email, phone, memberNo and staffNo.
@@ -16,7 +13,7 @@ export const adminApi = {
         role: "admin",
         page: params.page,
         limit: params.limit,
-        ...(search && { search: escapeRegex(search) }),
+        ...(search && { search }),
         ...(params.status && { status: params.status }),
         ...(params.sort && { sort: params.sort }),
       },

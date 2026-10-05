@@ -110,6 +110,9 @@ or page change would be noise.
   the backend's own `meta` (`page`, `totalPages`, `total`, `hasNextPage`…).
   No client-side paging or filtering.
 - Changing search/filters/sort resets to page 1.
+- Send the search box text as typed (`search`). The backend matches it
+  literally (it escapes regex characters and caps it at 100 characters),
+  so the frontend must not escape it too, or "a.b" would search for "a\.b".
 - Tables are built from a typed `columns` array, so a future column
   (e.g. Actions) is one new entry.
 - Reuse the shared list pieces in `components/shared/`: `SearchInput`

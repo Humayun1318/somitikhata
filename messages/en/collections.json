@@ -333,7 +333,8 @@
     "invalidSocietyType": "This type can't be used for a samiti entry.",
     "serviceChargeNotReversible": "A service charge entry can't be reversed on its own. If it was recovered from a deposit, reverse that deposit.",
     "yearEndNotReversible": "Dividend and profit appropriation entries are posted by the year-end run and can't be reversed one by one.",
-    "roleTaken": "“{name}” already has this role. Take it off that head first."
+    "roleTaken": "“{name}” already has this role. Take it off that head first.",
+    "yearEndStarted": "The year-end of {fiscalYear} has started, so a member entry can't be dated on or before {date}. Use a later date."
   },
   "OpeningSummary": {
     "title": "Go-live check",

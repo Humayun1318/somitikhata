@@ -27,6 +27,12 @@ const KNOWN_MESSAGES: { pattern: RegExp; key: string; values?: string[] }[] = [
     values: ["date", "transactionNo"],
   },
   { pattern: /books are closed up to (\d{4}-\d{2}-\d{2})/i, key: "booksClosed", values: ["date"] },
+  // Year-end started: the year's member balances are fixed
+  {
+    pattern: /year-end of (\d{4}-\d{2}) has started .*on or before (\d{4}-\d{2}-\d{2})/i,
+    key: "yearEndStarted",
+    values: ["fiscalYear", "date"],
+  },
   // Refunds and the share lock
   { pattern: /Share is refunded in full only\. Share balance: ৳([\d.,]+)/i, key: "shareRefundFull", values: ["balance"] },
   {

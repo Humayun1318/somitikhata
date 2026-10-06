@@ -1,20 +1,15 @@
-import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+
+import { publicPageMetadata } from "@/lib/metadata";
 import { LogIn } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Auth" });
-
-  return {
-    title: `${t("registerTitle")} — ${t("metaTitleSuffix")}`,
-    description: t("registerSubtitle"),
-  };
-}
+export const generateMetadata = publicPageMetadata("register", "/register", async (locale) =>
+  (await getTranslations({ locale, namespace: "Auth" }))("registerSubtitle"),
+);
 
 // There is no online sign-up: the samiti office opens every membership
 // (Members → Add member), and the login account is made with it. This page

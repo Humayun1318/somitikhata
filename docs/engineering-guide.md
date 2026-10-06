@@ -259,11 +259,42 @@ or page change would be noise.
   filters; details dialog with the schedule and the next step (approve, reject,
   disburse, collect next installment). Disburse/collect refresh the collections views.
 
+## 0.16 Rendering, metadata and SEO
+
+Rendering per area (deliberate; keep it unless the auth model changes):
+
+| Area | Rendering | Why |
+|---|---|---|
+| Home, login, register | Static (SSG per locale), Server Components; client islands only for the navbar menu, account links, login form | Same for every visitor; no per-request data |
+| Admin / member pages | Static shell (layout, sidebar, page frame) + Client Components with TanStack Query | Session cookies live on the backend origin, so the Next server cannot fetch user data; queries run in the browser with credentials |
+| Unknown URLs | `[locale]/[...rest]` → `notFound()` → localized 404 with HTTP 404 | |
+
+- No ISR/SSR is used because there is no public data that changes. If a public,
+  changing page is added (e.g. notices from the API), fetch it in a Server
+  Component with `next: { revalidate: <seconds> }`.
+- Messages sent to the browser: the root layout sends only `PUBLIC_CLIENT_MESSAGES`
+  (`src/i18n/client-messages.ts`); `(dashboard)/layout.tsx` sends all. A new client
+  component on a public page that reads another namespace must be listed there.
+- The route skeleton (`loading.tsx`) lives in `(dashboard)` only, so public pages
+  and the 404 are not streamed behind a fallback (a 404 must return status 404).
+- Metadata (`src/lib/metadata.ts`): the root layout sets the title template
+  `Page | Site`, description, icons, Open Graph/Twitter (image
+  `public/branding/og-image.png`, 1200×630). Each page exports one line:
+  `pageTitleMetadata("<key>")` (signed-in/utility) or
+  `publicPageMetadata("<key>", "/path")` (adds canonical, hreflang en/bn/x-default
+  and its own share card). Titles live in `messages/<locale>/common.json` →
+  `Metadata.pages`. A new page needs a key there in both locales.
+- `(dashboard)/layout.tsx` sets `robots: noindex, nofollow`; `robots.txt` disallows
+  `/<locale>/admin` and `/<locale>/member`; `sitemap.xml` lists the public pages.
+- Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://example.com`) in production so canonical,
+  sitemap and share URLs are absolute and correct.
+
 ## 0.15 Home page and branding
 
 - Home (`features/home`, `app/[locale]/(public)/page.tsx`): server sections with
   texts in `messages/<locale>/home.json`; only the parts that depend on the signed-in
-  user are client components (`HomeActions`, the navbar's `AccountNav`, the footer).
+  user are client components (`HomeActions`, the navbar's `AccountNav`, the footer's
+  account links and year in `footer-client.tsx`; the rest of the footer is server).
   It describes only features that work and shows no figures (the hero ledger draws
   ink strokes, not numbers).
 - Public navbar: signed in → the dashboard's `ProfileMenu variant="public"`

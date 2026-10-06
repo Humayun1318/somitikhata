@@ -1,21 +1,11 @@
-import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+
 import { LoginForm } from "@/features/auth/components/login-form";
+import { publicPageMetadata } from "@/lib/metadata";
 
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Auth" });
-
-  return {
-    title: `${t("loginTitle")} — ${t("metaTitleSuffix")}`,
-    description: t("loginSubtitle"),
-  };
-}
+export const generateMetadata = publicPageMetadata("login", "/login", async (locale) =>
+  (await getTranslations({ locale, namespace: "Auth" }))("loginSubtitle"),
+);
 
 export default async function LoginPage({
   params,

@@ -1,25 +1,20 @@
-"use client";
-
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { ExternalLink, MapPin, ShieldCheck } from "lucide-react";
 
-import { useMe } from "@/features/auth/hooks/use-me";
-import { getPostLoginRoute } from "@/features/auth/role-routes";
-import { Link } from "@/i18n/navigation";
+import { CurrentYear, FooterAccountLinks } from "./footer-client";
 
 const LINK_CLASS =
   "inline-flex min-h-10 items-center text-sm text-app-text transition-colors hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus sm:min-h-0";
 const HEADING_CLASS = "text-sm font-semibold text-app-text-muted";
 
 // Site footer for the public pages: who the samiti is, where to go next,
-// the address, and who built the app.
+// the address, and who built the app. A Server Component: only the account
+// links and the year (footer-client.tsx) run in the browser.
 export function Footer() {
   const t = useTranslations("Footer");
   const tNav = useTranslations("HomePage.nav");
   const locale = useLocale();
-  const { data: user } = useMe();
-  const year = new Date().getFullYear();
 
   const sections = [
     { id: "modules", label: tNav("modules") },
@@ -72,26 +67,7 @@ export function Footer() {
         <nav aria-label={t("account")} className="lg:col-span-2">
           <p className={HEADING_CLASS}>{t("account")}</p>
           <ul className="mt-3 space-y-1 sm:space-y-2">
-            {user ? (
-              <li>
-                <Link href={getPostLoginRoute(user)} className={LINK_CLASS}>
-                  {t("myDashboard")}
-                </Link>
-              </li>
-            ) : (
-              <>
-                <li>
-                  <Link href="/login" className={LINK_CLASS}>
-                    {t("login")}
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/register" className={LINK_CLASS}>
-                    {t("join")}
-                  </Link>
-                </li>
-              </>
-            )}
+            <FooterAccountLinks linkClassName={LINK_CLASS} />
           </ul>
         </nav>
 
@@ -104,7 +80,7 @@ export function Footer() {
       <div className="border-t border-app-border bg-app-surface-muted/60">
         <div className="mx-auto flex max-w-app-wide flex-col gap-2 px-4 py-4 text-xs text-app-text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>
-            © {year} {t("orgName")} {t("rights")}
+            © <CurrentYear /> {t("orgName")} {t("rights")}
           </p>
           <p>
             {t("developedBy")}{" "}

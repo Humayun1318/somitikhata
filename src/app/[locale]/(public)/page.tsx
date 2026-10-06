@@ -11,6 +11,9 @@ import {
   HomeSafeguards,
   HomeYear,
 } from "@/features/home/components/home-sections";
+import { publicPageMetadata } from "@/lib/metadata";
+
+export const generateMetadata = publicPageMetadata("home", "");
 
 // The public home page. Everything it describes is a working part of the app;
 // it shows no figures, because the real ones are behind sign-in.

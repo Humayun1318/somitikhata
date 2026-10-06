@@ -117,5 +117,37 @@
     "badge": "Coming soon",
     "title": "This feature will be available in a future version.",
     "backToDashboard": "Back to dashboard"
+  },
+  "Metadata": {
+    "siteName": "Bottoli Cooperative",
+    "homeTitle": "Bottoli Cooperative — Lohagara",
+    "description": "Digital savings, loan, and shared-asset management platform for Bottoli Business Welfare Cooperative Society, Lohagara.",
+    "ogImageAlt": "Logo of Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
+    "pages": {
+      "login": "Sign in",
+      "register": "How to join",
+      "dashboard": "Dashboard",
+      "members": "Members",
+      "pendingMembers": "Pending Members",
+      "collections": "Collections",
+      "cashBook": "Cash Book",
+      "passbook": "Member Passbook",
+      "societyEntries": "Samiti Entries",
+      "ledgerHeads": "Ledger Heads",
+      "openingBalances": "Opening Balances",
+      "loans": "Loan Management",
+      "reports": "Reports",
+      "yearEnd": "Year-end",
+      "admins": "Admins",
+      "settings": "Settings",
+      "profile": "Profile",
+      "mySavings": "My Savings",
+      "myLoans": "My Loans",
+      "applyLoan": "Apply for Loan",
+      "depositRequest": "Deposit Request",
+      "membership": "Membership",
+      "unauthorized": "Access denied",
+      "notFound": "Page not found"
+    }
   }
 }

@@ -1,4 +1,13 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+import { pageTitleMetadata } from '@/lib/metadata';
+
+const titleMetadata = pageTitleMetadata('unauthorized');
+
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  return { ...(await titleMetadata(props)), robots: { index: false, follow: false } };
+}
 
 export default async function UnauthorizedPage({
   params,

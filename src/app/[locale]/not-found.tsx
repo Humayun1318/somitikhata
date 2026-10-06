@@ -1,5 +1,12 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Metadata');
+  // Next.js adds noindex to 404 responses itself.
+  return { title: t('pages.notFound') };
+}
 
 export default async function NotFound() {
   const t = await getTranslations('NotFound');

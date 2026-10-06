@@ -1,108 +1,204 @@
 {
   "HomePage": {
-    "site": {
-      "name": "Bottoli Cooperative",
-      "tagline": "Digital savings, loans, and member management for Bottoli Business Welfare Cooperative Society, Lohagara."
-    },
     "nav": {
-      "howItWorks": "How it works",
-      "features": "Features",
-      "faq": "FAQ",
-      "login": "Login",
-      "register": "Create account",
+      "modules": "What's inside",
+      "year": "The year",
+      "faq": "Questions",
+      "login": "Sign in",
       "language": "বাং",
-      "navigationLabel": "Primary navigation",
-      "mobileNavigationLabel": "Mobile primary navigation",
-      "openMenuLabel": "Open navigation menu",
-      "closeMenuLabel": "Close navigation menu",
+      "languageLabel": "বাংলায় দেখুন",
+      "homeLabel": "Bottoli Cooperative — home",
+      "navigationLabel": "Main navigation",
+      "mobileNavigationLabel": "Mobile navigation",
+      "openMenuLabel": "Open menu",
+      "closeMenuLabel": "Close menu",
       "shortName": "Bottoli Cooperative",
       "registration": "Reg. No. 7646/99",
-      "legalName": "Lohagara Bottoli Business Welfare Cooperative Society Ltd.",
-      "location": "Lohagara, Chattogram",
-      "logout": "Logout"
+      "legalName": "Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
+      "location": "Lohagara, Chattogram"
     },
     "hero": {
-      "eyebrow": "Digital ledger for your cooperative",
-      "title": "A clearer way to manage savings, loans, and shared assets.",
-      "description": "SomitiKhata helps committees track deposits, view member balances, and keep shared asset records organized with clarity and trust.",
-      "primaryCta": "Create account",
-      "secondaryCta": "Member login",
-      "statLabel": "Total savings",
-      "statValue": "৳1,25,000",
-      "savings": "Savings",
-      "loans": "Loans",
-      "assetShare": "Asset share"
+      "org": "Lohagara Bottoli Merchant Welfare Cooperative Society Ltd.",
+      "title": "Every taka of the samiti, in one clear ledger.",
+      "description": "Members, savings, loans and the year-end accounts in one place. The office records every transaction, and each member can see their own passbook.",
+      "login": "Member sign in",
+      "join": "How to become a member",
+      "dashboard": "My dashboard",
+      "points": [
+        "Exact to the paisa",
+        "Bangla and English",
+        "On phone, tablet and computer"
+      ],
+      "ledger": {
+        "title": "Member passbook",
+        "member": "Member no. LBKS-0000",
+        "date": "Date",
+        "entry": "Entry",
+        "amount": "Amount",
+        "rows": [
+          "Opening balance",
+          "Amanot deposit",
+          "Amanot deposit",
+          "Amanot withdrawal",
+          "Service charge",
+          "Dividend"
+        ],
+        "caption": "A sample page. Sign in to see your real balances."
+      }
     },
-    "sections": {
-      "howItWorksLabel": "How it works",
-      "howItWorksTitle": "A simple workflow designed for real committees",
+    "modules": {
+      "title": "The whole samiti, in six parts",
+      "intro": "Everything that used to go into the paper ledger has its own place in the app.",
+      "items": [
+        {
+          "title": "Members and nominees",
+          "body": "Member details, business, address and up to two nominees. Membership active, inactive, suspended or exited."
+        },
+        {
+          "title": "Amanot, share and fixed Amanot",
+          "body": "Every deposit and withdrawal lands in the member's passbook. The app checks the withdrawal limit itself."
+        },
+        {
+          "title": "Loans and installments",
+          "body": "Application, approval, disbursement and installment collection. The app works out interest and the schedule."
+        },
+        {
+          "title": "Cash, bank and samiti entries",
+          "body": "Cash book, bank accounts, income and expense, assets and liabilities, and transfers between accounts."
+        },
+        {
+          "title": "Year-end",
+          "body": "Service charge, depreciation, dividend and profit appropriation. Every step is previewed before it runs."
+        },
+        {
+          "title": "Reports",
+          "body": "Receipts and payments, income and expenditure, balance sheet, trial balance and the dividend list. Printable."
+        }
+      ]
+    },
+    "audience": {
+      "title": "The right page for each person",
+      "office": {
+        "title": "Office and committee",
+        "body": "Admins and the super admin run the samiti's daily work.",
+        "items": [
+          "Add members and update their details",
+          "Record deposits, withdrawals and installments",
+          "Fix a wrong entry by reversing it",
+          "See pending work on the dashboard",
+          "Year-end and reports",
+          "Settings and admin accounts (super admin)"
+        ]
+      },
+      "member": {
+        "title": "Members",
+        "body": "Sign in with your member number and see only your own account.",
+        "items": [
+          "Amanot, share, fixed Amanot and loan due",
+          "The full passbook with dates",
+          "Your loans and the next installment",
+          "Latest dividend and any service charge due",
+          "Your membership and nominee details",
+          "Change your own password"
+        ]
+      }
+    },
+    "year": {
+      "title": "One fiscal year, July to June",
+      "intro": "The app follows the samiti's year. Each year-end step happens in order.",
       "steps": [
-        "Committee members verify each account before access is approved.",
-        "Members register with a trusted phone or email identity.",
-        "Committee staff log deposits and repayments in a single ledger.",
-        "Members can view balances, shares, and loan status without confusion."
-      ],
-      "featuresLabel": "Features",
-      "featuresTitle": "Everything a cooperative needs to stay organized",
-      "features": [
         {
-          "title": "Savings tracking",
-          "description": "Monitor every deposit, current balance, and monthly history with less paperwork and fewer errors.",
-          "icon": "💰"
+          "when": "1 July",
+          "title": "A new year starts",
+          "body": "Member and samiti balances carry forward; income and expense start from zero."
         },
         {
-          "title": "Loan overview",
-          "description": "Keep applications, approvals, repayment schedules, and outstanding balances in one clear place.",
-          "icon": "📄"
+          "when": "All year",
+          "title": "Deposits, withdrawals and loans",
+          "body": "The office records each transaction and the member sees it in their passbook right away."
         },
         {
-          "title": "Shared asset share",
-          "description": "See each member’s contribution to shared property and understand asset value without manual calculations.",
-          "icon": "🏠"
+          "when": "Year-end",
+          "title": "Service charge and depreciation",
+          "body": "The yearly charge comes out of Amanot. If the balance is short, the rest is taken from the next deposit."
         },
         {
-          "title": "Bilingual access",
-          "description": "Switch between English and Bangla without losing context, route flow, or important navigation.",
-          "icon": "🌐"
+          "when": "Year-end",
+          "title": "Dividend",
+          "body": "The committee's amount is shared among active members within the limits in settings."
+        },
+        {
+          "when": "Year-end",
+          "title": "Profit appropriation and closing",
+          "body": "Net profit goes to the funds, and the old year's books are locked."
         }
-      ],
-      "trustLabel": "Why it matters",
-      "trustTitle": "Built for transparency and accountability",
-      "trustPoints": [
-        "Access is controlled for authorized members and committee staff only.",
-        "Important events are recorded in a structured way so nothing is left ambiguous.",
-        "The platform keeps records clear enough for a committee to review them with confidence."
-      ],
-      "faqLabel": "FAQ",
-      "faqTitle": "Common questions from committees and members",
-      "faq": [
-        {
-          "question": "Do members need internet access?",
-          "answer": "Yes, members can check balances and savings activity from a phone with internet access. Committee-side deposit and review work is designed for the online administration flow."
-        },
-        {
-          "question": "Can paper records still be kept?",
-          "answer": "Yes. The system is designed to support the committee’s day-to-day recordkeeping rather than replace it entirely."
-        },
-        {
-          "question": "Can members self-register?",
-          "answer": "The intended flow is approval-based. New members are added through a committee-controlled pre-approval setup before full access is granted."
-        },
-        {
-          "question": "Is this secure?",
-          "answer": "This phase focuses on a reviewable, trustworthy UI and route structure. Security hardening and real backend logic are planned for the later implementation stages."
-        }
-      ],
-      "ctaTitle": "Bring your cooperative into a cleaner digital workflow.",
-      "ctaDescription": "Use SomitiKhata to simplify savings tracking, reduce manual confusion, and provide members with a more transparent view of shared finances.",
-      "ctaButton": "Create account"
+      ]
     },
-    "footer": {
-      "brand": "SomitiKhata",
-      "tagline": "Digital savings ledger for cooperative communities",
-      "login": "Login",
-      "register": "Register",
-      "language": "বাংলা"
+    "safeguards": {
+      "title": "Books that keep their own record",
+      "items": [
+        {
+          "title": "Nothing is erased",
+          "body": "A wrong entry is reversed. The original and its reversal both stay in the ledger."
+        },
+        {
+          "title": "Closed years stay closed",
+          "body": "Once a year is closed, nobody can add or reverse an entry dated in it."
+        },
+        {
+          "title": "Each role, its own rights",
+          "body": "Super admin, admin and member can each do only what their role allows."
+        },
+        {
+          "title": "A name on every entry",
+          "body": "Who recorded each entry, and when, is kept with the transaction."
+        },
+        {
+          "title": "Exact to the paisa",
+          "body": "Every amount is kept in paisa. Nothing is rounded along the way."
+        },
+        {
+          "title": "Careful sign-in",
+          "body": "You set your own password at first sign-in. Repeated wrong passwords pause sign-in for a while."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Common questions",
+      "items": [
+        {
+          "question": "How do I become a member?",
+          "answer": "Contact the samiti office. The office opens your membership and gives you a member number, and your sign-in account is created with it."
+        },
+        {
+          "question": "How do I sign in the first time?",
+          "answer": "Use your member number and your registered mobile number as the first password. The app then asks you to set a new password."
+        },
+        {
+          "question": "What if I forget my password?",
+          "answer": "Tell the office. When an admin resets it, your password becomes your mobile number again, and you set a new one after signing in."
+        },
+        {
+          "question": "Can I deposit money online?",
+          "answer": "Not yet. Pay at the office as usual. The deposit shows in your passbook as soon as the office records it."
+        },
+        {
+          "question": "Who can see my account?",
+          "answer": "You and the samiti office. Other members can't see your account."
+        },
+        {
+          "question": "How is the dividend decided?",
+          "answer": "At year-end the committee sets the total. It is shared among active members by their Amanot and fixed Amanot, within the limits in settings, and added straight to their Amanot."
+        }
+      ]
+    },
+    "cta": {
+      "guestTitle": "See your passbook now",
+      "guestBody": "Sign in with your member number and password.",
+      "guestButton": "Sign in",
+      "userTitle": "You're signed in",
+      "userBody": "Carry on from your dashboard.",
+      "userButton": "Go to dashboard"
     }
   }
 }

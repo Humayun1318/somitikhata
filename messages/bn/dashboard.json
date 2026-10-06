@@ -35,6 +35,7 @@
     "logout": "লগআউট",
     "staffNo": "স্টাফ নং",
     "memberNo": "সদস্য নং",
-    "membership": "সদস্যপদ"
+    "membership": "সদস্যপদ",
+    "dashboard": "ড্যাশবোর্ড"
   }
 }

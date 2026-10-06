@@ -9,6 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useMe } from "@/features/auth/hooks/use-me";
 import {
+  getDashboardRoute,
   getProfileRoute,
   getRoleArea,
   getSettingsRoute,
@@ -19,9 +20,17 @@ import { cn } from "@/lib/cn";
 const ITEM_CLASS =
   "flex min-h-12 w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-app-focus sm:min-h-11 sm:py-2.5";
 
-// Avatar button in the dashboard header. Opens the account menu:
-// profile, settings and logout. User data comes from useMe() (GET /user/me).
-export function ProfileMenu() {
+type ProfileMenuProps = {
+  /**
+   * "dashboard" (header inside the app): profile + settings/membership.
+   * "public" (home page navbar): dashboard + profile, the way back into the app.
+   */
+  variant?: "dashboard" | "public";
+};
+
+// Avatar button with the account menu, then logout. Used in the dashboard
+// header and in the public navbar. User data comes from useMe() (GET /user/me).
+export function ProfileMenu({ variant = "dashboard" }: ProfileMenuProps) {
   const t = useTranslations("DashboardHeader");
   const { data: user } = useMe();
   const logout = useLogout();
@@ -36,13 +45,17 @@ export function ProfileMenu() {
   const identifier = isStaff ? user?.staffNo : user?.memberNo;
   const identifierLabel = isStaff ? t("staffNo") : t("memberNo");
 
-  const menuItems = [
-    { href: getProfileRoute(area), label: t("profile"), icon: "User" },
-    // Members have no settings page: their second link is their membership record.
-    isStaff
-      ? { href: getSettingsRoute(area), label: t("settings"), icon: "Settings" }
-      : { href: "/member/membership", label: t("membership"), icon: "IdCard" },
-  ];
+  const profileItem = { href: getProfileRoute(area), label: t("profile"), icon: "User" };
+  const menuItems =
+    variant === "public"
+      ? [{ href: getDashboardRoute(area), label: t("dashboard"), icon: "LayoutDashboard" }, profileItem]
+      : [
+          profileItem,
+          // Members have no settings page: their second link is their membership record.
+          isStaff
+            ? { href: getSettingsRoute(area), label: t("settings"), icon: "Settings" }
+            : { href: "/member/membership", label: t("membership"), icon: "IdCard" },
+        ];
 
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((open) => !open);

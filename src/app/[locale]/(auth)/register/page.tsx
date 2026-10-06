@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Building2, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 
@@ -27,10 +27,7 @@ export default async function RegisterPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-app-primary/10 text-app-primary">
-          <Building2 aria-hidden="true" className="h-7 w-7" />
-        </span>
-        <h1 className="mt-4 text-2xl font-bold text-app-text">{t("registerTitle")}</h1>
+        <h1 className="mt-2 text-2xl font-bold text-app-text">{t("registerTitle")}</h1>
         <p className="mt-1.5 text-sm text-app-text-muted">{t("registerSubtitle")}</p>
       </div>
 

@@ -1,121 +1,85 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link, usePathname } from "@/i18n/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { Menu, X } from "lucide-react";
+
 import { BrandLogo } from "@/components/shared/brand-logo";
-import { AuthNavButton } from "@/features/auth/components/auth-nav-button";
+import { AccountNav } from "@/features/auth/components/account-nav";
+import { Link, usePathname } from "@/i18n/navigation";
 
-type PublicNavbarProps = {
-  locale: string;
-  howItWorksLabel: string;
-  featuresLabel: string;
-  faqLabel: string;
-  languageLabel: string;
-  loginLabel: string;
-  logoutLabel: string;
-  navigationLabel: string;
-  mobileNavigationLabel: string;
-  openMenuLabel: string;
-  closeMenuLabel: string;
-  shortName: string;
-  registration: string;
-  legalName: string;
-  location: string;
-};
+// Sections of the home page. From another page (login, register) the links go
+// to the home page first, then to the section.
+const SECTIONS = [
+  { id: "modules", key: "modules" },
+  { id: "year", key: "year" },
+  { id: "faq", key: "faq" },
+] as const;
 
-export function PublicNavbar({
-  locale,
-  howItWorksLabel,
-  featuresLabel,
-  faqLabel,
-  languageLabel,
-  loginLabel,
-  logoutLabel,
-  navigationLabel,
-  mobileNavigationLabel,
-  openMenuLabel,
-  closeMenuLabel,
-  shortName,
-  registration,
-  legalName,
-  location,
-}: PublicNavbarProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const nextLocale = locale === "en" ? "bn" : "en";
+const LINK_CLASS =
+  "rounded-md px-1 py-1 text-sm font-medium text-app-text-muted transition-colors hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus";
+
+// Top bar of the public pages (home, login, register).
+export function PublicNavbar() {
+  const t = useTranslations("HomePage.nav");
+  const locale = useLocale();
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const nextLocale = locale === "en" ? "bn" : "en";
+  const isHome = pathname === "/";
+  const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
   const closeMenu = () => setIsMenuOpen(false);
+  const toggleMenu = () => setIsMenuOpen((open) => !open);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-app-border bg-app-background/95 shadow-sm backdrop-blur-md">
-      <div className="mx-auto flex min-h-16 max-w-app-wide items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8 ">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-app-border/80 bg-app-background/90 backdrop-blur-md print:hidden">
+      <div className="mx-auto flex h-16 max-w-app-wide items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
           onClick={closeMenu}
-          aria-label="বটতলী সমবায় home"
-          className="rounded-lg outline-offset-4 focus-visible:outline-2 focus-visible:outline-app-focus "
+          aria-label={t("homeLabel")}
+          className="min-w-0 rounded-lg outline-offset-4 focus-visible:outline-2 focus-visible:outline-app-focus"
         >
           <BrandLogo
-            shortName={shortName}
-            registration={registration}
-            legalName={legalName}
-            location={location}
+            shortName={t("shortName")}
+            registration={t("registration")}
+            legalName={t("legalName")}
+            location={t("location")}
           />
         </Link>
 
-        <nav
-          aria-label={navigationLabel}
-          className="hidden items-center gap-6 text-sm font-medium text-app-text-muted md:flex"
-        >
-          <Link
-            href="#how-it-works"
-            className="rounded-md px-1 py-1 transition hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus"
-          >
-            {howItWorksLabel}
-          </Link>
-          <Link
-            href="#features"
-            className="rounded-md px-1 py-1 transition hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus"
-          >
-            {featuresLabel}
-          </Link>
-          <Link
-            href="#faq"
-            className="rounded-md px-1 py-1 transition hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus"
-          >
-            {faqLabel}
-          </Link>
+        <nav aria-label={t("navigationLabel")} className="hidden items-center gap-7 md:flex">
+          {SECTIONS.map((section) => (
+            <a key={section.id} href={sectionHref(section.id)} className={LINK_CLASS}>
+              {t(section.key)}
+            </a>
+          ))}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
             href={pathname}
             locale={nextLocale}
             onClick={closeMenu}
-            className="rounded-full border border-app-border bg-app-surface px-2.5 py-1.5 text-xs font-semibold text-app-text-muted transition hover:border-app-primary hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus sm:px-3"
+            title={t("languageLabel")}
+            aria-label={t("languageLabel")}
+            className="flex h-9 min-w-9 items-center justify-center rounded-full border border-app-border bg-app-surface px-2 text-xs font-bold text-app-text transition-colors hover:border-app-primary hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus"
           >
-            {languageLabel}
+            {t("language")}
           </Link>
-          <AuthNavButton
-            variant="desktop"
-            loginLabel={loginLabel}
-            logoutLabel={logoutLabel}
-            onNavigate={closeMenu}
-          />
+
+          <AccountNav placement="bar" loginLabel={t("login")} />
 
           <button
             type="button"
             aria-expanded={isMenuOpen}
             aria-controls="public-mobile-navigation"
-            aria-label={isMenuOpen ? closeMenuLabel : openMenuLabel}
-            onClick={() => setIsMenuOpen((open) => !open)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-app-border bg-app-surface text-app-text transition hover:border-app-primary hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus md:hidden"
+            aria-label={isMenuOpen ? t("closeMenuLabel") : t("openMenuLabel")}
+            onClick={toggleMenu}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-app-border bg-app-surface text-app-text transition-colors hover:border-app-primary hover:text-app-primary focus-visible:outline-2 focus-visible:outline-app-focus md:hidden"
           >
-            {isMenuOpen ? (
-              <X aria-hidden="true" size={20} />
-            ) : (
-              <Menu aria-hidden="true" size={20} />
-            )}
+            {isMenuOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
           </button>
         </div>
       </div>
@@ -123,42 +87,24 @@ export function PublicNavbar({
       {isMenuOpen && (
         <nav
           id="public-mobile-navigation"
-          aria-label={mobileNavigationLabel}
+          aria-label={t("mobileNavigationLabel")}
           className="border-t border-app-border bg-app-surface px-4 py-3 md:hidden"
         >
-          <div className="mx-auto flex max-w-app-wide flex-col gap-1 sm:px-2">
-            <Link
-              href="#how-it-works"
-              onClick={closeMenu}
-              className="rounded-lg px-3 py-3 text-sm font-medium text-app-text transition hover:bg-app-surface-muted hover:text-app-primary"
-            >
-              {howItWorksLabel}
-            </Link>
-            <Link
-              href="#features"
-              onClick={closeMenu}
-              className="rounded-lg px-3 py-3 text-sm font-medium text-app-text transition hover:bg-app-surface-muted hover:text-app-primary"
-            >
-              {featuresLabel}
-            </Link>
-            <Link
-              href="#faq"
-              onClick={closeMenu}
-              className="rounded-lg px-3 py-3 text-sm font-medium text-app-text transition hover:bg-app-surface-muted hover:text-app-primary"
-            >
-              {faqLabel}
-            </Link>
-            <AuthNavButton
-              variant="mobile"
-              loginLabel={loginLabel}
-              logoutLabel={logoutLabel}
-              onNavigate={closeMenu}
-            />
+          <div className="flex flex-col gap-1">
+            {SECTIONS.map((section) => (
+              <a
+                key={section.id}
+                href={sectionHref(section.id)}
+                onClick={closeMenu}
+                className="rounded-lg px-3 py-3 text-sm font-medium text-app-text transition-colors hover:bg-app-surface-muted hover:text-app-primary"
+              >
+                {t(section.key)}
+              </a>
+            ))}
+            <AccountNav placement="menu" loginLabel={t("login")} onNavigate={closeMenu} />
           </div>
         </nav>
       )}
     </header>
   );
 }
-
-export type { PublicNavbarProps };

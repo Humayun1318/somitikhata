@@ -259,6 +259,23 @@ or page change would be noise.
   filters; details dialog with the schedule and the next step (approve, reject,
   disburse, collect next installment). Disburse/collect refresh the collections views.
 
+## 0.15 Home page and branding
+
+- Home (`features/home`, `app/[locale]/(public)/page.tsx`): server sections with
+  texts in `messages/<locale>/home.json`; only the parts that depend on the signed-in
+  user are client components (`HomeActions`, the navbar's `AccountNav`, the footer).
+  It describes only features that work and shows no figures (the hero ledger draws
+  ink strokes, not numbers).
+- Public navbar: signed in → the dashboard's `ProfileMenu variant="public"`
+  (dashboard, profile, logout); guest → Sign in.
+- Server components that call `useTranslations()` rely on `setRequestLocale()` in
+  the layout/page and on `requestLocale` in `i18n/request.ts`.
+- `public/branding`: every file is generated from one transparent master logo at
+  the size its name says (favicons 16/32/48, PWA 192/512 + maskable with a white
+  safe-zone background, apple-touch-icon 180 opaque, logo-mark 1024, preview 500,
+  badge 512). `src/app/favicon.ico` serves `/favicon.ico`; the icon links are set
+  in the root layout's metadata. Keep the file names: the manifest and pages use them.
+
 ## 0.14 Year-end, reports and dashboards
 
 - **Year-end** (`features/year-end`, `/admin/year-end?year=`): status from

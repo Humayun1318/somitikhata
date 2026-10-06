@@ -35,6 +35,7 @@
     "logout": "Logout",
     "staffNo": "Staff ID",
     "memberNo": "Member ID",
-    "membership": "Membership"
+    "membership": "Membership",
+    "dashboard": "Dashboard"
   }
 }

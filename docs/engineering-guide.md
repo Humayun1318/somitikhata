@@ -53,6 +53,23 @@ new page/search loads (`placeholderData: keepPreviousData` keeps the old
 rows visible). No toast for reads — a toast on every search keystroke
 or page change would be noise.
 
+- A list that belongs to one thing (passbook of a member, cash book of an
+  account) uses `keepPreviousInScope(queryKey, index)` (`lib/query/keep-previous.ts`)
+  instead of `keepPreviousData`, so member B never shows member A's rows.
+- Show the red error state only when there is **no data**
+  (`isError && !data`). A failed background refetch keeps the data on screen.
+  Render content from `data`, not `isSuccess` (a failed refetch flips the status
+  to `error` but keeps `data`).
+- A disabled query is `isPending` forever. Gate skeletons with the same
+  condition as `enabled`, or pass `enabled` and keep the key, so closing a
+  dialog keeps its data instead of flashing a skeleton.
+- Queries retry network/5xx/429 errors twice; 4xx never (`make-query-client.ts`).
+- After a mutation, invalidate every key that shows the changed data (see
+  `invalidateMemberViews`, `useRefreshCollections`). Invalidation only refetches
+  queries on screen; the rest are marked stale, so a wide prefix is cheap.
+- A dialog that keeps a row snapshot shows the list's current row with the same
+  `_id` when there is one (Members page).
+
 **Actions (`useMutation`)** — login, logout, create, update, delete:
 
 1. **Loading toast — automatic.** `MutationLoadingToasts` (mounted once in
@@ -241,6 +258,34 @@ or page change would be noise.
 - **Loans** (`features/loans`, `/admin/loans`): list with status / member / loan no.
   filters; details dialog with the schedule and the next step (approve, reject,
   disburse, collect next installment). Disburse/collect refresh the collections views.
+
+## 0.14 Year-end, reports and dashboards
+
+- **Year-end** (`features/year-end`, `/admin/year-end?year=`): status from
+  `GET /year-end/:fiscalYear` (steps, depreciation, closed or not). Admins see it;
+  only the super admin gets "Preview and run" / "Add depreciation". Each run dialog
+  shows the server's own preview (`POST …/preview`, never cached) and needs a ticked
+  confirmation. The dividend needs the committee's amount first. A run refreshes
+  every query except the signed-in user (it changes balances everywhere and the
+  appropriation closes the books). Why a step can't run is worked out from the
+  status (the backend's reason is English). Backend messages → `year-end-errors.ts`.
+- **Reports** (`features/reports`, `/admin/reports?report=&year=&account=`): the five
+  report endpoints; only the params `report.validation.ts` accepts are sent (dates as
+  `YYYY-MM-DD`). A running year is shown up to today. "Print" uses the browser; the
+  dashboard shell hides its navigation in print.
+- **Dashboards** (`features/overview`): admin `GET /dashboard/overview?fiscalYear=`,
+  member `GET /dashboard/my-overview`; the member's passbook `GET /transactions/my-ledger`
+  and loans `GET /loans/my-loans` (`features/member-area`). A member can't read the
+  transaction-type catalog, so `ledger-direction.ts` reads a row's effect from its
+  system code.
+- **Summaries go stale with every change**: `invalidateSummaries()` (overview, reports,
+  year-end status) is called by every money, member, loan, head and setting mutation.
+- **Not supported by the backend yet** (online deposit request, online loan application,
+  pending/online member applications, member settings, online sign-up): the page shows
+  `ComingSoon` (or, for sign-up, how membership is opened at the office) — never sample
+  data and never a form that can't be sent.
+- Shared pieces: `QueryState` (loading / error-only-without-data / content),
+  `StatCard` + `StatGrid`, `ComingSoon`, `lib/fiscal-year.ts` (labels like `2025-26`).
 
 ------------------------------------------------------------------------
 

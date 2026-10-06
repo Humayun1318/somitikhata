@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Eye, HandCoins, Plus, X } from "lucide-react";
 
-import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-states";
+import { PageHeader } from "@/components/shared/page-header";
+import { ListEmpty, ListError, ListLoading, ListUpdatingHint } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
 import { Pagination } from "@/components/shared/pagination";
 import { SearchInput } from "@/components/shared/search-input";
 import { Button } from "@/components/ui/button";
 import { SegmentedControl } from "@/components/ui/segmented-control";
-import { Spinner } from "@/components/ui/spinner";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 import { cn } from "@/lib/cn";
 
@@ -66,16 +66,12 @@ export function LoansPage() {
 
   return (
     <div className="space-y-5">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-app-text">{t("title")}</h1>
-          <p className="mt-1 text-sm text-app-text-muted">{t("subtitle")}</p>
-        </div>
+      <PageHeader title={t("title")} subtitle={t("subtitle")}>
         <Button onClick={() => open("apply")} className="w-full gap-2 sm:w-auto">
           <Plus aria-hidden="true" className="h-4 w-4" />
           {t("newApplication")}
         </Button>
-      </header>
+      </PageHeader>
 
       <div className="space-y-3">
         <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
@@ -104,14 +100,7 @@ export function LoansPage() {
       </div>
 
       <section className="relative space-y-4">
-        <p aria-live="polite" className="absolute -top-5 right-1 text-xs text-app-text-muted">
-          {isUpdating && (
-            <span className="inline-flex items-center gap-1.5">
-              <Spinner className="h-3 w-3" />
-              {t("updating")}
-            </span>
-          )}
-        </p>
+        <ListUpdatingHint show={isUpdating} label={t("updating")} />
 
         {isPending && !showError && <ListLoading />}
         {showError && <ListError title={t("error")} retryLabel={t("retry")} onRetry={retry} isRetrying={isFetching} />}

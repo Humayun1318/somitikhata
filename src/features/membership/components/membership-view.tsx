@@ -36,7 +36,10 @@ export function MembershipView() {
     mono,
   });
 
-  const isNotLinked = error?.status === 404;
+  // Errors matter only while there is nothing to show; a failed background
+  // refetch keeps the record on screen.
+  const isNotLinked = !member && error?.status === 404;
+  const showError = !member && !!error && !isNotLinked;
   const retry = () => void refetch();
 
   const relation = member?.guardianRelation ? t(`relation.${member.guardianRelation}`) : "";
@@ -102,7 +105,7 @@ export function MembershipView() {
 
       {isPending && <ListLoading rows={3} />}
       {isNotLinked && <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">{t("notLinked")}</p>}
-      {error && !isNotLinked && <ListError title={t("error")} retryLabel={t("retry")} onRetry={retry} isRetrying={isFetching} />}
+      {showError && <ListError title={t("error")} retryLabel={t("retry")} onRetry={retry} isRetrying={isFetching} />}
 
       {member && (
         <section className="flex items-center gap-4 rounded-2xl border border-app-border bg-linear-to-br from-app-primary/10 via-app-surface to-app-surface p-5 motion-safe:animate-fade-in-up sm:p-6">
@@ -128,7 +131,7 @@ export function MembershipView() {
           {/* GET /nominee/my-nominees: read only. Changes go through the society office. */}
           <InfoSection id="membership-nominee" icon={UsersRound} title={t("nominee.title")} hint={t("nominee.hint")} rows={[]}>
             {nominees.isPending && <div aria-busy="true" className="h-24 animate-pulse rounded-2xl bg-app-surface-muted" />}
-            {nominees.isError && (
+            {nominees.isError && !nominees.data && (
               <ListError title={t("nominee.error")} retryLabel={t("retry")} onRetry={retryNominees} isRetrying={nominees.isFetching} />
             )}
             {nominees.data && nomineeList.length === 0 && <p className="text-sm text-app-text-muted">{t("nominee.empty")}</p>}

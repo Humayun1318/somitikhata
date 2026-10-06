@@ -13,12 +13,14 @@ export function DesktopSidebar({ items }: { items: DashboardSidebarItem[] }) {
 
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-app-border bg-app-surface px-4 py-6 md:flex md:h-full">
-      <BrandLogo
-        shortName={t("HomePage.nav.shortName")}
-        registration={t("HomePage.nav.registration")}
-        legalName={t("HomePage.nav.legalName")}
-        location={t("HomePage.nav.location")}
-      />
+      <Link href="/" className="rounded-lg outline-offset-4 focus-visible:outline-2 focus-visible:outline-app-focus">
+        <BrandLogo
+          shortName={t("HomePage.nav.shortName")}
+          registration={t("HomePage.nav.registration")}
+          legalName={t("HomePage.nav.legalName")}
+          location={t("HomePage.nav.location")}
+        />
+      </Link>
 
       <nav className="flex-1 space-y-1.5 overflow-y-auto mt-4">
         {items.map((item) => {

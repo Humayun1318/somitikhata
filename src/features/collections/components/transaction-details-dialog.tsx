@@ -33,8 +33,11 @@ export function TransactionDetailsDialog({ open, onClose, transaction, catalog, 
   const t = useTranslations("TransactionDetails");
   const format = useFormatter();
   const locale = useLocale();
-  const reversal = useReversalOf(open ? transaction : null);
-  const lock = useSetting(open ? "backdate_lock_until" : "");
+  // The reversal check runs while open and keeps its answer while the dialog
+  // closes, so the Reverse button doesn't jump during the close animation.
+  // The lock date is one cached setting, shared with the record form.
+  const reversal = useReversalOf(transaction, open);
+  const lock = useSetting("backdate_lock_until");
   const accounts = useCashAccounts();
   const empty = "—";
 
@@ -57,7 +60,7 @@ export function TransactionDetailsDialog({ open, onClose, transaction, catalog, 
     !isYearEndEntry &&
     !isClosedYear &&
     isLockKnown &&
-    reversal.isSuccess &&
+    reversal.data !== undefined &&
     !reversedBy;
   const showNotReversible = !isReversal && !!type && !type.reversalTypeCode;
   const showLoanNote = !isReversal && isLoanEntry;

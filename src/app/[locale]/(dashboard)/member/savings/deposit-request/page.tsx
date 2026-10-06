@@ -1,5 +1,6 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { UnavailablePage } from "@/features/member-area/components/unavailable-page";
 
+// Not supported by the backend yet: a finished "coming soon" notice, no sample data.
 export default function MemberDepositRequestPage() {
-  return <PageHeader titleKey="depositRequest" />;
+  return <UnavailablePage name="depositRequest" />;
 }

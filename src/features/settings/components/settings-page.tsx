@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { CalendarClock, Info, Pencil } from "lucide-react";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { ListError, ListLoading } from "@/components/shared/list-states";
 import { Button } from "@/components/ui/button";
 import { useMe } from "@/features/auth/hooks/use-me";
@@ -79,10 +80,7 @@ export function SettingsPage() {
 
   return (
     <div className="space-y-5">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight text-app-text">{t("title")}</h1>
-        <p className="mt-1 text-sm text-app-text-muted">{t("subtitle")}</p>
-      </header>
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
 
       {!isSuperAdmin && (
         <p className="flex items-start gap-2.5 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
@@ -92,11 +90,11 @@ export function SettingsPage() {
       )}
 
       {settings.isPending && <ListLoading rows={4} />}
-      {settings.isError && (
+      {settings.isError && !settings.data && (
         <ListError title={t("error")} retryLabel={t("retry")} onRetry={retry} isRetrying={settings.isFetching} />
       )}
 
-      {settings.isSuccess &&
+      {settings.data &&
         groups.map((group) => (
           <section key={group.id} className="rounded-2xl border border-app-border bg-app-surface">
             <div className="border-b border-app-border px-4 py-3 sm:px-5">

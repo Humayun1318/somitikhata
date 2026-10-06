@@ -38,7 +38,10 @@ export function ProfileMenu() {
 
   const menuItems = [
     { href: getProfileRoute(area), label: t("profile"), icon: "User" },
-    { href: getSettingsRoute(area), label: t("settings"), icon: "Settings" },
+    // Members have no settings page: their second link is their membership record.
+    isStaff
+      ? { href: getSettingsRoute(area), label: t("settings"), icon: "Settings" }
+      : { href: "/member/membership", label: t("membership"), icon: "IdCard" },
   ];
 
   const closeMenu = () => setIsOpen(false);

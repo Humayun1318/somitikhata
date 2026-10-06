@@ -1,0 +1,147 @@
+{
+  "AdminOverview": {
+    "title": "অ্যাডমিন ওভারভিউ",
+    "subtitle": "{date} পর্যন্ত সমিতির হিসাব",
+    "subtitleLoading": "সমিতির হিসাব এক নজরে",
+    "yearLabel": "অর্থবছর",
+    "yearOption": "অর্থবছর {year}",
+    "error": "ওভারভিউ লোড করা যায়নি।",
+    "retry": "আবার চেষ্টা করুন",
+    "viewAll": "সব দেখুন",
+    "openReport": "রিপোর্ট খুলুন",
+    "sections": {
+      "cash": "নগদ ও ব্যাংক",
+      "members": "সদস্য ও তাদের জমা",
+      "flows": "এ বছরের লেনদেন",
+      "loans": "ঋণ",
+      "monthly": "মাসওয়ারি আমানত জমা ও উত্তোলন",
+      "incomeExpense": "আয়-ব্যয় ও তহবিল"
+    },
+    "cash": {
+      "total": "মোট নগদ + ব্যাংক",
+      "inHand": "হাতে নগদ",
+      "bank": "ব্যাংকে",
+      "netProfit": "এ বছরের নিট লাভ",
+      "netProfitHint": "এখন পর্যন্ত আয় − ব্যয়"
+    },
+    "members": {
+      "total": "মোট সদস্য",
+      "byStatus": "সক্রিয় {active} · নিষ্ক্রিয়/স্থগিত {inactive}",
+      "joined": "এ বছরে যোগ দিয়েছেন"
+    },
+    "balances": {
+      "amanot": "সদস্যদের মোট আমানত",
+      "shareAndStayi": "শেয়ার + স্থায়ী আমানত",
+      "share": "শেয়ার",
+      "stayi": "স্থায়ী"
+    },
+    "flows": {
+      "amanotDeposits": "আমানত জমা",
+      "amanotWithdrawals": "আমানত উত্তোলন",
+      "otherDeposits": "শেয়ার ও স্থায়ী আমানত জমা",
+      "otherDepositsHint": "নতুন সদস্যের শেয়ার আর জমির জন্য জমা",
+      "yearEnd": "সার্ভিস চার্জ",
+      "dividend": "লভ্যাংশ"
+    },
+    "loans": {
+      "outstanding": "বকেয়া ঋণ",
+      "active": "চলমান {count, number}টি ঋণ",
+      "disbursed": "এ বছরে দেওয়া ঋণ",
+      "repaid": "এ বছরে আদায় (আসল)",
+      "interest": "সুদ",
+      "overdue": "মেয়াদ পেরোনো কিস্তি",
+      "overdueCount": "{count, number}টি কিস্তি"
+    },
+    "incomeExpense": {
+      "income": "মোট আয়",
+      "expense": "মোট ব্যয়",
+      "netProfit": "নিট লাভ"
+    },
+    "pending": {
+      "title": "যা করা বাকি",
+      "none": "এই মুহূর্তে কোনো কাজ বাকি নেই।",
+      "loanApplications": "{count, number}টি ঋণ আবেদন অনুমোদনের অপেক্ষায়",
+      "loansToDisburse": "{count, number}টি অনুমোদিত ঋণ দেওয়া বাকি",
+      "overdue": "{count, number}টি কিস্তির মেয়াদ পেরিয়েছে",
+      "serviceChargeDue": "{count, number} জন সদস্যের সার্ভিস চার্জ বকেয়া",
+      "yearEnd": "{fiscalYear}-এর বছর শেষের কাজ বাকি (পরের ধাপ: {step})"
+    },
+    "monthly": {
+      "month": "মাস",
+      "deposits": "জমা",
+      "withdrawals": "উত্তোলন",
+      "empty": "এই বছরে কোনো লেনদেন নেই।"
+    }
+  },
+  "MemberArea": {
+    "error": "তথ্য লোড করা যায়নি।",
+    "retry": "আবার চেষ্টা করুন",
+    "updating": "হালনাগাদ হচ্ছে…",
+    "reversal": "রিভার্স",
+    "dashboard": {
+      "title": "ড্যাশবোর্ড",
+      "greeting": "স্বাগতম, {name}",
+      "subtitle": "আপনার সঞ্চয়, ঋণ আর সাম্প্রতিক লেনদেন।",
+      "memberSince": "সদস্য {date} থেকে",
+      "loanTitle": "আমার ঋণ",
+      "loanLink": "সব ঋণ দেখুন",
+      "principal": "ঋণের টাকা",
+      "nextInstallment": "পরের কিস্তি ({date})",
+      "overdue": "{count, number}টি কিস্তির মেয়াদ পেরিয়েছে",
+      "noLoan": "এখন কোনো চলমান ঋণ নেই।",
+      "dividendTitle": "সর্বশেষ লভ্যাংশ",
+      "dividendFor": "অর্থবছর {fiscalYear}",
+      "noDividend": "এখনো কোনো লভ্যাংশ পাননি।",
+      "serviceChargeTitle": "সার্ভিস চার্জ",
+      "serviceChargeDue": "বকেয়া। পরের আমানত জমা থেকে আপনা-আপনি কাটা হবে।",
+      "noServiceChargeDue": "কোনো বকেয়া নেই।",
+      "recent": "সাম্প্রতিক লেনদেন",
+      "allTransactions": "সব লেনদেন"
+    },
+    "savings": {
+      "title": "আমার সঞ্চয়",
+      "subtitle": "আপনার জের আর পাসবইয়ের সব এন্ট্রি।",
+      "ledgerTitle": "পাসবই",
+      "error": "পাসবই লোড করা যায়নি।",
+      "emptyTitle": "এখনো কোনো লেনদেন নেই",
+      "emptyBody": "সমিতিতে জমা বা উত্তোলন হলে এখানে দেখা যাবে।"
+    },
+    "loans": {
+      "title": "আমার ঋণ",
+      "subtitle": "আপনার সব ঋণ আবেদন ও ঋণ।",
+      "nextTitle": "{loanNo}-এর পরের কিস্তি",
+      "nextLine": "কিস্তি {number} · তারিখ {date}",
+      "remaining": "বাকি {count, number}টি কিস্তি",
+      "error": "ঋণের তথ্য লোড করা যায়নি।",
+      "emptyTitle": "কোনো ঋণ নেই",
+      "emptyBody": "ঋণ নিতে সমিতির অফিসে যোগাযোগ করুন।",
+      "terms": "সুদ · মেয়াদ",
+      "termsValue": "বছরে {rate}% · {months} মাস",
+      "applied": "আবেদন",
+      "disbursed": "ঋণ প্রদান",
+      "closed": "পরিশোধ শেষ"
+    }
+  },
+  "Unavailable": {
+    "depositRequest": {
+      "body": "অনলাইনে জমার অনুরোধ পাঠানোর সুবিধা এখনো চালু হয়নি।",
+      "hint": "জমা দিতে আগের মতো সমিতির অফিসে টাকা দিন। জমা হলে তা সঙ্গে সঙ্গে আপনার পাসবইয়ে দেখা যাবে।",
+      "back": "আমার সঞ্চয় দেখুন"
+    },
+    "applyLoan": {
+      "body": "অনলাইনে ঋণ আবেদনের সুবিধা এখনো চালু হয়নি।",
+      "hint": "ঋণের জন্য সমিতির অফিসে আবেদন করুন। আবেদন হলে \"আমার ঋণ\" পাতায় দেখা যাবে।",
+      "back": "আমার ঋণ দেখুন"
+    },
+    "memberSettings": {
+      "body": "সদস্যের আলাদা সেটিংস পাতা এখনো নেই।",
+      "hint": "পাসওয়ার্ড বদলাতে প্রোফাইল পাতায় যান।",
+      "back": "প্রোফাইলে যান"
+    },
+    "pendingMembers": {
+      "body": "অনলাইনে সদস্য হওয়ার আবেদন আর তা অনুমোদনের সুবিধা এখনো চালু হয়নি।",
+      "hint": "নতুন সদস্য \"সকল সদস্য\" পাতার \"সদস্য যোগ করুন\" দিয়ে সরাসরি যোগ করুন।",
+      "back": "সকল সদস্য দেখুন"
+    }
+  }
+}

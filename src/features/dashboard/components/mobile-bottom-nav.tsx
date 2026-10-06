@@ -71,7 +71,7 @@ export function MobileBottomNav({
         className="flex flex-1 flex-col items-center justify-center py-1 text-xs font-medium text-app-text-muted transition-colors hover:text-app-text"
       >
         <DynamicIcon name="Menu" className="h-5 w-5" />
-        <span className="mt-1 text-[10px]">মোড় (More)</span>
+        <span className="mt-1 text-[10px]">{t("DashboardSidebar.more")}</span>
       </button>
     </nav>
   );

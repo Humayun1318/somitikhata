@@ -2,6 +2,8 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { loanKeys } from "@/features/loans/query-keys";
+import { invalidateSummaries } from "@/features/overview/invalidate-summaries";
 import { ApiError } from "@/lib/api-errors";
 
 import { settingApi } from "../api";
@@ -32,6 +34,13 @@ export function useUpdateSetting() {
   return useMutation<unknown, ApiError, UpdateVariables>({
     meta: { loadingMessage: "updateSetting" },
     mutationFn: ({ key, ...payload }) => settingApi.update(key, payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: settingKeys.all }),
+    // Loan eligibility is worked out from settings (e.g. loan_limit_percent).
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: settingKeys.all }),
+        queryClient.invalidateQueries({ queryKey: loanKeys.eligibilities() }),
+        // The closed-books date shows on the year-end page and the dashboards.
+        invalidateSummaries(queryClient),
+      ]),
   });
 }

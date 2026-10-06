@@ -202,7 +202,7 @@ export function SocietyEntryDialog({ open, onClose, kind, catalog, defaultHeadId
             />
           )}
         />
-        {heads.isSuccess && headOptions.length === 0 && (
+        {heads.data && headOptions.length === 0 && (
           <p className="mt-1.5 text-xs text-amber-700">{t(`noHeads.${kind}`)}</p>
         )}
         {headBalanceText && <p className="mt-1.5 text-xs text-app-text-muted">{headBalanceText}</p>}

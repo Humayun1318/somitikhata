@@ -41,14 +41,14 @@ export function MobileDrawer({ isOpen, onClose, items }: MobileDrawerProps) {
         )}
       >
         <div className="mb-6 flex items-center justify-between border-b border-app-border pb-4">
-          <span className="text-base font-bold text-app-text">
+          <Link href="/" onClick={onClose} className="rounded-lg text-base font-bold text-app-text outline-offset-4 focus-visible:outline-2 focus-visible:outline-app-focus">
             <BrandLogo
               shortName={t("HomePage.nav.shortName")}
               registration={t("HomePage.nav.registration")}
               legalName={t("HomePage.nav.legalName")}
               location={t("HomePage.nav.location")}
             />
-          </span>
+          </Link>
           <button
             onClick={onClose}
             className="rounded-lg p-1.5 text-app-text-muted hover:bg-app-surface-muted hover:text-app-text transition-colors"

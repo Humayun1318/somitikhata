@@ -4,8 +4,7 @@ import { DashboardSidebarItem } from "@/features/dashboard/types";
 
 export class DashboardSidebarConfig {
   static readonly items: DashboardSidebarItem[] = [
-    // ==========================================
-    // ==========================================
+    // Member area
     {
       id: 'member-dashboard',
       titleKey: 'DashboardSidebar.dashboard',
@@ -74,8 +73,7 @@ export class DashboardSidebarConfig {
       roles: ['MEMBER'],
     },
 
-    // ==========================================
-    // ==========================================
+    // Admin area (super admin included; super-admin-only actions are hidden inside the pages)
     {
       id: 'admin-dashboard',
       titleKey: 'DashboardSidebar.adminDashboard',
@@ -174,6 +172,22 @@ export class DashboardSidebarConfig {
       iconName: 'BarChart3',
       roles: ['ADMIN'],
       permissions: ['VIEW_REPORTS'],
+      children: [
+        {
+          id: 'admin-reports-list',
+          titleKey: 'DashboardSidebar.reportsList',
+          href: '/admin/reports',
+          iconName: 'FileText',
+          roles: ['ADMIN'],
+        },
+        {
+          id: 'admin-year-end',
+          titleKey: 'DashboardSidebar.yearEnd',
+          href: '/admin/year-end',
+          iconName: 'CalendarCheck',
+          roles: ['ADMIN'],
+        },
+      ],
     },
     {
       id: 'admin-admins',
@@ -196,6 +210,5 @@ export class DashboardSidebarConfig {
       iconName: 'User',
       roles: ['ADMIN'],
     },
-    
   ];
 }

@@ -1,0 +1,68 @@
+{
+  "Reports": {
+    "title": "Reports",
+    "subtitle": "The year's statements, made from the samiti's books. Pick a fiscal year to read or print.",
+    "print": "Print",
+    "kindLabel": "Report",
+    "yearLabel": "Fiscal year",
+    "yearOption": "Fiscal year {year}",
+    "accountLabel": "Account",
+    "allAccounts": "All cash and bank accounts",
+    "asOf": "As of {date}",
+    "period": "{from} to {to}",
+    "error": "Couldn't load the report.",
+    "retry": "Try again",
+    "dividendNotRun": "The dividend for {fiscalYear} has not been paid yet",
+    "dividendNotRunBody": "Once the dividend is run from the Year-end page, the member list shows here.",
+    "kinds": {
+      "receipts-payments": "Receipts & payments",
+      "trial-balance": "Trial balance",
+      "income-expenditure": "Income & expenditure",
+      "balance-sheet": "Balance sheet",
+      "dividend": "Dividend list"
+    },
+    "hints": {
+      "receipts-payments": "How much came into and went out of cash and bank in the year. The current year up to today.",
+      "trial-balance": "Each head's debit or credit balance. Equal totals mean the books agree.",
+      "income-expenditure": "The year's income, expense and net profit, and the appropriation once it is run.",
+      "balance-sheet": "Assets against liabilities and funds on the year's last day (today for the current year).",
+      "dividend": "Who got how much once the dividend is run."
+    },
+    "receiptsPayments": {
+      "receipts": "Receipts",
+      "payments": "Payments",
+      "opening": "Opening balance",
+      "closing": "Closing balance",
+      "total": "Total",
+      "totalReceipts": "Total received in the year",
+      "totalPayments": "Total paid in the year",
+      "actualClosing": "Accounts' actual balance",
+      "difference": "Difference between the closing balance and the accounts' actual balance:"
+    },
+    "trialBalance": {
+      "serial": "No.",
+      "head": "Head",
+      "debit": "Debit",
+      "credit": "Credit",
+      "total": "Total",
+      "difference": "Difference between total debit and credit:"
+    },
+    "incomeExpenditure": {
+      "expense": "Expenditure",
+      "income": "Income",
+      "netProfit": "Net profit",
+      "netLoss": "Net loss",
+      "total": "Total",
+      "appropriationTitle": "Profit appropriation",
+      "appropriationTotal": "Total appropriated",
+      "notAppropriated": "This year's profit has not been appropriated yet."
+    },
+    "balanceSheet": {
+      "liabilities": "Liabilities & funds",
+      "assets": "Assets",
+      "total": "Total",
+      "previous": "Brought forward (start of year)",
+      "difference": "Difference between assets and liabilities:"
+    }
+  }
+}

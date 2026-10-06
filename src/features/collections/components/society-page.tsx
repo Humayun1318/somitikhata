@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeftRight, Building2, HandCoins, Landmark, ReceiptText, X, type LucideIcon } from "lucide-react";
 
 import { Money } from "@/components/shared/money";
+import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
@@ -18,7 +19,6 @@ import { useTransactionDialogs } from "../hooks/use-transaction-dialogs";
 import { useTransactionListParams } from "../hooks/use-transaction-list-params";
 import { typeName } from "../transaction-effects";
 
-import { CollectionsHeader } from "./collections-header";
 import { SocietyEntryDialog, type SocietyEntryKind } from "./society-entry-dialog";
 import { TransactionDialogs } from "./transaction-dialogs";
 import { TransactionList } from "./transaction-list";
@@ -66,7 +66,7 @@ export function SocietyPage() {
 
   return (
     <div className="space-y-5">
-      <CollectionsHeader title={t("title")} subtitle={t("subtitle")} />
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
 
       <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         {actions.map(({ kind, icon: Icon, label }) => (

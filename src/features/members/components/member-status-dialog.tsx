@@ -24,6 +24,8 @@ type MemberStatusDialogProps = {
   open: boolean;
   onClose: () => void;
   member: Member;
+  /** Gets the updated member, e.g. so Member details shows the new status. */
+  onSaved?: (member: Member) => void;
 };
 
 type ErrorBody = { errorSources?: { path?: string; message?: string }[] };
@@ -37,7 +39,7 @@ function getExitDateError(error: unknown) {
 
 // Uses the dedicated PATCH /member/update-status/:memberNo API.
 // The parent passes a new `key` each time it opens, so the choice starts fresh.
-export function MemberStatusDialog({ open, onClose, member }: MemberStatusDialogProps) {
+export function MemberStatusDialog({ open, onClose, member, onSaved }: MemberStatusDialogProps) {
   const t = useTranslations("MemberStatusForm");
   const tStatus = useTranslations("Members.status");
   const toast = useToast();
@@ -71,10 +73,11 @@ export function MemberStatusDialog({ open, onClose, member }: MemberStatusDialog
     }
 
     try {
-      await updateStatus.mutateAsync({
+      const saved = await updateStatus.mutateAsync({
         memberNo: member.memberNo,
         payload: { status, ...(isExited && { exitDate }) },
       });
+      onSaved?.(saved);
       onClose();
       toast.success(t("success", { memberNo: member.memberNo, status: tStatus(status) }));
     } catch (error) {

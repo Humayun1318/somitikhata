@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { registerSessionExpiredHandler } from "@/lib/http/session-events";
+import { endSession } from "@/features/auth/end-session";
 import { getAreaFromPathname, LOGIN_ROUTE } from "@/features/auth/role-routes";
 
 
@@ -21,7 +22,7 @@ export function SessionExpiredListener() {
       // someone is signed in. A guest failing that check is not an expired
       // session: no redirect, and clearing the cache would kill the check itself.
       if (!getAreaFromPathname(pathname)) return;
-      queryClient.clear();
+      endSession(queryClient);
       router.replace(LOGIN_ROUTE);
     });
   }, [queryClient, router, pathname]);

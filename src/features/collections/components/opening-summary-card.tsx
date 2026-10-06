@@ -65,7 +65,7 @@ export function OpeningSummaryCard() {
       </div>
 
       {summary.isPending && <div className="h-40 animate-pulse rounded-xl bg-app-surface-muted" />}
-      {summary.isError && (
+      {summary.isError && !data && (
         <ListError title={t("error")} retryLabel={t("retry")} onRetry={retry} isRetrying={summary.isFetching} />
       )}
 

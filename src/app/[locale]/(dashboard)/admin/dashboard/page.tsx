@@ -1,5 +1,13 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { Suspense } from "react";
 
+import { ListLoading } from "@/components/shared/list-states";
+import { AdminOverviewPage } from "@/features/overview/components/admin-overview-page";
+
+// Suspense is needed because the page reads the URL search params (?year=).
 export default function AdminDashboardPage() {
-  return <PageHeader titleKey="adminDashboard" />;
+  return (
+    <Suspense fallback={<ListLoading />}>
+      <AdminOverviewPage />
+    </Suspense>
+  );
 }

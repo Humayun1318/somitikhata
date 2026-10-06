@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { CirclePlus } from "lucide-react";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { ListError, ListLoading } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,6 @@ import { useCashAccounts, useCashBalance, useCashBook, useTransactionTypes } fro
 import { useTransactionDialogs } from "../hooks/use-transaction-dialogs";
 import { useTransactionListParams } from "../hooks/use-transaction-list-params";
 
-import { CollectionsHeader } from "./collections-header";
 import { TransactionDialogs } from "./transaction-dialogs";
 import { TransactionList } from "./transaction-list";
 
@@ -44,15 +44,15 @@ export function CashBookPage() {
 
   return (
     <div className="space-y-5">
-      <CollectionsHeader title={t("title")} subtitle={t("subtitle")}>
+      <PageHeader title={t("title")} subtitle={t("subtitle")}>
         <Button onClick={openRecord} className="w-full gap-2 sm:w-auto">
           <CirclePlus aria-hidden="true" className="h-4 w-4" />
           {tCollections("recordTransaction")}
         </Button>
-      </CollectionsHeader>
+      </PageHeader>
 
       {accounts.isPending && <ListLoading rows={2} />}
-      {accounts.isError && (
+      {accounts.isError && !accounts.data && (
         <ListError
           title={tCollections("accountsError")}
           retryLabel={tCollections("retry")}
@@ -60,7 +60,7 @@ export function CashBookPage() {
           isRetrying={accounts.isFetching}
         />
       )}
-      {accounts.isSuccess && !account && <p className="text-sm text-app-text-muted">{tCollections("accountsEmpty")}</p>}
+      {accounts.data && !account && <p className="text-sm text-app-text-muted">{tCollections("accountsEmpty")}</p>}
 
       {account && (
         <section className="grid gap-4 rounded-2xl border border-app-border bg-app-surface p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:p-5">
@@ -83,7 +83,7 @@ export function CashBookPage() {
               />
             )}
             {balance.isPending && <div className="mt-1 h-8 w-40 animate-pulse rounded-lg bg-app-surface-muted sm:ml-auto" />}
-            {balance.isError && <p className="text-sm text-red-600">{tCollections("balanceError")}</p>}
+            {balance.isError && !balance.data && <p className="text-sm text-red-600">{tCollections("balanceError")}</p>}
           </div>
         </section>
       )}

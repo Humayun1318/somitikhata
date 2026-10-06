@@ -63,7 +63,7 @@ export function TransferDialog({ open, onClose }: TransferDialogProps) {
   const fromAccount = activeAccounts.find((account) => account._id === fromAccountId);
   const toAccount = activeAccounts.find((account) => account._id === toAccountId);
   const isBusy = isSubmitting || createTransfer.isPending;
-  const hasTooFewAccounts = accounts.isSuccess && activeAccounts.length < 2;
+  const hasTooFewAccounts = !!accounts.data && activeAccounts.length < 2;
 
   const fromOptions = activeAccounts.map((account) => ({ value: account._id, label: account.name }));
   const toOptions = activeAccounts

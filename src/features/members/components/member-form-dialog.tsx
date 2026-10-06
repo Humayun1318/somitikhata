@@ -32,6 +32,8 @@ type MemberFormDialogProps = {
   onClose: () => void;
   /** Given = edit this member. Not given = add a new member. */
   member?: Member | null;
+  /** Gets the saved member, e.g. so Member details shows the new data. */
+  onSaved?: (member: Member) => void;
 };
 
 // Which NID the backend said already has a membership (409), and its numbers.
@@ -39,7 +41,7 @@ type Duplicate = { nid: string; memberNos: string };
 
 // One form for "Add member" and "Edit member".
 // The parent passes a new `key` each time it opens, so the form starts fresh.
-export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProps) {
+export function MemberFormDialog({ open, onClose, member, onSaved }: MemberFormDialogProps) {
   const t = useTranslations("MemberForm");
   const tAddress = useTranslations("Address");
   const tNominee = useTranslations("Nominees");
@@ -101,6 +103,7 @@ export function MemberFormDialog({ open, onClose, member }: MemberFormDialogProp
 
     try {
       const saved = await saveMember(values);
+      onSaved?.(saved);
       onClose();
       toast.success(t(isEdit ? "editSuccess" : "success", { memberNo: saved.memberNo }));
     } catch (error) {

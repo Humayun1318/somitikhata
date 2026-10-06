@@ -23,7 +23,10 @@
     "membership": "Membership",
     "admins": "Admins",
     "societyEntries": "Samiti Entries",
-    "ledgerHeads": "Ledger Heads"
+    "ledgerHeads": "Ledger Heads",
+    "reportsList": "Reports",
+    "yearEnd": "Year-end",
+    "more": "More"
   },
   "DashboardHeader": {
     "menuLabel": "Account menu",
@@ -31,6 +34,7 @@
     "settings": "Settings",
     "logout": "Logout",
     "staffNo": "Staff ID",
-    "memberNo": "Member ID"
+    "memberNo": "Member ID",
+    "membership": "Membership"
   }
 }

@@ -67,7 +67,11 @@
     "applyLoan": "Saving application…",
     "decideLoan": "Saving decision…",
     "disburseLoan": "Disbursing loan…",
-    "repayInstallment": "Collecting installment…"
+    "repayInstallment": "Collecting installment…",
+    "runServiceCharge": "Charging the service charge…",
+    "runDividend": "Paying the dividend…",
+    "runAppropriation": "Appropriating the profit…",
+    "createDepreciation": "Saving depreciation…"
   },
   "Pagination": {
     "showing": "Showing {from, number}–{to, number} of {total, number}",
@@ -110,5 +114,10 @@
       "upazilaRequired": "Enter the upazila / thana.",
       "districtRequired": "Enter the district."
     }
+  },
+  "ComingSoon": {
+    "badge": "Coming soon",
+    "title": "This feature will be available in a future version.",
+    "backToDashboard": "Back to dashboard"
   }
 }

@@ -2,6 +2,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { loanKeys } from "@/features/loans/query-keys";
+import { memberKeys } from "@/features/members/query-keys";
+import { invalidateSummaries } from "@/features/overview/invalidate-summaries";
 import { ApiError } from "@/lib/api-errors";
 
 import { cashAccountApi, transactionApi } from "../api";
@@ -20,9 +23,18 @@ import type {
 } from "../types";
 
 // Any money action can change balances, cash books and passbooks: refetch them all.
+// Also what is computed from money elsewhere: loan eligibility (savings) and the
+// member record's share flag (hasShareDeposit). Only queries on screen refetch
+// now; the rest are just marked stale, so this costs nothing extra.
 function useRefreshCollections() {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: collectionKeys.all });
+  return () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: collectionKeys.all }),
+      queryClient.invalidateQueries({ queryKey: loanKeys.eligibilities() }),
+      queryClient.invalidateQueries({ queryKey: memberKeys.all }),
+      invalidateSummaries(queryClient),
+    ]);
 }
 
 export function useCreateTransaction() {

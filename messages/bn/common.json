@@ -67,7 +67,11 @@
     "applyLoan": "আবেদন সংরক্ষণ হচ্ছে…",
     "decideLoan": "সিদ্ধান্ত সংরক্ষণ হচ্ছে…",
     "disburseLoan": "ঋণ প্রদান হচ্ছে…",
-    "repayInstallment": "কিস্তি আদায় হচ্ছে…"
+    "repayInstallment": "কিস্তি আদায় হচ্ছে…",
+    "runServiceCharge": "সার্ভিস চার্জ কাটা হচ্ছে…",
+    "runDividend": "লভ্যাংশ দেওয়া হচ্ছে…",
+    "runAppropriation": "লাভ বণ্টন হচ্ছে…",
+    "createDepreciation": "অবচয় সংরক্ষণ হচ্ছে…"
   },
   "Pagination": {
     "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",
@@ -110,5 +114,10 @@
       "upazilaRequired": "উপজেলা / থানা লিখুন।",
       "districtRequired": "জেলা লিখুন।"
     }
+  },
+  "ComingSoon": {
+    "badge": "শীঘ্রই আসছে",
+    "title": "এই সুবিধাটি পরবর্তী সংস্করণে চালু করা হবে।",
+    "backToDashboard": "ড্যাশবোর্ডে ফিরে যান"
   }
 }

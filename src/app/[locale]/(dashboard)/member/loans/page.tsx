@@ -1,5 +1,5 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { MyLoansPage } from "@/features/member-area/components/my-loans-page";
 
 export default function MemberLoansPage() {
-  return <PageHeader titleKey="myLoans" />;
+  return <MyLoansPage />;
 }

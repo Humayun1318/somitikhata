@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { ArrowRight, FolderTree, Lock, LockOpen, Pencil, Plus } from "lucide-react";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
 import { useToast } from "@/components/shared/toast/toast-provider";
@@ -99,18 +100,14 @@ export function LedgerHeadsPage() {
 
   return (
     <div className="space-y-5">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-app-text">{t("title")}</h1>
-          <p className="mt-1 text-sm text-app-text-muted">{t("subtitle")}</p>
-        </div>
+      <PageHeader title={t("title")} subtitle={t("subtitle")}>
         {isSuperAdmin && (
           <Button onClick={() => openDialog()} className="w-full gap-2 sm:w-auto">
             <Plus aria-hidden="true" className="h-4 w-4" />
             {t("addHead")}
           </Button>
         )}
-      </header>
+      </PageHeader>
 
       <SegmentedControl aria-label={t("kindFilter")} value={kind} onChange={changeKind} options={kindOptions} />
 

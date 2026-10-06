@@ -25,12 +25,11 @@ export function BrandLogo({
 }: BrandLogoProps) {
   const isFull = variant === 'full';
 
-  const redirectToHome = () => {
-    window.location.href = '/';
-  }
-
+  // Display only. To make it a home link, wrap it in <Link href="/"> (as the
+  // navbar and dashboard do): a client navigation that keeps the locale and the
+  // cache, works with the keyboard, and never nests two links.
   return (
-    <span className={cn('inline-flex min-w-0 items-center gap-2.5 cursor-pointer', className)} onClick={redirectToHome}>
+    <span className={cn('inline-flex min-w-0 items-center gap-2.5', className)}>
       <Image
         src="/branding/logo-mark-removebg-preview.png"
         alt="BKS logo"

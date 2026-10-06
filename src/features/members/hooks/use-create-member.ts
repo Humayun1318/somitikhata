@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { invalidateSummaries } from "@/features/overview/invalidate-summaries";
 import { ApiError } from "@/lib/api-errors";
 
 import { memberApi } from "../api";
@@ -15,6 +16,8 @@ export function useCreateMember() {
     meta: { loadingMessage: "createMember" },
     mutationFn: memberApi.create,
     // Refetch every member list; the page keeps its own search/filter/page.
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: memberKeys.lists() }),
+    // Dashboards count members too.
+    onSuccess: () =>
+      Promise.all([queryClient.invalidateQueries({ queryKey: memberKeys.lists() }), invalidateSummaries(queryClient)]),
   });
 }

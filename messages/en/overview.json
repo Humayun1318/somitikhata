@@ -1,0 +1,147 @@
+{
+  "AdminOverview": {
+    "title": "Admin overview",
+    "subtitle": "The samiti's books up to {date}",
+    "subtitleLoading": "The samiti at a glance",
+    "yearLabel": "Fiscal year",
+    "yearOption": "Fiscal year {year}",
+    "error": "Couldn't load the overview.",
+    "retry": "Try again",
+    "viewAll": "View all",
+    "openReport": "Open report",
+    "sections": {
+      "cash": "Cash and bank",
+      "members": "Members and their savings",
+      "flows": "This year's activity",
+      "loans": "Loans",
+      "monthly": "Amanot deposits and withdrawals by month",
+      "incomeExpense": "Income, expense and funds"
+    },
+    "cash": {
+      "total": "Total cash + bank",
+      "inHand": "Cash in hand",
+      "bank": "In the bank",
+      "netProfit": "Net profit this year",
+      "netProfitHint": "Income − expense so far"
+    },
+    "members": {
+      "total": "Members",
+      "byStatus": "Active {active} · inactive/suspended {inactive}",
+      "joined": "Joined this year"
+    },
+    "balances": {
+      "amanot": "Members' total Amanot",
+      "shareAndStayi": "Share + Fixed Amanot",
+      "share": "Share",
+      "stayi": "Fixed"
+    },
+    "flows": {
+      "amanotDeposits": "Amanot deposits",
+      "amanotWithdrawals": "Amanot withdrawals",
+      "otherDeposits": "Share and Fixed Amanot deposits",
+      "otherDepositsHint": "New members' shares and land contributions",
+      "yearEnd": "Service charge",
+      "dividend": "Dividend"
+    },
+    "loans": {
+      "outstanding": "Loans outstanding",
+      "active": "{count, number} active loans",
+      "disbursed": "Disbursed this year",
+      "repaid": "Repaid this year (principal)",
+      "interest": "Interest",
+      "overdue": "Overdue installments",
+      "overdueCount": "{count, number} installments"
+    },
+    "incomeExpense": {
+      "income": "Total income",
+      "expense": "Total expense",
+      "netProfit": "Net profit"
+    },
+    "pending": {
+      "title": "Waiting for you",
+      "none": "Nothing is waiting right now.",
+      "loanApplications": "{count, number} loan applications to decide",
+      "loansToDisburse": "{count, number} approved loans to disburse",
+      "overdue": "{count, number} installments are overdue",
+      "serviceChargeDue": "{count, number} members owe service charge",
+      "yearEnd": "Year-end of {fiscalYear} is unfinished (next: {step})"
+    },
+    "monthly": {
+      "month": "Month",
+      "deposits": "Deposits",
+      "withdrawals": "Withdrawals",
+      "empty": "No entries this year."
+    }
+  },
+  "MemberArea": {
+    "error": "Couldn't load your information.",
+    "retry": "Try again",
+    "updating": "Updating…",
+    "reversal": "Reversal",
+    "dashboard": {
+      "title": "Dashboard",
+      "greeting": "Welcome, {name}",
+      "subtitle": "Your savings, loans and latest entries.",
+      "memberSince": "Member since {date}",
+      "loanTitle": "My loan",
+      "loanLink": "See all loans",
+      "principal": "Loan amount",
+      "nextInstallment": "Next installment ({date})",
+      "overdue": "{count, number} installments are overdue",
+      "noLoan": "No open loan.",
+      "dividendTitle": "Latest dividend",
+      "dividendFor": "Fiscal year {fiscalYear}",
+      "noDividend": "No dividend yet.",
+      "serviceChargeTitle": "Service charge",
+      "serviceChargeDue": "Due. It is taken from your next Amanot deposit automatically.",
+      "noServiceChargeDue": "Nothing due.",
+      "recent": "Latest entries",
+      "allTransactions": "All entries"
+    },
+    "savings": {
+      "title": "My savings",
+      "subtitle": "Your balances and every passbook entry.",
+      "ledgerTitle": "Passbook",
+      "error": "Couldn't load your passbook.",
+      "emptyTitle": "No entries yet",
+      "emptyBody": "Deposits and withdrawals at the samiti show here."
+    },
+    "loans": {
+      "title": "My loans",
+      "subtitle": "All your loan applications and loans.",
+      "nextTitle": "Next installment of {loanNo}",
+      "nextLine": "Installment {number} · due {date}",
+      "remaining": "{count, number} installments left",
+      "error": "Couldn't load your loans.",
+      "emptyTitle": "No loans",
+      "emptyBody": "To take a loan, contact the samiti office.",
+      "terms": "Interest · term",
+      "termsValue": "{rate}% a year · {months} months",
+      "applied": "Applied",
+      "disbursed": "Disbursed",
+      "closed": "Repaid"
+    }
+  },
+  "Unavailable": {
+    "depositRequest": {
+      "body": "Sending a deposit request online is not available yet.",
+      "hint": "Pay at the samiti office as usual. The deposit shows in your passbook as soon as it is recorded.",
+      "back": "See my savings"
+    },
+    "applyLoan": {
+      "body": "Applying for a loan online is not available yet.",
+      "hint": "Apply at the samiti office. Your application then shows on the \"My loans\" page.",
+      "back": "See my loans"
+    },
+    "memberSettings": {
+      "body": "There is no separate settings page for members yet.",
+      "hint": "To change your password, go to your profile.",
+      "back": "Go to profile"
+    },
+    "pendingMembers": {
+      "body": "Online membership applications and their approval are not available yet.",
+      "hint": "Add new members directly with \"Add member\" on the All members page.",
+      "back": "See all members"
+    }
+  }
+}

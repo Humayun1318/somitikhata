@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { BookOpenText, CirclePlus, FolderTree, History, Landmark, Plus, Wallet, type LucideIcon } from "lucide-react";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { ListError } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
 import { useToast } from "@/components/shared/toast/toast-provider";
@@ -19,7 +20,6 @@ import type { CashAccount } from "../types";
 
 import { AccountCard } from "./account-card";
 import { CashAccountDialog } from "./cash-account-dialog";
-import { CollectionsHeader } from "./collections-header";
 import { TransactionDialogs } from "./transaction-dialogs";
 
 type Shortcut = { href: string; icon: LucideIcon; titleKey: string; bodyKey: string };
@@ -55,11 +55,11 @@ export function CollectionsOverview() {
   const activeBalances = accountList.flatMap((account, index) =>
     account.status === "active" ? [balances[index]] : [],
   );
-  const isTotalReady = activeBalances.every((balance) => balance?.isSuccess);
+  // `data`, not isSuccess: a failed background refetch keeps the last balance.
+  const isTotalReady = !!accounts.data && activeBalances.every((balance) => balance?.data !== undefined);
   const total = activeBalances.reduce((sum, balance) => sum + (balance?.data?.balance ?? 0), 0);
   const firstActive = accountList.find((account) => account.status === "active");
   const togglingId = updateStatus.isPending ? updateStatus.variables?.id : undefined;
-  const shortcuts = SHORTCUTS;
 
   const openRecord = () => dialogs.openRecord({ cashAccountId: firstActive?._id });
   const openAddAccount = () => {
@@ -82,18 +82,18 @@ export function CollectionsOverview() {
 
   return (
     <div className="space-y-6">
-      <CollectionsHeader title={t("title")} subtitle={t("subtitle")}>
+      <PageHeader title={t("title")} subtitle={t("subtitle")}>
         <Button onClick={openRecord} className="w-full gap-2 sm:w-auto">
           <CirclePlus aria-hidden="true" className="h-4 w-4" />
           {t("recordTransaction")}
         </Button>
-      </CollectionsHeader>
+      </PageHeader>
 
       <section className="rounded-2xl bg-app-primary p-5 text-white sm:p-6">
         <p className="text-sm font-medium text-white/80">{t("totalBalance")}</p>
         <div className="mt-2 min-h-10">
-          {isTotalReady && accounts.isSuccess && <Money paisa={total} className="text-3xl font-bold sm:text-4xl" />}
-          {!(isTotalReady && accounts.isSuccess) && <div className="h-10 w-52 animate-pulse rounded-lg bg-white/20" />}
+          {isTotalReady && <Money paisa={total} className="text-3xl font-bold sm:text-4xl" />}
+          {!isTotalReady && <div className="h-10 w-52 animate-pulse rounded-lg bg-white/20" />}
         </div>
         <p className="mt-1 text-xs text-white/70">{t("totalBalanceHint")}</p>
       </section>
@@ -116,10 +116,10 @@ export function CollectionsOverview() {
             ))}
           </div>
         )}
-        {accounts.isError && (
+        {accounts.isError && !accounts.data && (
           <ListError title={t("accountsError")} retryLabel={t("retry")} onRetry={retry} isRetrying={accounts.isFetching} />
         )}
-        {accounts.isSuccess && accountList.length === 0 && <p className="text-sm text-app-text-muted">{t("accountsEmpty")}</p>}
+        {accounts.data && accountList.length === 0 && <p className="text-sm text-app-text-muted">{t("accountsEmpty")}</p>}
         {accountList.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {accountList.map((account, index) => (
@@ -127,7 +127,7 @@ export function CollectionsOverview() {
                 key={account._id}
                 account={account}
                 balance={balances[index]?.data?.balance}
-                isBalanceError={!!balances[index]?.isError}
+                isBalanceError={!!balances[index]?.isError && balances[index]?.data === undefined}
                 onToggleStatus={isSuperAdmin ? () => void toggleStatus(account) : undefined}
                 isToggling={togglingId === account._id}
               />
@@ -139,7 +139,7 @@ export function CollectionsOverview() {
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-app-text">{t("shortcuts.title")}</h2>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {shortcuts.map(({ href, icon: Icon, titleKey, bodyKey }) => (
+          {SHORTCUTS.map(({ href, icon: Icon, titleKey, bodyKey }) => (
             <Link
               key={href}
               href={href}

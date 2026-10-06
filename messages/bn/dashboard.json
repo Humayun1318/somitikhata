@@ -23,7 +23,10 @@
     "membership": "সদস্যপদ",
     "admins": "অ্যাডমিন",
     "societyEntries": "সমিতির লেনদেন",
-    "ledgerHeads": "খাত"
+    "ledgerHeads": "খাত",
+    "reportsList": "রিপোর্ট",
+    "yearEnd": "বছর শেষের হিসাব",
+    "more": "আরও"
   },
   "DashboardHeader": {
     "menuLabel": "অ্যাকাউন্ট মেনু",
@@ -31,6 +34,7 @@
     "settings": "সেটিংস",
     "logout": "লগআউট",
     "staffNo": "স্টাফ নং",
-    "memberNo": "সদস্য নং"
+    "memberNo": "সদস্য নং",
+    "membership": "সদস্যপদ"
   }
 }

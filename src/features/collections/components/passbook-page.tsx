@@ -3,13 +3,13 @@
 import { useTranslations } from "next-intl";
 import { UserSearch } from "lucide-react";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-states";
 
 import { useCashAccounts, useLedger, useMemberBalances, useMemberLookup, useTransactionTypes } from "../hooks/use-collection-queries";
 import { useTransactionDialogs } from "../hooks/use-transaction-dialogs";
 import { useTransactionListParams } from "../hooks/use-transaction-list-params";
 
-import { CollectionsHeader } from "./collections-header";
 import { MemberBalances } from "./member-balances";
 import { MemberLookupForm } from "./member-lookup-form";
 import { TransactionDialogs } from "./transaction-dialogs";
@@ -31,14 +31,15 @@ export function PassbookPage() {
   const accounts = useCashAccounts();
   const firstActiveAccount = accounts.data?.find((account) => account.status === "active");
 
-  const isNotFound = lookup.error?.status === 404 || lookup.error?.status === 400;
-  const showLookupError = !!lookup.error && !isNotFound;
+  // Only when nothing was found yet: a failed background refetch keeps the member.
+  const isNotFound = !member && (lookup.error?.status === 404 || lookup.error?.status === 400);
+  const showLookupError = !member && !!lookup.error && !isNotFound;
   const retryLookup = () => void lookup.refetch();
   const openRecord = () => dialogs.openRecord({ memberNo: member?.memberNo, cashAccountId: firstActiveAccount?._id });
 
   return (
     <div className="space-y-5">
-      <CollectionsHeader title={t("title")} subtitle={t("subtitle")} />
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
 
       <MemberLookupForm key={memberNo} memberNo={memberNo} onLookup={list.setScope} isLooking={lookup.isFetching && !member} />
 
@@ -50,7 +51,7 @@ export function PassbookPage() {
       )}
 
       {member && (
-        <MemberBalances member={member} balances={balances.data} isBalancesError={balances.isError} onRecord={openRecord} />
+        <MemberBalances member={member} balances={balances.data} isBalancesError={balances.isError && !balances.data} onRecord={openRecord} />
       )}
 
       {member && (

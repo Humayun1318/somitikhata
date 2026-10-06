@@ -1,0 +1,184 @@
+{
+  "YearEnd": {
+    "title": "Year-end",
+    "subtitle": "Service charge, depreciation, dividend and profit appropriation — in this order. The last step closes the year's books.",
+    "yearLabel": "Fiscal year",
+    "yearOption": "Fiscal year {year}",
+    "statusError": "Couldn't load the year-end status.",
+    "retry": "Try again",
+    "close": "Close",
+    "cancel": "Cancel",
+    "saving": "Saving…",
+    "loading": "Loading…",
+    "optional": "optional",
+    "adminNote": "You can follow the status here. Only the super admin can run the year-end steps.",
+    "yearRange": "{from} to {to}",
+    "banner": {
+      "closed": "This year's books are closed (up to {date}). Its entries can no longer change.",
+      "open": "The year has ended and its books are still open. Run the steps below in order.",
+      "notEnded": "This year is still running. Its year-end can start the day after {date}."
+    },
+    "progress": "{done, number} of {total, number} steps done",
+    "stepNo": "Step {number, number}",
+    "stepBody": {
+      "service_charge": "The yearly service charge is taken from every member's Amanot. If the balance is short, the rest stays due and is taken from their next Amanot deposit automatically.",
+      "dividend": "The committee's amount is shared among active members (by Amanot + Fixed Amanot) and added to their Amanot.",
+      "appropriation": "The year's net profit is split into the funds. Then the year's books close."
+    },
+    "state": {
+      "done": "Done · {date}",
+      "ready": "Ready to run"
+    },
+    "blocked": {
+      "notEnded": "Can run once the year ends",
+      "closed": "The year's books are closed",
+      "previous": "Run the {kind} first",
+      "other": "Can't run now"
+    },
+    "viewDetails": "View details",
+    "previewAndRun": "Preview and run",
+    "result": {
+      "charged": "Charged",
+      "openDue": "Due from {count, number} members",
+      "paid": "Paid",
+      "netProfit": "Net profit"
+    },
+    "kinds": {
+      "service_charge": "Yearly service charge",
+      "dividend": "Dividend",
+      "appropriation": "Profit appropriation & closing"
+    },
+    "roles": {
+      "reserve_fund": "Reserve fund",
+      "coop_dev_fund": "Co-operative development fund",
+      "welfare_fund": "Welfare fund",
+      "undistributed_profit": "Undistributed profit"
+    },
+    "lines": {
+      "search": "Search by member no. or name",
+      "member": "Member",
+      "balance": "Amanot on 30 June",
+      "base": "Base (Amanot + Fixed)",
+      "yearDeposit": "Amanot deposited this year",
+      "dividend": "Dividend",
+      "charged": "Charge",
+      "due": "Due",
+      "groups": {
+        "small": "Small depositor",
+        "large": "Large depositor"
+      },
+      "capped": "Capped",
+      "recovered": "Recovered",
+      "empty": "No matching members",
+      "count": "Showing {shown, number} of {total, number}"
+    },
+    "figures": {
+      "chargePerMember": "Charge per member",
+      "members": "Members",
+      "chargedMembers": "Members charged",
+      "totalCharged": "Total charged",
+      "totalDue": "Total due",
+      "distributable": "Amount to share",
+      "totalPaid": "Total paid",
+      "unpaid": "Not paid out",
+      "totalBase": "Total base",
+      "baseRate": "Base rate",
+      "largeRate": "Large depositors' rate",
+      "eligible": "Eligible members",
+      "excluded": "Left out (inactive/suspended)",
+      "smallGroup": "Small depositors",
+      "smallTotal": "Small depositors' total",
+      "cappedLarge": "Held at the maximum",
+      "dividendRules": "Rules: under <threshold></threshold> deposited this year gets at most <cap></cap>; nobody gets more than <max></max>.",
+      "incomeHeads": "Income heads",
+      "loanInterest": "Loan interest",
+      "serviceCharge": "Service charge",
+      "totalIncome": "Total income",
+      "expenseHeads": "Expense heads",
+      "depreciation": "Depreciation",
+      "dividend": "Dividend",
+      "totalExpense": "Total expense",
+      "netProfit": "Net profit",
+      "fund": "Fund",
+      "percent": "Rate",
+      "amount": "Amount",
+      "noHead": "No head set",
+      "rest": "The rest",
+      "total": "Total"
+    },
+    "runTitle": "{kind} · {fiscalYear}",
+    "runDescription": {
+      "service_charge": "Every entry is dated {lastDay}. Check the figures below, then run.",
+      "dividend": "Enter the committee's total and preview. Every entry is dated {lastDay}.",
+      "appropriation": "Check the year's income, expense and the fund split. Running it closes the books up to {lastDay}."
+    },
+    "running": "Running…",
+    "runAction": "Run {kind}",
+    "done": {
+      "service_charge": "The service charge for {fiscalYear} is done.",
+      "dividend": "The dividend for {fiscalYear} has been added to members' Amanot.",
+      "appropriation": "The profit for {fiscalYear} is appropriated and the year is closed."
+    },
+    "dividend": {
+      "amountLabel": "Total to share (৳)",
+      "amountPlaceholder": "e.g. 7097",
+      "amountHint": "Enter the amount and press \"Preview\". Nothing is saved.",
+      "amountInvalid": "Enter an amount above 0, at most 2 decimals",
+      "previewAgain": "The amount changed. Press \"Preview\" again.",
+      "preview": "Preview"
+    },
+    "appropriation": {
+      "problemsTitle": "Some fund heads are not set",
+      "problemsBody": "On the heads page, give the fund heads their \"year-end role\" (reserve, co-operative development, welfare, undistributed profit), then open this again.",
+      "openHeads": "Open the fund heads"
+    },
+    "warning": {
+      "service_charge": "Running this adds an entry to every member's passbook. It can't be undone.",
+      "dividend": "Running this adds the dividend to every member's Amanot. It can't be undone.",
+      "appropriation": "Running this moves the profit into the funds and closes this year for good. No entry of this year can be added or reversed afterwards."
+    },
+    "confirm": "I have checked the figures and want to run it",
+    "detailsTitle": "{kind} · {fiscalYear}",
+    "runAt": "Run on {when}",
+    "depreciation": {
+      "cardTitle": "Depreciation (optional)",
+      "cardBody": "Lower the value of assets like land, buildings or furniture. No cash moves; it counts as an expense of the year. Enter it before the profit appropriation.",
+      "none": "No depreciation entered for this year.",
+      "total": "Total depreciation",
+      "add": "Add depreciation",
+      "title": "Depreciation · {fiscalYear}",
+      "description": "Lower one asset head's value. It can't be more than the head's current balance.",
+      "save": "Save depreciation",
+      "saved": "Depreciation saved.",
+      "head": "Asset head",
+      "headPlaceholder": "Choose a head",
+      "noHeads": "There is no open asset head with a balance.",
+      "amount": "Amount (৳)",
+      "date": "Date",
+      "voucher": "Voucher no.",
+      "note": "Description",
+      "hint": "Without a description it reads \"<head> অবচয়\". A wrong entry is reversed from Samiti entries.",
+      "validation": {
+        "head": "Choose a head",
+        "amount": "Enter the amount",
+        "amountFormat": "Enter an amount above 0, at most 2 decimals",
+        "date": "Choose a date",
+        "dateFuture": "The date can't be in the future",
+        "voucherLong": "At most 30 characters",
+        "descriptionLong": "At most 200 characters"
+      }
+    }
+  },
+  "YearEndErrors": {
+    "generic": "That didn't work. Please try again.",
+    "notEnded": "{fiscalYear} ends on {date}. Its year-end can run from the next day.",
+    "alreadyFinal": "The books of {fiscalYear} are already closed.",
+    "finishEarlier": "Finish the year-end of {fiscalYear} first (next step: {kind}).",
+    "alreadyRun": "The {kind} for {fiscalYear} has already been run.",
+    "runPreviousFirst": "Run the {kind} for {fiscalYear} first.",
+    "netLoss": "{fiscalYear} ended with a net loss. There is no rule for appropriating a loss yet, so this can't run.",
+    "missingFundHead": "Not every fund head is set. Give the fund heads their \"year-end role\" on the heads page.",
+    "dividendNotRun": "The dividend for {fiscalYear} has not been paid yet.",
+    "runNotFound": "The {kind} for {fiscalYear} has not been run yet."
+  }
+}

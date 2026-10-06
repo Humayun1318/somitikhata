@@ -19,7 +19,7 @@ import { AuthLoading } from "./auth-loading";
 
 /**
  * Guards a protected area (admin, member, ...). Put it in that area's layout.
- * - not signed in           -> login
+ * - not signed in / signed out (user is null) -> login
  * - signed in, wrong role   -> permission toast + AccessDenied page (no redirect)
  * - must change password    -> profile page of their own area
  *
@@ -48,7 +48,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
   // Where this user must go instead of seeing this page (null = stay).
   let redirectTo: string | null = null;
   if (!user) {
-    if (isError) redirectTo = LOGIN_ROUTE;
+    if (isError || user === null) redirectTo = LOGIN_ROUTE;
   } else if (!forbidden && user.mustChangePassword && !onProfile) {
     redirectTo = profileRoute;
   }
@@ -71,8 +71,10 @@ export function AuthGate({ children }: { children: ReactNode }) {
   }, [forbidden, pathname, toast, t]);
 
   // Backend down or network error is not "logged out". Let the existing
-  // error boundary handle it instead of sending the user to login.
-  if (isError && error.status !== 401) throw error;
+  // error boundary handle it instead of sending the user to login — but only
+  // when there is no user yet. A failed background refetch of /user/me keeps
+  // the signed-in user and the page; it must not replace the whole area.
+  if (isError && !user && error.status !== 401) throw error;
 
   const showAccessDenied = !!user && forbidden;
   const showLoading = !showAccessDenied && (!user || !!redirectTo);

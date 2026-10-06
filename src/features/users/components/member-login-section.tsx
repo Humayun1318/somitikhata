@@ -65,7 +65,7 @@ export function MemberLoginSection({ memberId, memberNo, name, enabled = true }:
 
       {isPending && <div aria-busy="true" className="h-20 animate-pulse rounded-2xl bg-app-surface-muted" />}
 
-      {isError && (
+      {isError && account === undefined && (
         <div role="alert" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
           <span className="inline-flex items-center gap-2">
             <CircleAlert aria-hidden="true" className="h-4 w-4 shrink-0" />

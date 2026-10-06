@@ -27,7 +27,8 @@ type Action = { type: LoanDecision | LoanCashMode; key: number };
 export function LoanDetailsDialog({ open, onClose, loanNo }: LoanDetailsDialogProps) {
   const t = useTranslations("Loans");
   const format = useFormatter();
-  const detail = useLoanDetail(open ? loanNo : "");
+  // Disabled (not emptied) when closed, so the content stays while it animates out.
+  const detail = useLoanDetail(loanNo, open);
   const [action, setAction] = useState<Action | null>(null);
   const [isActionOpen, setIsActionOpen] = useState(false);
 
@@ -102,7 +103,7 @@ export function LoanDetailsDialog({ open, onClose, loanNo }: LoanDetailsDialogPr
         }
       >
         {detail.isPending && <div className="h-48 animate-pulse rounded-2xl bg-app-surface-muted" />}
-        {detail.isError && (
+        {detail.isError && !detail.data && (
           <ListError title={t("detailsError")} retryLabel={t("retry")} onRetry={retry} isRetrying={detail.isFetching} />
         )}
 

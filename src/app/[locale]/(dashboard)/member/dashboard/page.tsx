@@ -1,5 +1,5 @@
-import { PageHeader } from '@/components/shared/page-header';
+import { MemberDashboardPage } from "@/features/member-area/components/member-dashboard-page";
 
-export default function MemberDashboardPage() {
-  return <PageHeader titleKey="dashboard" />;
+export default function MemberDashboardRoute() {
+  return <MemberDashboardPage />;
 }

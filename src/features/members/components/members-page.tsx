@@ -3,9 +3,10 @@
 import { UserPlus } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { PageHeader } from "@/components/shared/page-header";
+import { ListUpdatingHint } from "@/components/shared/list-states";
 import { Pagination } from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
 
 import { useMemberDialogs } from "../hooks/use-member-dialogs";
 import { useMemberListParams } from "../hooks/use-member-list-params";
@@ -44,7 +45,9 @@ export function MembersPage() {
 
   const openAddMember = () => dialogs.open("form");
   const handleAction = (action: MemberAction, member: Member) => dialogs.open(DIALOG_FOR_ACTION[action], member);
-  const activeMember = dialogs.member;
+  // The list's current row when it's there, so details and status show fresh
+  // data after an edit; the kept snapshot when the row has left this page.
+  const activeMember = members.find((member) => member._id === dialogs.member?._id) ?? dialogs.member;
   const openEdit = () => dialogs.open("form", activeMember);
   const openStatus = () => dialogs.open("status", activeMember);
   const retry = () => void refetch();
@@ -54,16 +57,12 @@ export function MembersPage() {
 
   return (
     <div className="space-y-5">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-app-text">{t("title")}</h1>
-          <p className="mt-1 text-sm text-app-text-muted">{t("subtitle")}</p>
-        </div>
+      <PageHeader title={t("title")} subtitle={t("subtitle")}>
         <Button onClick={openAddMember} className="w-full gap-2 sm:w-auto">
           <UserPlus aria-hidden="true" className="h-4 w-4" />
           {t("addMember")}
         </Button>
-      </header>
+      </PageHeader>
 
       <MembersToolbar
         params={params}
@@ -73,15 +72,7 @@ export function MembersPage() {
       />
 
       <section className="relative space-y-4">
-        {/* Sits in the gap above the list, so it takes no extra space. */}
-        <p aria-live="polite" className="absolute -top-5 right-1 text-xs text-app-text-muted">
-          {isUpdating && (
-            <span className="inline-flex items-center gap-1.5">
-              <Spinner className="h-3 w-3" />
-              {t("updating")}
-            </span>
-          )}
-        </p>
+        <ListUpdatingHint show={isUpdating} label={t("updating")} />
 
         {showLoading && <MembersLoading />}
         {showError && <MembersError onRetry={retry} isRetrying={isFetching} />}
@@ -105,6 +96,7 @@ export function MembersPage() {
         open={dialogs.openDialog === "form"}
         onClose={dialogs.close}
         member={activeMember}
+        onSaved={dialogs.replaceMember}
       />
       {activeMember && (
         <MemberDetailsDialog
@@ -121,6 +113,7 @@ export function MembersPage() {
           open={dialogs.openDialog === "status"}
           onClose={dialogs.close}
           member={activeMember}
+          onSaved={dialogs.replaceMember}
         />
       )}
     </div>

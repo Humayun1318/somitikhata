@@ -1,9 +1,29 @@
 "use client";
 
+import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { CircleAlert } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+
+type ListUpdatingHintProps = { show: boolean; label: string };
+
+// "Updating…" above a list while a new page/search loads or the list refetches
+// (the old rows stay visible). Put it first inside a `relative` section: it sits
+// in the gap above the list, so it takes no space and nothing jumps.
+export function ListUpdatingHint({ show, label }: ListUpdatingHintProps) {
+  return (
+    <p aria-live="polite" className="absolute -top-5 right-1 text-xs text-app-text-muted">
+      {show && (
+        <span className="inline-flex items-center gap-1.5">
+          <Spinner className="h-3 w-3" />
+          {label}
+        </span>
+      )}
+    </p>
+  );
+}
 
 // First load: grey rows in the shape of the list.
 export function ListLoading({ rows = 5 }: { rows?: number }) {
@@ -45,4 +65,33 @@ export function ListError({ title, retryLabel, onRetry, isRetrying }: ListErrorP
       </Button>
     </div>
   );
+}
+
+type QueryLike<T> = {
+  data: T | undefined;
+  isError: boolean;
+  isFetching: boolean;
+  refetch: () => unknown;
+};
+
+type QueryStateProps<T> = {
+  query: QueryLike<T>;
+  errorTitle: string;
+  retryLabel: string;
+  /** First-load placeholder; defaults to grey rows. */
+  loading?: ReactNode;
+  children: (data: T) => ReactNode;
+};
+
+// One read's three states for a section: grey rows on first load, the error
+// card only while there is nothing to show, otherwise the content. A failed
+// background refetch keeps the last good data on screen.
+export function QueryState<T>({ query, errorTitle, retryLabel, loading, children }: QueryStateProps<T>) {
+  if (query.data !== undefined) return <>{children(query.data)}</>;
+  if (query.isError) {
+    return (
+      <ListError title={errorTitle} retryLabel={retryLabel} onRetry={() => void query.refetch()} isRetrying={query.isFetching} />
+    );
+  }
+  return <>{loading ?? <ListLoading rows={3} />}</>;
 }

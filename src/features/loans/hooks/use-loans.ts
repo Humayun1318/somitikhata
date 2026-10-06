@@ -3,6 +3,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { collectionKeys } from "@/features/collections/query-keys";
+import { invalidateSummaries } from "@/features/overview/invalidate-summaries";
 import { ApiError } from "@/lib/api-errors";
 import type { PaginatedResult } from "@/types/api";
 
@@ -30,11 +31,11 @@ export function useLoans(params: LoanListParams) {
   });
 }
 
-export function useLoanDetail(loanNo: string) {
+export function useLoanDetail(loanNo: string, enabled = true) {
   return useQuery<LoanDetail, ApiError>({
     queryKey: loanKeys.detail(loanNo),
     queryFn: () => loanApi.detail(loanNo),
-    enabled: !!loanNo,
+    enabled: enabled && !!loanNo,
     staleTime: STALE_TIME,
   });
 }
@@ -57,6 +58,8 @@ function useRefreshLoans(movesMoney: boolean) {
     Promise.all([
       queryClient.invalidateQueries({ queryKey: loanKeys.all }),
       movesMoney ? queryClient.invalidateQueries({ queryKey: collectionKeys.all }) : undefined,
+      // Dashboards count applications, loans to disburse and overdue installments.
+      invalidateSummaries(queryClient),
     ]);
 }
 

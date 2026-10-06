@@ -1,0 +1,68 @@
+{
+  "Reports": {
+    "title": "রিপোর্ট",
+    "subtitle": "সমিতির খাতা থেকে তৈরি বছরের হিসাবপত্র। অর্থবছর বেছে দেখুন বা প্রিন্ট করুন।",
+    "print": "প্রিন্ট করুন",
+    "kindLabel": "রিপোর্ট",
+    "yearLabel": "অর্থবছর",
+    "yearOption": "অর্থবছর {year}",
+    "accountLabel": "হিসাব",
+    "allAccounts": "সব নগদ ও ব্যাংক হিসাব",
+    "asOf": "{date} তারিখে",
+    "period": "{from} থেকে {to}",
+    "error": "রিপোর্ট লোড করা যায়নি।",
+    "retry": "আবার চেষ্টা করুন",
+    "dividendNotRun": "{fiscalYear}-এর লভ্যাংশ এখনো দেওয়া হয়নি",
+    "dividendNotRunBody": "বছর শেষের হিসাব পাতা থেকে লভ্যাংশ চালানোর পর এখানে সদস্যওয়ারি তালিকা দেখা যাবে।",
+    "kinds": {
+      "receipts-payments": "প্রাপ্তি ও প্রদান",
+      "trial-balance": "রেওয়ামিল",
+      "income-expenditure": "আয়-ব্যয় হিসাব",
+      "balance-sheet": "উদ্বৃত্ত পত্র",
+      "dividend": "লভ্যাংশ তালিকা"
+    },
+    "hints": {
+      "receipts-payments": "বছরে নগদ ও ব্যাংকে কত টাকা এসেছে আর গেছে। চলতি বছর আজ পর্যন্ত।",
+      "trial-balance": "প্রতিটি খাতের ডেবিট/ক্রেডিট জের। দুই দিকের মোট সমান হলে খাতা ঠিক আছে।",
+      "income-expenditure": "বছরের আয়, ব্যয় আর নিট লাভ; লাভ বণ্টন হয়ে থাকলে তার হিসাবও।",
+      "balance-sheet": "বছরের শেষ দিনে (চলতি বছরে আজ) সমিতির সম্পদ বনাম দায় ও তহবিল।",
+      "dividend": "লভ্যাংশ চালানোর পর কোন সদস্য কত পেয়েছেন।"
+    },
+    "receiptsPayments": {
+      "receipts": "প্রাপ্তি",
+      "payments": "প্রদান",
+      "opening": "প্রারম্ভিক তহবিল",
+      "closing": "সমাপনী তহবিল",
+      "total": "মোট",
+      "totalReceipts": "বছরের মোট প্রাপ্তি",
+      "totalPayments": "বছরের মোট প্রদান",
+      "actualClosing": "হিসাবগুলোর আসল জের",
+      "difference": "হিসাবের সমাপনী তহবিল আর আসল জেরে পার্থক্য:"
+    },
+    "trialBalance": {
+      "serial": "ক্রম",
+      "head": "হিসাবের খাত",
+      "debit": "ডেবিট",
+      "credit": "ক্রেডিট",
+      "total": "মোট",
+      "difference": "ডেবিট আর ক্রেডিটের মোটে পার্থক্য:"
+    },
+    "incomeExpenditure": {
+      "expense": "ব্যয়",
+      "income": "আয়",
+      "netProfit": "নিট লাভ",
+      "netLoss": "নিট ক্ষতি",
+      "total": "মোট",
+      "appropriationTitle": "লাভ বণ্টন",
+      "appropriationTotal": "মোট বণ্টন",
+      "notAppropriated": "এই বছরের লাভ বণ্টন এখনো হয়নি।"
+    },
+    "balanceSheet": {
+      "liabilities": "দায় ও তহবিল",
+      "assets": "সম্পদ",
+      "total": "মোট",
+      "previous": "সাবেক (বছরের শুরুতে)",
+      "difference": "সম্পদ আর দায়ের মোটে পার্থক্য:"
+    }
+  }
+}

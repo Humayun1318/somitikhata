@@ -3,9 +3,8 @@
 import { ReceiptText } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-states";
+import { ListEmpty, ListError, ListLoading, ListUpdatingHint } from "@/components/shared/list-states";
 import { Pagination } from "@/components/shared/pagination";
-import { Spinner } from "@/components/ui/spinner";
 import type { ApiError } from "@/lib/api-errors";
 import type { PaginatedResult } from "@/types/api";
 
@@ -81,14 +80,7 @@ export function TransactionList({
       {catalog.isError && <p className="text-xs text-amber-700">{t("typesError")}</p>}
 
       <section className="relative space-y-4">
-        <p aria-live="polite" className="absolute -top-5 right-1 text-xs text-app-text-muted">
-          {isUpdating && (
-            <span className="inline-flex items-center gap-1.5">
-              <Spinner className="h-3 w-3" />
-              {t("updating")}
-            </span>
-          )}
-        </p>
+        <ListUpdatingHint show={isUpdating} label={t("updating")} />
 
         {showLoading && <ListLoading />}
         {showError && <ListError title={t("listError")} retryLabel={t("retry")} onRetry={retry} isRetrying={isFetching} />}

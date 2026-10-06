@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
 import { CircleCheck, Info, ShieldAlert } from "lucide-react";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { ListLoading } from "@/components/shared/list-states";
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
@@ -39,7 +40,6 @@ import {
 } from "../schemas";
 import { typeName } from "../transaction-effects";
 
-import { CollectionsHeader } from "./collections-header";
 import { FormAlert } from "@/components/shared/form-alert";
 import { MemberPreview } from "./member-preview";
 import { OpeningSummaryCard } from "./opening-summary-card";
@@ -60,7 +60,7 @@ export function OpeningPage() {
 
   return (
     <div className="space-y-5">
-      <CollectionsHeader title={t("title")} subtitle={t("subtitle")} />
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
 
       {!isSuperAdmin && (
         <p className="flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
@@ -256,7 +256,7 @@ function OpeningForm({ target }: { target: OpeningTarget }) {
                   />
                 )}
               />
-              {heads.isSuccess && headOptions.length === 0 && (
+              {heads.data && headOptions.length === 0 && (
                 <p className="mt-1.5 text-xs text-amber-700">{t("noHeads")}</p>
               )}
             </FormField>

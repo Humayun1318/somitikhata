@@ -25,4 +25,6 @@ export type CurrentUser = {
   // memberNo for members. Optional so a missing field never breaks the UI.
   memberNo?: string;
   staffNo?: string;
+  /** The avatar photo's version (staff: own photo, member: membership photo); null = initials. Image: GET /user/me/avatar. */
+  avatar?: { version: number } | null;
 };

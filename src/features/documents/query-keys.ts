@@ -8,4 +8,5 @@ export const documentKeys = {
   all: ["documents"] as const,
   image: (owner: DocumentOwner, kind: DocumentKind, size: ImageSize, version: number) =>
     [...documentKeys.all, owner.type, ownerId(owner), kind, size, version] as const,
+  myAvatar: (size: ImageSize, version: number) => [...documentKeys.all, "me", size, version] as const,
 };

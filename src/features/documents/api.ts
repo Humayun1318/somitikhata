@@ -41,4 +41,23 @@ export const documentApi = {
   remove: async (owner: DocumentOwner, kind: DocumentKind): Promise<void> => {
     await httpKit.delete<ApiEnvelope<null>>(path(owner, kind));
   },
+
+  // GET /user/me/avatar -> the logged-in user's avatar (staff photo or membership photo)
+  myAvatar: async (size: ImageSize): Promise<string> => {
+    const { data } = await httpKit.get<Blob>("/user/me/avatar", { params: { size }, responseType: "blob" });
+    return toDataUrl(data);
+  },
+
+  // POST /user/me/photo (staff only) -> data: stored file info
+  uploadMyPhoto: async (file: File) => {
+    const body = new FormData();
+    body.append("file", file);
+    const { data } = await httpKit.post<ApiEnvelope<StoredFileInfo>>("/user/me/photo", body);
+    return data.data;
+  },
+
+  // DELETE /user/me/photo (staff only)
+  removeMyPhoto: async (): Promise<void> => {
+    await httpKit.delete<ApiEnvelope<null>>("/user/me/photo");
+  },
 };

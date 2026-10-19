@@ -47,6 +47,10 @@
       "network": "No internet connection. Please try again.",
       "generic": "Couldn't save the image. Please try again.",
       "removeGeneric": "Couldn't remove the image. Please try again."
-    }
+    },
+    "myPhoto": "Profile photo",
+    "myPhotoHint": "This photo shows as your avatar in the top menu.",
+    "memberPhotoHint": "You can change your photo on the Membership page.",
+    "goToMembership": "Go to Membership"
   }
 }

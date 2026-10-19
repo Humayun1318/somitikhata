@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { DynamicIcon } from "@/components/shared/dynamic-icon";
-import { UserAvatar } from "@/components/shared/user-avatar";
+import { CurrentUserAvatar } from "@/features/documents/components/current-user-avatar";
 import { Spinner } from "@/components/ui/spinner";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { useMe } from "@/features/auth/hooks/use-me";
@@ -99,7 +99,7 @@ export function ProfileMenu({ variant = "dashboard" }: ProfileMenuProps) {
         aria-label={t("menuLabel")}
         className="flex min-h-11 items-center gap-2.5 rounded-full p-1 transition-colors hover:bg-app-surface-muted focus-visible:outline-2 focus-visible:outline-app-focus md:rounded-xl md:py-1 md:pr-3"
       >
-        <UserAvatar name={name} size="sm" />
+        <CurrentUserAvatar size="sm" />
 
         <span className="hidden min-w-0 max-w-48 flex-col text-left md:flex">
           <span className="truncate text-sm font-semibold leading-tight text-app-text">
@@ -135,7 +135,7 @@ export function ProfileMenu({ variant = "dashboard" }: ProfileMenuProps) {
         )}
       >
         <div className="flex items-center gap-3 px-3 py-3">
-          <UserAvatar name={name} size="md" />
+          <CurrentUserAvatar size="md" />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-app-text">{name}</p>
             {identifier && (

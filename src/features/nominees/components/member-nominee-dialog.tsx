@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { CircleAlert, IdCard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { DocumentsGrid } from "@/features/documents/components/documents-grid";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
 
@@ -24,9 +25,10 @@ type MemberNomineeDialogProps = {
   onOpenDetails: () => void;
 };
 
-// The member list's Nominee column: a compact popup with the member's
-// nominees (GET /nominee/member/:memberNo) and Edit. Adding, deleting and the
-// nominee images stay in Member details, one click away.
+// The member list's Nominee column: a popup with everything about the
+// member's nominees (GET /nominee/member/:memberNo): details, guardian and
+// their images (view only, tap for full size), with Edit. Adding, deleting
+// and changing images stay in Member details, one click away.
 export function MemberNomineeDialog({ open, onClose, memberNo, memberLabel, onOpenDetails }: MemberNomineeDialogProps) {
   const t = useTranslations("Nominees");
   const { data: nominees, isPending, isError, isFetching, refetch } = useMemberNominees(memberNo, open);
@@ -47,6 +49,7 @@ export function MemberNomineeDialog({ open, onClose, memberNo, memberLabel, onOp
       title={t("quick.title")}
       description={memberLabel}
       closeLabel={t("close")}
+      size="lg"
       footer={
         <DialogActions
           cancelLabel={t("close")}
@@ -81,7 +84,20 @@ export function MemberNomineeDialog({ open, onClose, memberNo, memberLabel, onOp
       )}
 
       {nominees?.map((nominee, index) => (
-        <NomineeCard key={nominee._id} nominee={nominee} index={index} onEdit={() => openEdit(nominee)} />
+        <NomineeCard
+          key={nominee._id}
+          nominee={nominee}
+          index={index}
+          onEdit={() => openEdit(nominee)}
+          images={
+            <DocumentsGrid
+              owner={{ type: "nominee", nomineeId: nominee._id }}
+              documents={nominee.documents}
+              canUpload={() => false}
+              compact
+            />
+          }
+        />
       ))}
 
       {editing && (

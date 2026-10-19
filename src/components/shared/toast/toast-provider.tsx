@@ -124,8 +124,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         ref={containerRef}
         popover="manual"
         aria-live="polite"
-        // Centered on the screen at every size (phone, tablet, desktop)
-        className="pointer-events-none fixed inset-auto top-1/2 left-1/2 z-100 m-0 flex h-auto w-[min(24rem,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 flex-col gap-2 overflow-visible border-0 bg-transparent p-0"
+        // Top center at every size (phone, tablet, desktop)
+        className="pointer-events-none fixed inset-auto top-4 left-1/2 z-100 m-0 flex h-auto w-[min(24rem,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-2 overflow-visible border-0 bg-transparent p-0"
       >
         {toasts.map(({ id, type, message }) => (
           <div

@@ -68,7 +68,8 @@
     },
     "nominee": {
       "open": "Nominee of {memberNo}",
-      "more": "+{count, number}"
+      "more": "+{count, number}",
+      "view": "View"
     }
   },
   "MemberForm": {

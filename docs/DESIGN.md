@@ -169,8 +169,8 @@ data). A disabled query stays `isPending`; gate skeletons with the same conditio
 - No toast for reads (searching and paging would spam toasts).
 - Toasts live in a popover in the browser's top layer, so they stay above open dialogs; errors use
   `role="alert"`, others `role="status"`, in an `aria-live="polite"` region.
-- Position: centered on the screen on every size (phone, tablet, desktop), set once in
-  `ToastProvider`; never position toasts per page.
+- Position: top center on every size (phone, tablet, desktop), set once in `ToastProvider`;
+  never position toasts per page.
 
 ## Confirming consequential actions
 

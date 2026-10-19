@@ -68,7 +68,8 @@
     },
     "nominee": {
       "open": "{memberNo}-এর নমিনি",
-      "more": "+{count, number}"
+      "more": "+{count, number}",
+      "view": "দেখুন"
     }
   },
   "MemberForm": {

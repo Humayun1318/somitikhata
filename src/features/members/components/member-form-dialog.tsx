@@ -145,6 +145,14 @@ export function MemberFormDialog({ open, onClose, member, onSaved }: MemberFormD
       setIsConfirmOpen(false);
       onSaved?.(saved);
       onClose();
+      // Add: the member is saved first and the images after it. If the images
+      // could not be saved, the member is still registered: say so, so the
+      // office adds them from the details instead of registering again.
+      const imagesMissing = !isEdit && chosenKinds.some((kind) => !saved.documents?.[kind]);
+      if (imagesMissing) {
+        toast.error(t("documents.savedWithoutImages", { memberNo: saved.memberNo }));
+        return;
+      }
       toast.success(t(isEdit ? "editSuccess" : "success", { memberNo: saved.memberNo }));
     } catch (error) {
       setIsConfirmOpen(false);

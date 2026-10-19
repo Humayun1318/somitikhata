@@ -6,6 +6,7 @@ import { ImagePlus, RefreshCw, Trash2 } from "lucide-react";
 
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useMe } from "@/features/auth/hooks/use-me";
 import { Link } from "@/i18n/navigation";
 
@@ -24,6 +25,8 @@ export function MyPhotoControls({ isStaff }: { isStaff: boolean }) {
   const remove = useRemoveMyPhoto();
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isRemoveOpen, setIsRemoveOpen] = useState(false);
+  const [removeError, setRemoveError] = useState<string | null>(null);
   const hasPhoto = !!user?.avatar;
   const isBusy = upload.isPending || remove.isPending;
 
@@ -53,13 +56,21 @@ export function MyPhotoControls({ isStaff }: { isStaff: boolean }) {
     }
   };
 
-  const onRemove = async () => {
+  const askRemove = () => {
     setError(null);
+    setRemoveError(null);
+    setIsRemoveOpen(true);
+  };
+
+  const onRemove = async () => {
+    if (remove.isPending) return;
+    setRemoveError(null);
     try {
       await remove.mutateAsync();
+      setIsRemoveOpen(false);
       toast.success(t("removeSuccess", { name: t("myPhoto") }));
-    } catch (removeError) {
-      setError(getDocumentError(removeError, t, "errors.removeGeneric"));
+    } catch (failure) {
+      setRemoveError(getDocumentError(failure, t, "errors.removeGeneric"));
     }
   };
 
@@ -90,7 +101,7 @@ export function MyPhotoControls({ isStaff }: { isStaff: boolean }) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => void onRemove()}
+            onClick={askRemove}
             isLoading={remove.isPending}
             disabled={isBusy}
             className="min-h-9 gap-1.5 px-3 text-xs hover:bg-red-50 hover:text-red-700"
@@ -108,6 +119,19 @@ export function MyPhotoControls({ isStaff }: { isStaff: boolean }) {
           {error}
         </p>
       )}
+      <ConfirmDialog
+        open={isRemoveOpen}
+        onCancel={() => setIsRemoveOpen(false)}
+        onConfirm={() => void onRemove()}
+        title={t("removeTitle", { name: t("myPhoto") })}
+        description={t("removeDescription")}
+        cancelLabel={t("cancel")}
+        confirmLabel={t("removeSubmit")}
+        busyLabel={t("removing")}
+        confirmIcon={Trash2}
+        isBusy={remove.isPending}
+        error={removeError}
+      />
     </div>
   );
 }

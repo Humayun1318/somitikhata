@@ -224,6 +224,7 @@ Components: `AuthGate`, `GuestGate` (not mounted today), `SessionExpiredListener
 | `FormField` | `id`, `label`, `labelHint?`, `error?`, `footer?`, `children` | Error gets id `${id}-error` |
 | `Dialog` | `open`, `onClose`, `title`, `description?`, `closeLabel`, `dismissible?`, `size?: "md" \| "lg"`, `footer?`, `onSubmit?`, `busy?`, `children` | Native `<dialog>`; bottom sheet on phones; renders a `<form>` when `onSubmit` is given |
 | `DialogActions` | `cancelLabel`, `onCancel`, `actionLabel?`, `onAction?`, `actionIcon?`, `tone?: "primary" \| "danger"`, `isBusy?`, `actionDisabled?`, `children?` | Footer buttons |
+| `ConfirmDialog` | `open`, `onCancel`, `onConfirm`, `title`, `description?`, `confirmLabel?`, `busyLabel?`, `cancelLabel?`, `confirmIcon?`, `tone?: "danger" \| "primary"` (default danger), `isBusy?`, `error?`, `children?` | The shared "Are you sure?" dialog (see DESIGN.md); the caller runs the action and closes it on success |
 | `SelectMenu` | `value`, `onChange`, `options: { value, label, group?, disabled?, dot? }[]`, `placeholder?`, `searchable?`, `disabled?`, `error?`, `highlighted?`, `size?: "md" \| "sm"`, `id?`, `onBlur?` | Popover dropdown; use with RHF `Controller` |
 | `SegmentedControl` | `value`, `onChange`, `options: { value, label, dot? }[]`, `disabled?`, `fullWidth?` | Few visible choices |
 | `Spinner` | `className?` | |
@@ -298,13 +299,21 @@ pages).
 | `DocumentsGrid` | `owner`, `documents?`, `canUpload`, `canRemove?`, `compact?`, `hint?` | The four document slots of a member or nominee |
 | `DocumentSlot` | `owner`, `kind`, `label`, `file`, `canUpload`, `canRemove`, `onView`, `onRemove` | One slot with upload / view / remove |
 | `DocumentImage` | `owner`, `kind`, `file`, `size`, `alt`, `className?` | Loads one image through the API |
-| `DocumentViewerDialog`, `DocumentRemoveDialog` | `open`, `onClose`, `owner`, `kind`, … | Full view; confirm removal |
-| `MemberPhotoAvatar` | `owner`, `photo`, `name`, `size?` | A member's photo or initials |
+| `DocumentViewerDialog`, `DocumentRemoveDialog` | `open`, `onClose`, `owner`, `kind`, … | Full view; confirm removal (on `ConfirmDialog`) |
+| `MemberPhotoAvatar` | `owner`, `photo`, `name`, `size: "md" \| "lg"` | A member's photo; initials when there is none or it fails to load |
 | `CurrentUserAvatar` | `size?`, `className?` | The signed-in user's avatar (photo or initials) |
 | `MyPhotoControls` | `isStaff` | Upload / remove own photo (staff) or a link to the membership page (member) |
 
 `owner` is `{ type: "member", memberNo }` or `{ type: "nominee", nomineeId }` (see
 `features/documents/types.ts`).
+
+`shrinkImageForUpload(file)` (`features/documents/prepare-image.ts`) shrinks a photo to the
+longest side the backend keeps (`STORED_MAX_SIDE`, 1600 px) before it is sent; returns the original
+file when it is already small or anything fails. Used by the member form.
+
+`MemberDocumentsField` (`features/members/components/member-documents-field.tsx`) is the image part
+of the add / edit member form: choose, replace, remove (undo until saved). Nothing is uploaded by it;
+the files go with the form.
 
 ## Types
 

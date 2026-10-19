@@ -51,6 +51,9 @@
     "myPhoto": "Profile photo",
     "myPhotoHint": "This photo shows as your avatar in the top menu.",
     "memberPhotoHint": "You can change your photo on the Membership page.",
-    "goToMembership": "Go to Membership"
+    "goToMembership": "Go to Membership",
+    "replaceTitle": "Replace {name}?",
+    "replaceDescription": "The current image will be deleted permanently and the new one saved in its place.",
+    "replaceSubmit": "Replace"
   }
 }

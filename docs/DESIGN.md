@@ -169,6 +169,19 @@ data). A disabled query stays `isPending`; gate skeletons with the same conditio
 - No toast for reads (searching and paging would spam toasts).
 - Toasts live in a popover in the browser's top layer, so they stay above open dialogs; errors use
   `role="alert"`, others `role="status"`, in an `aria-live="polite"` region.
+- Position: top center on every size (phone, tablet, desktop), set once in `ToastProvider`;
+  never position toasts per page.
+
+## Confirming consequential actions
+
+- `ConfirmDialog` (`components/ui/confirm-dialog.tsx`) is the one "Are you sure?" dialog. Use it
+  before anything that deletes or can't easily be undone: removing or replacing a saved image,
+  deleting a nominee, closing a cash/bank account or a ledger head, blocking a login (member status
+  other than active, admin account suspend/deactivate), saving a member edit that deletes saved
+  images.
+- Not for harmless actions (reopening an account or head, activating a login, opening a dialog).
+- Dialogs that already are the confirmation (reverse a transaction with a reason, year-end runs
+  with a ticked confirmation, loan decisions) don't get a second one.
 
 ## Money, numbers and dates
 

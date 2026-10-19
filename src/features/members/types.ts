@@ -1,5 +1,5 @@
-import type { Documents } from "@/features/documents/types";
-import type { CreateNomineePayload } from "@/features/nominees/types";
+import type { DocumentKind, Documents } from "@/features/documents/types";
+import type { CreateNomineePayload, NomineeRelation } from "@/features/nominees/types";
 import type { Address } from "@/types/address";
 import type { PaginatedResult, PaginationMeta } from "@/types/api";
 
@@ -36,14 +36,18 @@ export type Member = {
   permanentAddress?: Address;
   /** Set by the transaction service once the one-time Share Deposit is recorded. */
   hasShareDeposit?: boolean;
-  /** Photo, NID both sides, signature (only filled slots). Set via /documents. */
+  /** Photo, NID both sides, signature (only filled slots). Set by the add / edit form or /documents. */
   documents?: Documents;
+  /** Only in the list (GET /member): a short summary of the nominees, oldest first. */
+  nominees?: NomineeSummary[];
   createdAt?: string;
   updatedAt?: string;
   // The list endpoint fills these in (populate); other endpoints send only the id.
   createdBy?: AuditUser | string;
   updatedBy?: AuditUser | string;
 };
+
+export type NomineeSummary = { _id: string; name: string; relation: NomineeRelation; relationNote?: string };
 
 export type AuditUser = { _id: string; name: string; email?: string; role?: string };
 
@@ -90,7 +94,10 @@ export type CreateMemberPayload = {
 // PATCH /member/update/:memberNo (backend updateMemberZodSchema: strict,
 // every field optional, at least one field required). Nominees have their own API.
 // An address is replaced as a whole, so {} empties the permanent address.
-export type UpdateMemberPayload = Partial<Omit<CreateMemberPayload, "confirmExtraMembership" | "nominee">>;
+export type UpdateMemberPayload = Partial<Omit<CreateMemberPayload, "confirmExtraMembership" | "nominee">> & {
+  /** Empty these image slots (their images are deleted after the save). */
+  removeDocuments?: DocumentKind[];
+};
 
 // PATCH /member/update-status/:memberNo. exitDate is required for "exited"
 // and must be left out for every other status.

@@ -2,16 +2,22 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { memberKeys } from "@/features/members/query-keys";
 import { ApiError } from "@/lib/api-errors";
 
 import { nomineeApi } from "../api";
 import { nomineeKeys } from "../query-keys";
 import type { CreateNomineePayload, Nominee, UpdateNomineePayload } from "../types";
 
-// Every change refetches that member's nominee list.
+// Every change refetches that member's nominee list, and the member lists
+// (each row shows its nominees' names in the Nominee column).
 function useRefreshMemberNominees(memberNo: string) {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: nomineeKeys.byMember(memberNo) });
+  return () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: nomineeKeys.byMember(memberNo) }),
+      queryClient.invalidateQueries({ queryKey: memberKeys.lists() }),
+    ]);
 }
 
 export function useCreateNominee(memberNo: string) {

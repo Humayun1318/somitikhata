@@ -29,5 +29,8 @@ export type ImageSize = "thumb" | "full";
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
+/** Longest side Cloudinary keeps (backend STORED_MAX_SIDE): a bigger photo is shrunk to it before sending. */
+export const STORED_MAX_SIDE = 1600;
+
 /** Slots a member may fill themselves (backend: MEMBER_SELF_UPLOAD_KINDS). */
 export const MEMBER_SELF_UPLOAD_KINDS: readonly DocumentKind[] = ["photo"];

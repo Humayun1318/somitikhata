@@ -76,6 +76,11 @@
       "coop_dev_fund": "Co-op development fund (appropriation)",
       "welfare_fund": "Welfare fund (appropriation)",
       "undistributed_profit": "Undistributed profit (appropriation)"
+    },
+    "closeConfirm": {
+      "title": "Close {name}?",
+      "description": "A closed head takes no new entries until it is reopened. Its balance stays in the reports.",
+      "submit": "Close head"
     }
   }
 }

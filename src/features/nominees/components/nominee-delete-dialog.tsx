@@ -4,10 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Trash2 } from "lucide-react";
 
-import { FormAlert } from "@/components/shared/form-alert";
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Dialog } from "@/components/ui/dialog";
-import { DialogActions } from "@/components/ui/dialog-actions";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { useDeleteNominee } from "../hooks/use-nominee-mutations";
@@ -45,28 +43,20 @@ export function NomineeDeleteDialog({ open, onClose, memberNo, nominee }: Nomine
   const confirm = () => void runLocked(remove);
 
   return (
-    <Dialog
+    <ConfirmDialog
       open={open}
-      onClose={onClose}
+      onCancel={onClose}
+      onConfirm={confirm}
       title={t("delete.title")}
       description={t("delete.description", { name: nominee.name })}
-      closeLabel={t("close")}
-      dismissible={!isBusy}
-      busy={isBusy}
-      footer={
-        <DialogActions
-          cancelLabel={t("cancel")}
-          onCancel={onClose}
-          actionLabel={isBusy ? t("delete.submitting") : t("delete.submit")}
-          actionIcon={Trash2}
-          onAction={confirm}
-          tone="danger"
-          isBusy={isBusy}
-        />
-      }
+      cancelLabel={t("cancel")}
+      confirmLabel={t("delete.submit")}
+      busyLabel={t("delete.submitting")}
+      confirmIcon={Trash2}
+      isBusy={isBusy}
+      error={formError}
     >
-      {formError && <FormAlert message={formError} />}
       <p className="text-sm text-app-text-muted">{t("delete.warning")}</p>
-    </Dialog>
+    </ConfirmDialog>
   );
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import type { Member } from "../types";
 
-export type MemberDialogType = "form" | "view" | "status";
+export type MemberDialogType = "form" | "view" | "status" | "nominee";
 
 /**
  * Which member dialog is open, and for which member.

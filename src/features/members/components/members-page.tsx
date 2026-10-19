@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { ListUpdatingHint } from "@/components/shared/list-states";
 import { Pagination } from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
+import { MemberNomineeDialog } from "@/features/nominees/components/member-nominee-dialog";
 
 import { useMemberDialogs } from "../hooks/use-member-dialogs";
 import { useMemberListParams } from "../hooks/use-member-list-params";
@@ -22,7 +23,7 @@ import { MembersTable } from "./members-table";
 import { MembersToolbar } from "./members-toolbar";
 
 // Which dialog each row action opens ("edit" reuses the add-member form).
-const DIALOG_FOR_ACTION = { view: "view", edit: "form", changeStatus: "status" } as const;
+const DIALOG_FOR_ACTION = { view: "view", edit: "form", changeStatus: "status", nominee: "nominee" } as const;
 
 // All Members: search/filter/sort/page live in the URL; the backend does the work.
 export function MembersPage() {
@@ -50,6 +51,7 @@ export function MembersPage() {
   const activeMember = members.find((member) => member._id === dialogs.member?._id) ?? dialogs.member;
   const openEdit = () => dialogs.open("form", activeMember);
   const openStatus = () => dialogs.open("status", activeMember);
+  const openDetails = () => dialogs.open("view", activeMember);
   const retry = () => void refetch();
   const changeSort = (sort: string) => setParams({ sort });
   const changePage = (page: number) => setParams({ page });
@@ -105,6 +107,16 @@ export function MembersPage() {
           member={activeMember}
           onEdit={openEdit}
           onChangeStatus={openStatus}
+        />
+      )}
+      {activeMember && (
+        <MemberNomineeDialog
+          key={`nominee-${dialogs.key}`}
+          open={dialogs.openDialog === "nominee"}
+          onClose={dialogs.close}
+          memberNo={activeMember.memberNo}
+          memberLabel={`${activeMember.nameBn} (${activeMember.memberNo})`}
+          onOpenDetails={openDetails}
         />
       )}
       {activeMember && (

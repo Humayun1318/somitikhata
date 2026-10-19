@@ -144,8 +144,8 @@ export function MemberDetailsDialog({ open, onClose, member, onEdit, onChangeSta
           owner={documentOwner}
           photo={member.documents?.photo}
           name={member.nameEn || member.nameBn}
-          size="md"
-          className="bg-app-surface"
+          size="lg"
+          className="bg-app-surface shadow-sm"
         />
         <div className="min-w-0 flex-1">
           <p className="truncate text-base font-semibold text-app-text">{member.nameBn}</p>

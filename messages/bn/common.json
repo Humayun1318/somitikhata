@@ -152,5 +152,11 @@
       "unauthorized": "প্রবেশাধিকার নেই",
       "notFound": "পাতা পাওয়া যায়নি"
     }
+  },
+  "ConfirmDialog": {
+    "close": "বন্ধ করুন",
+    "cancel": "বাতিল",
+    "confirm": "নিশ্চিত করুন",
+    "working": "অপেক্ষা করুন…"
   }
 }

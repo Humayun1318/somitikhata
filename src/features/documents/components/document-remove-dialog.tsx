@@ -4,10 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Trash2 } from "lucide-react";
 
-import { FormAlert } from "@/components/shared/form-alert";
 import { useToast } from "@/components/shared/toast/toast-provider";
-import { Dialog } from "@/components/ui/dialog";
-import { DialogActions } from "@/components/ui/dialog-actions";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getDocumentError } from "../document-errors";
@@ -43,27 +41,18 @@ export function DocumentRemoveDialog({ open, onClose, owner, kind, label }: Docu
   };
 
   return (
-    <Dialog
+    <ConfirmDialog
       open={open}
-      onClose={onClose}
+      onCancel={onClose}
+      onConfirm={() => void runLocked(remove)}
       title={t("removeTitle", { name: label })}
       description={t("removeDescription")}
-      closeLabel={t("close")}
-      dismissible={!isBusy}
-      busy={isBusy}
-      footer={
-        <DialogActions
-          cancelLabel={t("cancel")}
-          onCancel={onClose}
-          actionLabel={isBusy ? t("removing") : t("removeSubmit")}
-          actionIcon={Trash2}
-          onAction={() => void runLocked(remove)}
-          tone="danger"
-          isBusy={isBusy}
-        />
-      }
-    >
-      {formError && <FormAlert message={formError} />}
-    </Dialog>
+      cancelLabel={t("cancel")}
+      confirmLabel={t("removeSubmit")}
+      busyLabel={t("removing")}
+      confirmIcon={Trash2}
+      isBusy={isBusy}
+      error={formError}
+    />
   );
 }

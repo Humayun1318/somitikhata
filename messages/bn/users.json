@@ -23,7 +23,8 @@
         "suspended": "অ্যাকাউন্ট স্থগিত করুন"
       },
       "submitting": "সংরক্ষণ হচ্ছে…",
-      "success": "{name}-এর অ্যাকাউন্ট এখন {status}।"
+      "success": "{name}-এর অ্যাকাউন্ট এখন {status}।",
+      "confirmTitle": "{name}-কে {status} করবেন?"
     },
     "reset": {
       "open": "পাসওয়ার্ড রিসেট",

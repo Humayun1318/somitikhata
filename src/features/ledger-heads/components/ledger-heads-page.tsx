@@ -10,6 +10,7 @@ import { ListEmpty, ListError, ListLoading } from "@/components/shared/list-stat
 import { Money } from "@/components/shared/money";
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { useMe } from "@/features/auth/hooks/use-me";
 import { getCollectionError } from "@/features/collections/collection-errors";
@@ -19,6 +20,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 import { fiscalYearStart } from "@/lib/fiscal-year";
+import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { useUpdateLedgerHeadStatus } from "../hooks/use-ledger-head-mutations";
 import { HEAD_KINDS, type LedgerHead } from "../types";
@@ -56,6 +58,11 @@ export function LedgerHeadsPage() {
   const updateStatus = useUpdateLedgerHeadStatus();
   const [dialog, setDialog] = useState<HeadDialog | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // Kept after closing, so the confirm dialog's text doesn't change while it animates out
+  const [closingHead, setClosingHead] = useState<HeadBalance | null>(null);
+  const [isCloseOpen, setIsCloseOpen] = useState(false);
+  const [closeError, setCloseError] = useState<string | null>(null);
+  const runLocked = useSubmitLock();
 
   const heads = (query.data ?? []).filter((head) => head.kind === kind);
   const total = heads.filter((head) => head.status === "active").reduce((sum, head) => sum + head.balance, 0);
@@ -87,14 +94,35 @@ export function LedgerHeadsPage() {
   const closeDialog = () => setIsDialogOpen(false);
   const retry = () => void query.refetch();
 
+  const setStatus = async (head: HeadBalance, status: HeadBalance["status"]) => {
+    await updateStatus.mutateAsync({ id: head._id, status });
+    toast.success(t(status === "closed" ? "closedToast" : "reopenedToast", { name: head.nameBn }));
+  };
+
+  // Closing a head stops new entries on it, so it asks first; reopening runs at once
   const toggleStatus = async (head: HeadBalance) => {
     if (updateStatus.isPending) return;
-    const status = head.status === "active" ? "closed" : "active";
+    if (head.status === "active") {
+      setCloseError(null);
+      setClosingHead(head);
+      setIsCloseOpen(true);
+      return;
+    }
     try {
-      await updateStatus.mutateAsync({ id: head._id, status });
-      toast.success(t(status === "closed" ? "closedToast" : "reopenedToast", { name: head.nameBn }));
+      await setStatus(head, "active");
     } catch (error) {
       toast.error(getCollectionError(error, tErrors, locale).formError ?? tErrors("generic"));
+    }
+  };
+
+  const confirmClose = async () => {
+    if (!closingHead) return;
+    setCloseError(null);
+    try {
+      await setStatus(closingHead, "closed");
+      setIsCloseOpen(false);
+    } catch (error) {
+      setCloseError(getCollectionError(error, tErrors, locale).formError ?? tErrors("generic"));
     }
   };
 
@@ -215,6 +243,20 @@ export function LedgerHeadsPage() {
           onClose={closeDialog}
           head={dialog.head}
           defaultKind={kind}
+        />
+      )}
+      {closingHead && (
+        <ConfirmDialog
+          open={isCloseOpen}
+          onCancel={() => setIsCloseOpen(false)}
+          onConfirm={() => void runLocked(confirmClose)}
+          title={t("closeConfirm.title", { name: closingHead.nameBn })}
+          description={t("closeConfirm.description")}
+          cancelLabel={t("cancel")}
+          confirmLabel={t("closeConfirm.submit")}
+          confirmIcon={Lock}
+          isBusy={updateStatus.isPending}
+          error={closeError}
         />
       )}
     </div>

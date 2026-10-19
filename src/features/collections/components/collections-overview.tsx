@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { BookOpenText, CirclePlus, FolderTree, History, Landmark, Plus, Wallet, type LucideIcon } from "lucide-react";
+import { BookOpenText, CirclePlus, FolderTree, History, Landmark, Lock, Plus, Wallet, type LucideIcon } from "lucide-react";
 
 import { PageHeader } from "@/components/shared/page-header";
 import { ListError } from "@/components/shared/list-states";
 import { Money } from "@/components/shared/money";
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useMe } from "@/features/auth/hooks/use-me";
 import { Link } from "@/i18n/navigation";
+import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getCollectionError } from "../collection-errors";
 import { useUpdateCashAccountStatus } from "../hooks/use-collection-mutations";
@@ -52,6 +54,11 @@ export function CollectionsOverview() {
   const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false);
   // undefined = add a new account; an account = edit its bank details
   const [editingAccount, setEditingAccount] = useState<CashAccount>();
+  // Kept after closing, so the confirm dialog's text doesn't change while it animates out
+  const [closingAccount, setClosingAccount] = useState<CashAccount | null>(null);
+  const [isCloseOpen, setIsCloseOpen] = useState(false);
+  const [closeError, setCloseError] = useState<string | null>(null);
+  const runLocked = useSubmitLock();
 
   // Total of active accounts only; each balance is the backend's own figure.
   const activeBalances = accountList.flatMap((account, index) =>
@@ -73,14 +80,35 @@ export function CollectionsOverview() {
   const closeAddAccount = () => setIsAccountDialogOpen(false);
   const retry = () => void accounts.refetch();
 
+  const setStatus = async (account: CashAccount, status: CashAccount["status"]) => {
+    await updateStatus.mutateAsync({ id: account._id, status });
+    toast.success(tAccount(status === "closed" ? "closed" : "reopened", { name: account.name }));
+  };
+
+  // Closing stops new entries, so it asks first; reopening is harmless and runs at once
   const toggleStatus = async (account: CashAccount) => {
     if (updateStatus.isPending) return;
-    const status = account.status === "active" ? "closed" : "active";
+    if (account.status === "active") {
+      setCloseError(null);
+      setClosingAccount(account);
+      setIsCloseOpen(true);
+      return;
+    }
     try {
-      await updateStatus.mutateAsync({ id: account._id, status });
-      toast.success(tAccount(status === "closed" ? "closed" : "reopened", { name: account.name }));
+      await setStatus(account, "active");
     } catch (error) {
       toast.error(getCollectionError(error, tErrors, locale).formError ?? tErrors("generic"));
+    }
+  };
+
+  const confirmClose = async () => {
+    if (!closingAccount) return;
+    setCloseError(null);
+    try {
+      await setStatus(closingAccount, "closed");
+      setIsCloseOpen(false);
+    } catch (error) {
+      setCloseError(getCollectionError(error, tErrors, locale).formError ?? tErrors("generic"));
     }
   };
 
@@ -169,6 +197,20 @@ export function CollectionsOverview() {
           open={isAccountDialogOpen}
           onClose={closeAddAccount}
           account={editingAccount}
+        />
+      )}
+      {closingAccount && (
+        <ConfirmDialog
+          open={isCloseOpen}
+          onCancel={() => setIsCloseOpen(false)}
+          onConfirm={() => void runLocked(confirmClose)}
+          title={tAccount("closeConfirm.title", { name: closingAccount.name })}
+          description={tAccount("closeConfirm.description")}
+          cancelLabel={tAccount("cancel")}
+          confirmLabel={tAccount("closeConfirm.submit")}
+          confirmIcon={Lock}
+          isBusy={updateStatus.isPending}
+          error={closeError}
         />
       )}
     </div>

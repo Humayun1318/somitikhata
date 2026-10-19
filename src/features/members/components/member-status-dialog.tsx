@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { FormAlert } from "@/components/shared/form-alert";
 import { useToast } from "@/components/shared/toast/toast-provider";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
@@ -51,6 +52,8 @@ export function MemberStatusDialog({ open, onClose, member, onSaved }: MemberSta
   const [exitDate, setExitDate] = useState(savedExitDate || toDhakaDateString());
   const [exitDateError, setExitDateError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+  // Blocking a login or recording an exit asks once more before it is saved
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const isBusy = updateStatus.isPending;
   const isExited = status === "exited";
@@ -58,17 +61,26 @@ export function MemberStatusDialog({ open, onClose, member, onSaved }: MemberSta
   const isUnchanged = status === member.status && (!isExited || exitDate === savedExitDate);
   const today = toDhakaDateString();
 
-  const saveStatus = async () => {
-    setFormError(null);
-    setExitDateError(null);
+  const blocksLogin = status !== "active";
 
-    // Same rules as the backend: exit date only for "exited", required, not in the future.
+  // Same rules as the backend: exit date only for "exited", required, not in the future.
+  const checkExitDate = () => {
+    setExitDateError(null);
     if (isExited && !exitDate) {
       setExitDateError(t("exitDateRequired"));
-      return;
+      return false;
     }
     if (isExited && exitDate > today) {
       setExitDateError(t("dateInFuture"));
+      return false;
+    }
+    return true;
+  };
+
+  const saveStatus = async () => {
+    setFormError(null);
+    if (!checkExitDate()) {
+      setIsConfirmOpen(false);
       return;
     }
 
@@ -78,9 +90,12 @@ export function MemberStatusDialog({ open, onClose, member, onSaved }: MemberSta
         payload: { status, ...(isExited && { exitDate }) },
       });
       onSaved?.(saved);
+      setIsConfirmOpen(false);
       onClose();
       toast.success(t("success", { memberNo: member.memberNo, status: tStatus(status) }));
     } catch (error) {
+      // The error belongs to the form behind (e.g. the exit date), so the confirm closes
+      setIsConfirmOpen(false);
       const exitDateMessage = getExitDateError(error);
       if (exitDateMessage) {
         setExitDateError(exitDateMessage);
@@ -92,6 +107,10 @@ export function MemberStatusDialog({ open, onClose, member, onSaved }: MemberSta
 
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (blocksLogin) {
+      if (checkExitDate()) setIsConfirmOpen(true);
+      return;
+    }
     void runLocked(saveStatus);
   };
 
@@ -168,6 +187,20 @@ export function MemberStatusDialog({ open, onClose, member, onSaved }: MemberSta
           />
         </FormField>
       )}
+
+      <ConfirmDialog
+        open={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(false)}
+        onConfirm={() => void runLocked(saveStatus)}
+        title={t("confirm.title", { memberNo: member.memberNo, status: tStatus(status) })}
+        description={t(`effects.${status}`)}
+        cancelLabel={t("cancel")}
+        confirmLabel={t("confirm.submit", { status: tStatus(status) })}
+        busyLabel={t("submitting")}
+        isBusy={isBusy}
+      >
+        <p className="text-sm text-app-text-muted">{t("confirm.body", { name: member.nameBn })}</p>
+      </ConfirmDialog>
     </Dialog>
   );
 }

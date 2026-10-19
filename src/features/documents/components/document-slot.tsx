@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { ImagePlus, RefreshCw, Trash2 } from "lucide-react";
 
 import { useToast } from "@/components/shared/toast/toast-provider";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { cn } from "@/lib/cn";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 
@@ -37,6 +38,9 @@ export function DocumentSlot({ owner, kind, label, file, canUpload, canRemove, o
   const upload = useUploadDocument(owner);
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
+  // A replacement deletes the current image, so it waits for a confirm
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [isReplaceOpen, setIsReplaceOpen] = useState(false);
   const isUploading = upload.isPending;
 
   const pickFile = () => inputRef.current?.click();
@@ -51,12 +55,27 @@ export function DocumentSlot({ owner, kind, label, file, canUpload, canRemove, o
     setError(problem);
     if (problem) return;
 
+    if (file) {
+      setPendingFile(chosen);
+      setIsReplaceOpen(true);
+      return;
+    }
+    await save(chosen);
+  };
+
+  const save = async (chosen: File) => {
     try {
       await upload.mutateAsync({ kind, file: chosen });
+      setIsReplaceOpen(false);
       toast.success(t("uploadSuccess", { name: label }));
     } catch (uploadError) {
+      setIsReplaceOpen(false);
       setError(getDocumentError(uploadError, t, "errors.generic"));
     }
+  };
+
+  const confirmReplace = () => {
+    if (pendingFile && !isUploading) void save(pendingFile);
   };
 
   return (
@@ -138,6 +157,22 @@ export function DocumentSlot({ owner, kind, label, file, canUpload, canRemove, o
           )}
         </div>
       )}
+
+      <ConfirmDialog
+        open={isReplaceOpen}
+        onCancel={() => setIsReplaceOpen(false)}
+        onConfirm={confirmReplace}
+        title={t("replaceTitle", { name: label })}
+        description={t("replaceDescription")}
+        cancelLabel={t("cancel")}
+        confirmLabel={t("replaceSubmit")}
+        busyLabel={t("uploading")}
+        confirmIcon={RefreshCw}
+        tone="primary"
+        isBusy={isUploading}
+      >
+        {pendingFile && <p className="truncate text-sm text-app-text-muted">{pendingFile.name}</p>}
+      </ConfirmDialog>
     </figure>
   );
 }

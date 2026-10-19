@@ -311,6 +311,11 @@
       "nameLong": "Up to 50 characters",
       "bankName": "Enter the bank name",
       "bankAccountType": "Choose the account type"
+    },
+    "closeConfirm": {
+      "title": "Close {name}?",
+      "description": "A closed account takes no new entries (deposits, payments, transfers) until a super admin reopens it. Its balance and history stay as they are.",
+      "submit": "Close account"
     }
   },
   "CollectionErrors": {

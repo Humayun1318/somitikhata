@@ -34,7 +34,8 @@
       "nid": "NID",
       "joinDate": "Join date",
       "status": "Status",
-      "actions": "Actions"
+      "actions": "Actions",
+      "nominee": "Nominee"
     },
     "sortBy": "Sort by {column}",
     "status": {
@@ -64,6 +65,10 @@
         "edit": "Edit",
         "changeStatus": "Status"
       }
+    },
+    "nominee": {
+      "open": "Nominee of {memberNo}",
+      "more": "+{count, number}"
     }
   },
   "MemberForm": {
@@ -152,7 +157,24 @@
       "permanentAddressHint": "Optional.",
       "nomineeHint": "The person who receives the member's dues. A second (alternative) nominee can be added later from member details."
     },
-    "sameAsPresent": "Same as present address"
+    "sameAsPresent": "Same as present address",
+    "documents": {
+      "title": "Photo and documents (optional)",
+      "hint": "Photo, both sides of the NID and the signature. They are saved together with the member — if saving fails, none of them is kept.",
+      "choose": "Choose",
+      "new": "New",
+      "replacesSaved": "Replaces the saved image when you save.",
+      "willRemove": "Will be removed",
+      "undo": "Undo",
+      "discard": "Don’t use this image",
+      "discardFor": "Don’t use the new {name}",
+      "preparing": "Preparing…",
+      "uploading": "Uploading images… {percent}%",
+      "saving": "Images sent. Saving the member…",
+      "nothingSaved": "Nothing was saved.",
+      "confirmTitle": "{count, plural, one {Delete the saved image?} other {Delete # saved images?}}",
+      "confirmDescription": "Saving deletes these saved images permanently: {names}. They are deleted only after the member is saved."
+    }
   },
   "MemberStatusForm": {
     "title": "Change status",
@@ -175,6 +197,11 @@
     "errors": {
       "generic": "Could not change the status. Please try again.",
       "network": "Could not reach the server. Check your connection and try again."
+    },
+    "confirm": {
+      "title": "Set {memberNo} to {status}?",
+      "body": "{name} will not be able to log in until the status is set back to Active. Their records and balances are not changed.",
+      "submit": "Yes, set {status}"
     }
   },
   "MemberDetails": {

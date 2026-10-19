@@ -7,7 +7,8 @@ import { cn } from "@/lib/cn";
 
 import type { Member } from "../types";
 
-export type MemberAction = "view" | "edit" | "changeStatus";
+// "nominee" comes from the list's Nominee column, not from these buttons
+export type MemberAction = "view" | "edit" | "changeStatus" | "nominee";
 
 const ACTIONS = [
   { action: "view", Icon: Eye },

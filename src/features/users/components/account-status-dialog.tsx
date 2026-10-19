@@ -6,6 +6,7 @@ import { TriangleAlert } from "lucide-react";
 
 import { FormAlert } from "@/components/shared/form-alert";
 import { useToast } from "@/components/shared/toast/toast-provider";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
 import { cn } from "@/lib/cn";
@@ -34,6 +35,8 @@ export function AccountStatusDialog({ open, onClose, account }: AccountStatusDia
   const runLocked = useSubmitLock();
   const [status, setStatus] = useState<AccountStatus>(account.status);
   const [formError, setFormError] = useState<string | null>(null);
+  // Blocking a login asks once more before it is saved
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const isBusy = updateStatus.isPending;
   const isUnchanged = status === account.status;
@@ -44,15 +47,21 @@ export function AccountStatusDialog({ open, onClose, account }: AccountStatusDia
     setFormError(null);
     try {
       await updateStatus.mutateAsync({ id: account.id, status });
+      setIsConfirmOpen(false);
       onClose();
       toast.success(t("statusForm.success", { name: account.name, status: t(`status.${status}`) }));
     } catch (error) {
+      setIsConfirmOpen(false);
       setFormError(getUserActionError(error, t, "errors.statusGeneric"));
     }
   };
 
   const submitForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (blocksLogin) {
+      setIsConfirmOpen(true);
+      return;
+    }
     void runLocked(save);
   };
 
@@ -121,6 +130,18 @@ export function AccountStatusDialog({ open, onClose, account }: AccountStatusDia
           {t("statusForm.blockWarning", { name: account.name })}
         </p>
       )}
+
+      <ConfirmDialog
+        open={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(false)}
+        onConfirm={() => void runLocked(save)}
+        title={t("statusForm.confirmTitle", { name, status: t(`status.${status}`) })}
+        description={t("statusForm.blockWarning", { name: account.name })}
+        cancelLabel={t("cancel")}
+        confirmLabel={t(`statusForm.submit.${status}`)}
+        busyLabel={t("statusForm.submitting")}
+        isBusy={isBusy}
+      />
     </Dialog>
   );
 }

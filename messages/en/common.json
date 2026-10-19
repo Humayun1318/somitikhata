@@ -152,5 +152,11 @@
       "unauthorized": "Access denied",
       "notFound": "Page not found"
     }
+  },
+  "ConfirmDialog": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "working": "Please wait…"
   }
 }

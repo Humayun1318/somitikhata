@@ -23,7 +23,8 @@
         "suspended": "Suspend account"
       },
       "submitting": "Saving…",
-      "success": "{name}'s account is now {status}."
+      "success": "{name}'s account is now {status}.",
+      "confirmTitle": "Set {name} to {status}?"
     },
     "reset": {
       "open": "Reset password",

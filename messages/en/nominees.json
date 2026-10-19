@@ -112,6 +112,10 @@
       "submit": "Delete",
       "submitting": "Deleting…",
       "success": "Nominee {name} deleted."
+    },
+    "quick": {
+      "title": "Nominee",
+      "details": "Full member details"
     }
   }
 }

@@ -1,4 +1,4 @@
-// Money rules (see the development guide): the backend always sends and stores
+// Money rules (see docs/DEVELOPMENT_GUIDE.md): the backend always sends and stores
 // PAISA as whole numbers (1 taka = 100 paisa). Convert only for display/input.
 
 const TAKA_SIGN = "৳";

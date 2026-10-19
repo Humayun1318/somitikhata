@@ -68,6 +68,7 @@ export function MemberDetailsDialog({ open, onClose, member, onEdit, onChangeSta
       icon: UserRound,
       rows: [
         { key: "guardian", label: t("fields.guardian"), value: guardian },
+        { key: "motherName", label: t("fields.motherName"), value: member.motherName || empty },
         { key: "phone", label: t("fields.phone"), value: member.phone, mono: true },
         { key: "nid", label: t("fields.nid"), value: member.nid, mono: true },
         { key: "dob", label: t("fields.dob"), value: formatDay(member.dob) },

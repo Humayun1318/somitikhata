@@ -50,15 +50,25 @@ export const linesToRows = (lines: ReportLine[]): Row[] =>
 
 // Shown when the two sides do not agree (a missing opening, an entry in
 // an account the report does not cover …). 0 means the books balance.
-export function DifferenceNote({ difference, message }: { difference: number; message: string }) {
+type DifferenceNoteProps = {
+  difference: number;
+  message: string;
+  /** What usually causes it and where to fix it (shown under the amount). */
+  hint?: ReactNode;
+};
+
+export function DifferenceNote({ difference, message, hint }: DifferenceNoteProps) {
   if (difference === 0) return null;
   return (
-    <p role="alert" className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+    <div role="alert" className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
       <TriangleAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-      <span>
-        {message} <Money paisa={difference} className="font-semibold" />
-      </span>
-    </p>
+      <div className="space-y-1">
+        <p>
+          {message} <Money paisa={difference} className="font-semibold" />
+        </p>
+        {hint && <div className="text-amber-900/90 print:hidden">{hint}</div>}
+      </div>
+    </div>
   );
 }
 

@@ -19,6 +19,7 @@ export type Member = {
   nameEn?: string;
   guardianName?: string;
   guardianRelation?: GuardianRelation;
+  motherName?: string;
   phone: string;
   nid: string;
   dob?: string;
@@ -68,6 +69,7 @@ export type CreateMemberPayload = {
   nameEn?: string;
   guardianName?: string;
   guardianRelation?: GuardianRelation;
+  motherName?: string;
   phone: string;
   nid: string;
   dob?: string;

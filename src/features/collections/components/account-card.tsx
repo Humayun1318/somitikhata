@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ArrowRight, Banknote, Landmark, Lock, LockOpen } from "lucide-react";
+import { ArrowRight, Banknote, Landmark, Lock, LockOpen, Pencil } from "lucide-react";
 
 import { Money } from "@/components/shared/money";
 import { Button } from "@/components/ui/button";
@@ -18,15 +18,19 @@ type AccountCardProps = {
   /** Super admin only: close or reopen the account. */
   onToggleStatus?: () => void;
   isToggling: boolean;
+  /** Super admin only, bank accounts: edit the bank name and account type. */
+  onEdit?: () => void;
 };
 
-export function AccountCard({ account, balance, isBalanceError, onToggleStatus, isToggling }: AccountCardProps) {
+export function AccountCard({ account, balance, isBalanceError, onToggleStatus, isToggling, onEdit }: AccountCardProps) {
   const t = useTranslations("Collections");
   const isClosed = account.status === "closed";
   const KindIcon = account.accountKind === "bank" ? Landmark : Banknote;
   const ToggleIcon = isClosed ? LockOpen : Lock;
   const toggleLabel = isClosed ? t("reopenAccount") : t("closeAccount");
   const isBalanceLoading = balance === undefined && !isBalanceError;
+  const isBank = account.accountKind === "bank";
+  const typeLabel = account.bankAccountType ? t(`bankType.${account.bankAccountType}`) : t("bankType.missing");
 
   return (
     <article
@@ -44,6 +48,7 @@ export function AccountCard({ account, balance, isBalanceError, onToggleStatus, 
             <h3 className="truncate font-semibold text-app-text">{account.name}</h3>
             <p className="truncate text-xs text-app-text-muted">
               {t(`kind.${account.accountKind}`)}
+              {isBank && ` · ${typeLabel}`}
               {account.bankName && ` · ${account.bankName}`}
             </p>
           </div>
@@ -71,6 +76,13 @@ export function AccountCard({ account, balance, isBalanceError, onToggleStatus, 
           {t("openCashBook")}
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
         </Link>
+        <div className="flex items-center gap-2">
+        {onEdit && isBank && (
+          <Button type="button" variant="outline" onClick={onEdit} className="min-h-9 gap-1.5 px-3 py-1.5 text-xs">
+            <Pencil aria-hidden="true" className="h-3.5 w-3.5" />
+            {t("editAccount")}
+          </Button>
+        )}
         {onToggleStatus && (
           <Button
             type="button"
@@ -83,6 +95,7 @@ export function AccountCard({ account, balance, isBalanceError, onToggleStatus, 
             {toggleLabel}
           </Button>
         )}
+        </div>
       </div>
     </article>
   );

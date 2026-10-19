@@ -9,47 +9,75 @@ import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectMenu } from "@/components/ui/select-menu";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import { getCollectionError } from "../collection-errors";
-import { useCreateCashAccount } from "../hooks/use-collection-mutations";
-import type { CashAccountKind } from "../types";
+import { useCreateCashAccount, useUpdateCashAccount } from "../hooks/use-collection-mutations";
+import { BANK_ACCOUNT_TYPES, type BankAccountType, type CashAccount, type CashAccountKind } from "../types";
 
 import { FormAlert } from "@/components/shared/form-alert";
 
-type CashAccountDialogProps = { open: boolean; onClose: () => void };
-type FieldErrors = { name?: string; bankName?: string };
+type CashAccountDialogProps = {
+  open: boolean;
+  onClose: () => void;
+  /** Edit this bank account's bank name and type. Without it: add a new account. */
+  account?: CashAccount;
+};
+type FieldErrors = { name?: string; bankName?: string; bankAccountType?: string };
 
-// POST /cash-accounts/create (super admin). The parent passes a new `key` each time it opens.
-export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
+// Add: POST /cash-accounts/create. Edit (bank accounts): PATCH /cash-accounts/update/:id,
+// where only the bank name and the type (savings / FDR / current) can change.
+// Super admin only. The parent passes a new `key` each time it opens.
+export function CashAccountDialog({ open, onClose, account }: CashAccountDialogProps) {
   const t = useTranslations("CashAccountForm");
   const tCollections = useTranslations("Collections");
   const tErrors = useTranslations("CollectionErrors");
   const locale = useLocale();
   const toast = useToast();
   const createAccount = useCreateCashAccount();
+  const updateAccount = useUpdateCashAccount();
   const runLocked = useSubmitLock();
+  const isEdit = !!account;
 
-  const [name, setName] = useState("");
-  const [accountKind, setAccountKind] = useState<CashAccountKind>("bank");
-  const [bankName, setBankName] = useState("");
+  const [name, setName] = useState(account?.name ?? "");
+  const [accountKind, setAccountKind] = useState<CashAccountKind>(account?.accountKind ?? "bank");
+  const [bankName, setBankName] = useState(account?.bankName ?? "");
+  const [bankAccountType, setBankAccountType] = useState<BankAccountType | "">(account?.bankAccountType ?? "");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
-  const isBusy = createAccount.isPending;
+  const isBusy = createAccount.isPending || updateAccount.isPending;
   const isBank = accountKind === "bank";
   const kindOptions = [
     { value: "bank", label: tCollections("kind.bank") },
     { value: "cash", label: tCollections("kind.cash") },
   ];
+  const typeOptions = BANK_ACCOUNT_TYPES.map((type) => ({ value: type, label: tCollections(`bankType.${type}`) }));
 
-  // Same rules as the backend createCashAccountZodSchema.
+  // Same rules as the backend create / update schemas.
   const validate = (): FieldErrors => {
     const trimmed = name.trim();
     return {
-      ...(trimmed.length < 2 && { name: t("validation.nameShort") }),
-      ...(trimmed.length > 50 && { name: t("validation.nameLong") }),
+      ...(!isEdit && trimmed.length < 2 && { name: t("validation.nameShort") }),
+      ...(!isEdit && trimmed.length > 50 && { name: t("validation.nameLong") }),
       ...(isBank && !bankName.trim() && { bankName: t("validation.bankName") }),
+      ...(isBank && !bankAccountType && { bankAccountType: t("validation.bankAccountType") }),
     };
+  };
+
+  const saveAccount = async () => {
+    if (account) {
+      return updateAccount.mutateAsync({
+        id: account._id,
+        payload: { bankName: bankName.trim(), ...(bankAccountType && { bankAccountType }) },
+      });
+    }
+    return createAccount.mutateAsync({
+      name: name.trim(),
+      accountKind,
+      ...(isBank && { bankName: bankName.trim() }),
+      ...(isBank && bankAccountType && { bankAccountType }),
+    });
   };
 
   const save = async () => {
@@ -59,15 +87,11 @@ export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
     if (Object.keys(errors).length > 0) return;
 
     try {
-      const created = await createAccount.mutateAsync({
-        name: name.trim(),
-        accountKind,
-        ...(isBank && { bankName: bankName.trim() }),
-      });
+      const saved = await saveAccount();
       onClose();
-      toast.success(t("success", { name: created.name }));
+      toast.success(t(isEdit ? "editSuccess" : "success", { name: saved.name }));
     } catch (error) {
-      const result = getCollectionError(error, tErrors, locale, ["name", "bankName"]);
+      const result = getCollectionError(error, tErrors, locale, ["name", "bankName", "bankAccountType"]);
       setFieldErrors(Object.fromEntries(result.fieldErrors.map(({ field, message }) => [field, message])));
       setFormError(result.formError);
     }
@@ -78,11 +102,14 @@ export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
     void runLocked(save);
   };
 
+  const idleLabel = isEdit ? t("editSubmit") : t("submit");
+  const busyLabel = isEdit ? t("editSubmitting") : t("submitting");
+
   return (
     <Dialog
       open={open}
       onClose={onClose}
-      title={t("title")}
+      title={isEdit ? t("editTitle") : t("title")}
       closeLabel={t("close")}
       dismissible={!isBusy}
       onSubmit={submitForm}
@@ -91,38 +118,41 @@ export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
         <DialogActions
           cancelLabel={t("cancel")}
           onCancel={onClose}
-          actionLabel={isBusy ? t("submitting") : t("submit")}
+          actionLabel={isBusy ? busyLabel : idleLabel}
           isBusy={isBusy}
         />
       }
     >
       {formError && <FormAlert message={formError} />}
 
-      <div>
-        <p className="mb-1.5 text-sm font-medium text-app-text">{t("kind")}</p>
-        <SegmentedControl
-          aria-label={t("kind")}
-          value={accountKind}
-          onChange={(kind) => setAccountKind(kind as CashAccountKind)}
-          options={kindOptions}
-          disabled={isBusy}
-          fullWidth
-        />
-      </div>
+      {!isEdit && (
+        <div>
+          <p className="mb-1.5 text-sm font-medium text-app-text">{t("kind")}</p>
+          <SegmentedControl
+            aria-label={t("kind")}
+            value={accountKind}
+            onChange={(kind) => setAccountKind(kind as CashAccountKind)}
+            options={kindOptions}
+            disabled={isBusy}
+            fullWidth
+          />
+        </div>
+      )}
 
       <FormField id="account-name" label={t("name")} error={fieldErrors.name}>
         <Input
           id="account-name"
           value={name}
           maxLength={50}
-          readOnly={isBusy}
+          readOnly={isBusy || isEdit}
+          disabled={isEdit}
           error={!!fieldErrors.name}
           aria-invalid={!!fieldErrors.name}
           aria-describedby={fieldErrors.name ? "account-name-error" : undefined}
           placeholder={t("namePlaceholder")}
           onChange={(event) => setName(event.target.value)}
           className="min-h-11"
-          data-autofocus
+          {...(!isEdit && { "data-autofocus": true })}
         />
       </FormField>
 
@@ -138,6 +168,21 @@ export function CashAccountDialog({ open, onClose }: CashAccountDialogProps) {
             aria-describedby={fieldErrors.bankName ? "account-bankName-error" : undefined}
             onChange={(event) => setBankName(event.target.value)}
             className="min-h-11"
+            {...(isEdit && { "data-autofocus": true })}
+          />
+        </FormField>
+      )}
+
+      {isBank && (
+        <FormField id="account-bankAccountType" label={t("bankAccountType")} error={fieldErrors.bankAccountType}>
+          <SelectMenu
+            id="account-bankAccountType"
+            value={bankAccountType}
+            onChange={(type) => setBankAccountType(type as BankAccountType)}
+            options={typeOptions}
+            placeholder={t("bankAccountTypePlaceholder")}
+            disabled={isBusy}
+            error={!!fieldErrors.bankAccountType}
           />
         </FormField>
       )}

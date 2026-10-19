@@ -76,6 +76,7 @@
       "nameBn": "Name (Bangla)",
       "nameEn": "Name (English)",
       "guardian": "Father's / spouse's name",
+      "motherName": "Mother's name",
       "dob": "Date of birth",
       "phone": "Mobile number",
       "nid": "NID number",

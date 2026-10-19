@@ -76,6 +76,7 @@
       "nameEn": "Name (English)",
       "guardianName": "Father's / spouse's name",
       "guardianRelation": "Relation",
+      "motherName": "Mother's name",
       "phone": "Mobile number",
       "nid": "NID number",
       "dob": "Date of birth",
@@ -89,6 +90,7 @@
       "nameBn": "e.g. মোহাম্মদ রহিম উদ্দিন",
       "nameEn": "e.g. Mohammad Rahim Uddin",
       "guardianName": "e.g. Abdul Karim",
+      "motherName": "e.g. Rahima Khatun",
       "phone": "01XXXXXXXXX",
       "nid": "10, 13 or 17 digits",
       "admissionFormNo": "e.g. 125",
@@ -187,6 +189,7 @@
     },
     "fields": {
       "guardian": "Father's / spouse's name",
+      "motherName": "Mother's name",
       "phone": "Mobile number",
       "nid": "NID number",
       "dob": "Date of birth",

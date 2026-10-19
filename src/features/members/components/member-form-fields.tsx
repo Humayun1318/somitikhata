@@ -31,6 +31,7 @@ type TextField =
   | "nameBn"
   | "nameEn"
   | "guardianName"
+  | "motherName"
   | "phone"
   | "nid"
   | "dob"
@@ -125,6 +126,15 @@ export function MemberFormFields({
                 error={!!errors.guardianRelation}
               />
             )}
+          />
+        </FormField>
+
+        <FormField id="motherName" label={t("fields.motherName")} labelHint={optional} error={errors.motherName?.message}>
+          <Input
+            {...inputProps("motherName")}
+            autoComplete="off"
+            placeholder={t("placeholders.motherName")}
+            {...register("motherName")}
           />
         </FormField>
 

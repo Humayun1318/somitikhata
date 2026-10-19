@@ -13,12 +13,19 @@
       "cash": "নগদ",
       "bank": "ব্যাংক"
     },
+    "bankType": {
+      "savings": "সঞ্চয়ী",
+      "fdr": "এফডিআর (স্থায়ী আমানত)",
+      "current": "চলতি",
+      "missing": "ধরন দেওয়া হয়নি"
+    },
     "accountStatus": {
       "active": "চালু",
       "closed": "বন্ধ"
     },
     "closeAccount": "হিসাব বন্ধ করুন",
     "reopenAccount": "হিসাব আবার চালু করুন",
+    "editAccount": "সম্পাদনা",
     "accountsError": "হিসাবগুলো লোড করা যায়নি।",
     "accountsEmpty": "এখনো কোনো নগদ বা ব্যাংক হিসাব নেই।",
     "retry": "আবার চেষ্টা করুন",
@@ -282,21 +289,28 @@
   },
   "CashAccountForm": {
     "title": "নগদ বা ব্যাংক হিসাব যোগ করুন",
+    "editTitle": "ব্যাংক হিসাব সম্পাদনা",
     "close": "বন্ধ করুন",
     "cancel": "বাতিল",
     "submit": "হিসাব যোগ করুন",
     "submitting": "যোগ করা হচ্ছে…",
+    "editSubmit": "পরিবর্তন সংরক্ষণ করুন",
+    "editSubmitting": "সংরক্ষণ হচ্ছে…",
     "name": "হিসাবের নাম",
     "namePlaceholder": "যেমন সোনালী ব্যাংক – লোহাগড়া",
     "kind": "হিসাবের ধরন",
     "bankName": "ব্যাংকের নাম",
+    "bankAccountType": "ব্যাংক হিসাবের ধরন",
+    "bankAccountTypePlaceholder": "ধরন বেছে নিন (সঞ্চয়ী / এফডিআর / চলতি)",
     "success": "{name} যোগ হয়েছে।",
+    "editSuccess": "{name} হালনাগাদ হয়েছে।",
     "closed": "{name} বন্ধ করা হয়েছে।",
     "reopened": "{name} আবার চালু হয়েছে।",
     "validation": {
       "nameShort": "কমপক্ষে ২ অক্ষর",
       "nameLong": "সর্বোচ্চ ৫০ অক্ষর",
-      "bankName": "ব্যাংকের নাম লিখুন"
+      "bankName": "ব্যাংকের নাম লিখুন",
+      "bankAccountType": "হিসাবের ধরন বেছে নিন"
     }
   },
   "CollectionErrors": {

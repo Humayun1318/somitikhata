@@ -16,6 +16,7 @@ const FORM_FIELDS: (keyof CreateMemberInput)[] = [
   "nameEn",
   "guardianName",
   "guardianRelation",
+  "motherName",
   "phone",
   "nid",
   "dob",

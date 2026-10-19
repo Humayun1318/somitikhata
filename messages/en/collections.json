@@ -13,12 +13,19 @@
       "cash": "Cash",
       "bank": "Bank"
     },
+    "bankType": {
+      "savings": "Savings",
+      "fdr": "FDR (fixed deposit)",
+      "current": "Current",
+      "missing": "Type not set"
+    },
     "accountStatus": {
       "active": "Active",
       "closed": "Closed"
     },
     "closeAccount": "Close account",
     "reopenAccount": "Reopen account",
+    "editAccount": "Edit",
     "accountsError": "Couldn't load the accounts.",
     "accountsEmpty": "No cash or bank account yet.",
     "retry": "Try again",
@@ -282,21 +289,28 @@
   },
   "CashAccountForm": {
     "title": "Add cash or bank account",
+    "editTitle": "Edit bank account",
     "close": "Close",
     "cancel": "Cancel",
     "submit": "Add account",
     "submitting": "Adding…",
+    "editSubmit": "Save changes",
+    "editSubmitting": "Saving…",
     "name": "Account name",
     "namePlaceholder": "e.g. Sonali Bank – Lohagara",
     "kind": "Account type",
     "bankName": "Bank name",
+    "bankAccountType": "Bank account type",
+    "bankAccountTypePlaceholder": "Choose a type (Savings / FDR / Current)",
     "success": "{name} added.",
+    "editSuccess": "{name} updated.",
     "closed": "{name} closed.",
     "reopened": "{name} reopened.",
     "validation": {
       "nameShort": "At least 2 characters",
       "nameLong": "Up to 50 characters",
-      "bankName": "Enter the bank name"
+      "bankName": "Enter the bank name",
+      "bankAccountType": "Choose the account type"
     }
   },
   "CollectionErrors": {

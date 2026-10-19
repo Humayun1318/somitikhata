@@ -3,6 +3,7 @@
 import { useFormatter, useTranslations } from "next-intl";
 
 import { Money } from "@/components/shared/money";
+import { Link } from "@/i18n/navigation";
 import { MemberLinesTable } from "@/features/year-end/components/member-lines-table";
 import { DividendFigures } from "@/features/year-end/components/run-summary";
 
@@ -151,7 +152,18 @@ export function BalanceSheetView({ report }: { report: BalanceSheetReport }) {
         <BalanceSide title={t("liabilities")} sections={report.liabilities} total={report.totalLiabilities} totalLabel={t("total")} />
         <BalanceSide title={t("assets")} sections={report.assets} total={report.totalAssets} totalLabel={t("total")} />
       </TwoColumns>
-      <DifferenceNote difference={report.difference} message={t("difference")} />
+      <DifferenceNote
+        difference={report.difference}
+        message={t("difference")}
+        hint={
+          <>
+            <p>{t("differenceHint")}</p>
+            <Link href="/admin/collections/opening" className="font-semibold underline underline-offset-2">
+              {t("checkOpenings")}
+            </Link>
+          </>
+        }
+      />
     </div>
   );
 }

@@ -45,11 +45,15 @@ export type TransactionType = {
 // GET /cash-accounts
 export type CashAccountKind = "cash" | "bank";
 export type CashAccountStatus = "active" | "closed";
+// Bank accounts only (backend BankAccountType). Older bank accounts may have none.
+export const BANK_ACCOUNT_TYPES = ["savings", "fdr", "current"] as const;
+export type BankAccountType = (typeof BANK_ACCOUNT_TYPES)[number];
 export type CashAccount = {
   _id: string;
   name: string;
   accountKind: CashAccountKind;
   bankName?: string;
+  bankAccountType?: BankAccountType;
   status: CashAccountStatus;
 };
 
@@ -177,4 +181,11 @@ export type CreateCashAccountPayload = {
   name: string;
   accountKind: CashAccountKind;
   bankName?: string;
+  bankAccountType?: BankAccountType; // required for a bank account
+};
+
+// PATCH /cash-accounts/update/:id (super admin, bank accounts only)
+export type UpdateCashAccountPayload = {
+  bankName?: string;
+  bankAccountType?: BankAccountType;
 };

@@ -39,6 +39,17 @@ export function CashBookPage() {
   }));
 
   const isClosed = account?.status === "closed";
+  // "Bank · FDR · Sonali Bank": which kind of account this cash book belongs to
+  const accountMeta = account
+    ? [
+        tCollections(`kind.${account.accountKind}`),
+        account.accountKind === "bank" &&
+          tCollections(account.bankAccountType ? `bankType.${account.bankAccountType}` : "bankType.missing"),
+        account.bankName,
+      ]
+        .filter(Boolean)
+        .join(" · ")
+    : "";
   const retryAccounts = () => void accounts.refetch();
   const openRecord = () => dialogs.openRecord({ cashAccountId: isClosed ? undefined : accountId });
 
@@ -73,6 +84,7 @@ export function CashBookPage() {
               options={accountOptions}
               className="mt-1.5"
             />
+            <p className="mt-1.5 text-xs font-normal text-app-text-muted">{accountMeta}</p>
           </div>
           <div className="sm:text-right">
             <p className="text-xs font-medium text-app-text-muted">{t("currentBalance")}</p>

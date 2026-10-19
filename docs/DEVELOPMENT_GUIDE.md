@@ -143,6 +143,8 @@ The rules each part of the app follows today. Keep new work consistent with them
 
 ### Members, addresses and nominees
 
+- Optional personal fields: English name, father's / spouse's name with relation, mother's name
+  (`motherName`), date of birth, admission form number.
 - Business fields (`businessName`, `marketOrRoad`, `businessType`) are required. Two addresses
   share the backend's shape (`types/address.ts`): present address needs upazila + district;
   permanent is optional.
@@ -174,6 +176,11 @@ The rules each part of the app follows today. Keep new work consistent with them
 
 ### Samiti accounts: settings, heads, entries, openings, loans
 
+- **Cash and bank accounts** (`/admin/collections`): any number of accounts, each with its own
+  cash book. A bank account has a bank name and a type (Savings / FDR / Current); the super admin
+  sets them when adding the account and can edit them later (`CashAccountDialog` with `account`,
+  `PATCH /cash-accounts/update/:id`). Accounts made before types existed show "Type not set" until
+  edited. The account card and the cash book show kind · type · bank.
 - **Settings** (`/admin/settings`): `GET /settings` returns
   `{ key, value, effectiveFrom, changedAt, upcoming }` per key; values are strings (percent `"95"`,
   money in paisa `"192800"`, the lock as an ISO date). `setting-keys.ts` groups the keys and
@@ -210,7 +217,9 @@ The rules each part of the app follows today. Keep new work consistent with them
   Backend messages are mapped in `year-end-errors.ts`.
 - **Reports** (`/admin/reports?report=&year=&account=`): the five report endpoints; only the
   parameters the backend's `report.validation.ts` accepts are sent (dates `YYYY-MM-DD`). A running
-  year is shown up to today. Print uses the browser.
+  year is shown up to today. Print uses the browser. When the balance sheet's two sides differ,
+  the note explains that only incomplete opening balances can cause it (every regular entry is
+  balanced) and links to the opening-balance check.
 - **Dashboards** (`features/overview`): admin `GET /dashboard/overview?fiscalYear=`, member
   `GET /dashboard/my-overview`; the member passbook `GET /transactions/my-ledger` and loans
   `GET /loans/my-loans` (`features/member-area`). Members cannot read the transaction-type

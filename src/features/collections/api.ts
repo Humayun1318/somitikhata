@@ -8,6 +8,7 @@ import type {
   CashAccount,
   CashAccountBalance,
   CashAccountStatus,
+  UpdateCashAccountPayload,
   CreateCashAccountPayload,
   CreateOpeningPayload,
   CreateSocietyEntryPayload,
@@ -53,6 +54,10 @@ export const cashAccountApi = {
 
   create: async (payload: CreateCashAccountPayload) =>
     data(await httpKit.post<ApiEnvelope<CashAccount>>("/cash-accounts/create", payload)),
+
+  // Bank name / account type of a bank account. The name and kind never change.
+  update: async (id: string, payload: UpdateCashAccountPayload) =>
+    data(await httpKit.patch<ApiEnvelope<CashAccount>>(`/cash-accounts/update/${id}`, payload)),
 
   updateStatus: async (id: string, status: CashAccountStatus) =>
     data(await httpKit.patch<ApiEnvelope<CashAccount>>(`/cash-accounts/update-status/${id}`, { status })),

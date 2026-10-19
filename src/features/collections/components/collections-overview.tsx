@@ -50,6 +50,8 @@ export function CollectionsOverview() {
   const updateStatus = useUpdateCashAccountStatus();
   const [accountDialogKey, setAccountDialogKey] = useState(0);
   const [isAccountDialogOpen, setIsAccountDialogOpen] = useState(false);
+  // undefined = add a new account; an account = edit its bank details
+  const [editingAccount, setEditingAccount] = useState<CashAccount>();
 
   // Total of active accounts only; each balance is the backend's own figure.
   const activeBalances = accountList.flatMap((account, index) =>
@@ -62,10 +64,12 @@ export function CollectionsOverview() {
   const togglingId = updateStatus.isPending ? updateStatus.variables?.id : undefined;
 
   const openRecord = () => dialogs.openRecord({ cashAccountId: firstActive?._id });
-  const openAddAccount = () => {
+  const openAccountDialog = (account?: CashAccount) => {
+    setEditingAccount(account);
     setAccountDialogKey((key) => key + 1);
     setIsAccountDialogOpen(true);
   };
+  const openAddAccount = () => openAccountDialog();
   const closeAddAccount = () => setIsAccountDialogOpen(false);
   const retry = () => void accounts.refetch();
 
@@ -130,6 +134,7 @@ export function CollectionsOverview() {
                 isBalanceError={!!balances[index]?.isError && balances[index]?.data === undefined}
                 onToggleStatus={isSuperAdmin ? () => void toggleStatus(account) : undefined}
                 isToggling={togglingId === account._id}
+                onEdit={isSuperAdmin ? () => openAccountDialog(account) : undefined}
               />
             ))}
           </div>
@@ -159,7 +164,12 @@ export function CollectionsOverview() {
 
       <TransactionDialogs dialogs={dialogs} catalog={catalog} />
       {isSuperAdmin && (
-        <CashAccountDialog key={accountDialogKey} open={isAccountDialogOpen} onClose={closeAddAccount} />
+        <CashAccountDialog
+          key={accountDialogKey}
+          open={isAccountDialogOpen}
+          onClose={closeAddAccount}
+          account={editingAccount}
+        />
       )}
     </div>
   );

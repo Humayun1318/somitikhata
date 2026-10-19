@@ -20,6 +20,7 @@ import type {
   ReversePayload,
   Transaction,
   TransferResult,
+  UpdateCashAccountPayload,
 } from "../types";
 
 // Any money action can change balances, cash books and passbooks: refetch them all.
@@ -94,6 +95,19 @@ export function useCreateCashAccount() {
     meta: { loadingMessage: "createCashAccount" },
     mutationFn: cashAccountApi.create,
     onSuccess: refresh,
+  });
+}
+
+type UpdateVariables = { id: string; payload: UpdateCashAccountPayload };
+
+// Bank name / type only: no money moves, so only the collections views refetch.
+export function useUpdateCashAccount() {
+  const queryClient = useQueryClient();
+
+  return useMutation<CashAccount, ApiError, UpdateVariables>({
+    meta: { loadingMessage: "updateCashAccount" },
+    mutationFn: ({ id, payload }) => cashAccountApi.update(id, payload),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: collectionKeys.all }),
   });
 }
 

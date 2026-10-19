@@ -76,6 +76,7 @@
       "nameEn": "নাম (ইংরেজি)",
       "guardianName": "পিতা / স্বামী-স্ত্রীর নাম",
       "guardianRelation": "সম্পর্ক",
+      "motherName": "মাতার নাম",
       "phone": "মোবাইল নম্বর",
       "nid": "এনআইডি নম্বর",
       "dob": "জন্ম তারিখ",
@@ -89,6 +90,7 @@
       "nameBn": "যেমন: মোহাম্মদ রহিম উদ্দিন",
       "nameEn": "যেমন: Mohammad Rahim Uddin",
       "guardianName": "যেমন: আব্দুল করিম",
+      "motherName": "যেমন: রহিমা খাতুন",
       "phone": "01XXXXXXXXX",
       "nid": "১০, ১৩ বা ১৭ অঙ্ক",
       "admissionFormNo": "যেমন: ১২৫",
@@ -187,6 +189,7 @@
     },
     "fields": {
       "guardian": "পিতা / স্বামী-স্ত্রীর নাম",
+      "motherName": "মাতার নাম",
       "phone": "মোবাইল নম্বর",
       "nid": "এনআইডি নম্বর",
       "dob": "জন্ম তারিখ",

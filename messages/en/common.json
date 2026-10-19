@@ -50,6 +50,7 @@
     "createOpening": "Saving opening entry…",
     "createCashAccount": "Adding account…",
     "updateCashAccountStatus": "Updating account…",
+    "updateCashAccount": "Updating account…",
     "createAdmin": "Creating admin…",
     "createNominee": "Adding nominee…",
     "updateNominee": "Saving nominee…",

@@ -62,7 +62,9 @@
       "assets": "Assets",
       "total": "Total",
       "previous": "Brought forward (start of year)",
-      "difference": "Difference between assets and liabilities:"
+      "difference": "Difference between assets and liabilities:",
+      "differenceHint": "Every regular entry keeps both sides equal, so this difference comes from incomplete opening balances. When a fund, a liability or members' savings get an opening balance, where that money is kept (cash in hand, a bank, an FDR, land/building or another asset) needs its opening balance too. A fund stays on the liabilities & funds side; the asset side shows where its money is.",
+      "checkOpenings": "Check opening balances"
     }
   }
 }

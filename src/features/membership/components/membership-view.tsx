@@ -54,6 +54,7 @@ export function MembershipView() {
         row("nameBn", member.nameBn),
         row("nameEn", member.nameEn),
         row("guardian", guardian),
+        row("motherName", member.motherName),
         row("dob", day(member.dob)),
         row("phone", member.phone),
         row("nid", member.nid, true),

@@ -1,14 +1,21 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ArrowRight, Banknote, Landmark, Lock, LockOpen } from "lucide-react";
+import { ArrowRight, Banknote, Landmark, Lock, LockOpen, Pencil } from "lucide-react";
 
 import { Money } from "@/components/shared/money";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
-import type { CashAccount } from "../types";
+import type { BankAccountType, CashAccount } from "../types";
+
+// One colour per bank account type, so savings, FDR and current accounts are told apart at a glance
+const TYPE_TONES: Record<BankAccountType, string> = {
+  savings: "bg-emerald-50 text-emerald-700",
+  fdr: "bg-blue-50 text-blue-700",
+  current: "bg-amber-50 text-amber-800",
+};
 
 type AccountCardProps = {
   account: CashAccount;
@@ -18,15 +25,20 @@ type AccountCardProps = {
   /** Super admin only: close or reopen the account. */
   onToggleStatus?: () => void;
   isToggling: boolean;
+  /** Super admin only, bank accounts: edit the bank name and account type. */
+  onEdit?: () => void;
 };
 
-export function AccountCard({ account, balance, isBalanceError, onToggleStatus, isToggling }: AccountCardProps) {
+export function AccountCard({ account, balance, isBalanceError, onToggleStatus, isToggling, onEdit }: AccountCardProps) {
   const t = useTranslations("Collections");
   const isClosed = account.status === "closed";
   const KindIcon = account.accountKind === "bank" ? Landmark : Banknote;
   const ToggleIcon = isClosed ? LockOpen : Lock;
   const toggleLabel = isClosed ? t("reopenAccount") : t("closeAccount");
   const isBalanceLoading = balance === undefined && !isBalanceError;
+  const isBank = account.accountKind === "bank";
+  const typeLabel = account.bankAccountType ? t(`bankType.${account.bankAccountType}`) : t("bankType.missing");
+  const typeTone = account.bankAccountType ? TYPE_TONES[account.bankAccountType] : "border border-dashed border-amber-400 bg-amber-50 text-amber-800";
 
   return (
     <article
@@ -46,6 +58,11 @@ export function AccountCard({ account, balance, isBalanceError, onToggleStatus, 
               {t(`kind.${account.accountKind}`)}
               {account.bankName && ` · ${account.bankName}`}
             </p>
+            {isBank && (
+              <span className={cn("mt-1.5 inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold", typeTone)}>
+                {typeLabel}
+              </span>
+            )}
           </div>
         </div>
         {isClosed && (
@@ -63,26 +80,34 @@ export function AccountCard({ account, balance, isBalanceError, onToggleStatus, 
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-2 border-t border-app-border pt-3">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-app-border pt-3">
         <Link
           href={`/admin/collections/cash-book?account=${account._id}`}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-app-primary hover:underline"
+          className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-app-primary hover:underline"
         >
           {t("openCashBook")}
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
         </Link>
+        <div className="flex flex-wrap items-center gap-2">
+        {onEdit && isBank && (
+          <Button type="button" variant="outline" onClick={onEdit} className="min-h-9 gap-1.5 whitespace-nowrap px-3 py-1.5 text-xs">
+            <Pencil aria-hidden="true" className="h-3.5 w-3.5" />
+            {t("editAccount")}
+          </Button>
+        )}
         {onToggleStatus && (
           <Button
             type="button"
             variant="outline"
             onClick={onToggleStatus}
             isLoading={isToggling}
-            className="min-h-9 gap-1.5 px-3 py-1.5 text-xs"
+            className="min-h-9 gap-1.5 whitespace-nowrap px-3 py-1.5 text-xs"
           >
             {!isToggling && <ToggleIcon aria-hidden="true" className="h-3.5 w-3.5" />}
             {toggleLabel}
           </Button>
         )}
+        </div>
       </div>
     </article>
   );

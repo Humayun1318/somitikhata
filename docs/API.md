@@ -255,7 +255,7 @@ The image `version` from the record is part of the query key. `useMyAvatar` read
 | `documents` | `documentApi` | `/documents/member/:memberNo/:kind`, `/documents/nominee/:id/:kind` (GET/POST/DELETE); `GET /user/me/avatar`; `POST`/`DELETE /user/me/photo` |
 | `users` | `userAccountApi` | `GET /user`; `PATCH /user/update-status/:id`, `/user/reset-password/:id` |
 | `admins` | `adminApi` | `GET /user` (admins); `POST /user/create-admin` |
-| `collections` | `transactionApi`, `cashAccountApi`, `transactionTypeApi` | `/transactions/*` (create, society, transfer, opening, reverse, ledger, balances, cash-book, cash-balances, head-balances, opening-summary); `/cash-accounts` (list, create, update-status); `GET /transaction-types` |
+| `collections` | `transactionApi`, `cashAccountApi`, `transactionTypeApi` | `/transactions/*` (create, society, transfer, opening, reverse, ledger, balances, cash-book, cash-balances, head-balances, opening-summary); `/cash-accounts` (list, create, update, update-status); `GET /transaction-types` |
 | `ledger-heads` | `ledgerHeadApi` | `POST /ledger-heads/create`; `PATCH /ledger-heads/update/:id`, `/ledger-heads/update-status/:id` (heads are read with balances from `/transactions/head-balances`) |
 | `loans` | `loanApi` | `GET /loans`, `/loans/:loanNo`, `/loans/eligibility/:memberNo`; `POST /loans/apply`, `/:loanNo/disburse`, `/:loanNo/repay-next-installment`; `PATCH /:loanNo/approve`, `/:loanNo/reject` |
 | `settings` | `settingApi` | `GET /settings`, `/settings/:key`; `PATCH /settings/:key` |

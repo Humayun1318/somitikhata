@@ -47,6 +47,7 @@ export function createMemberSchema({ t, tAddress, tNominee, withNominee }: Membe
     nameEn: optionalName,
     guardianName: optionalName,
     guardianRelation: z.enum(["", "father", "spouse"]),
+    motherName: optionalName,
     phone: z
       .string()
       .trim()
@@ -85,6 +86,7 @@ function toMemberFields(values: CreateMemberInput) {
     nameEn: optional(values.nameEn),
     guardianName: optional(values.guardianName),
     guardianRelation: values.guardianRelation || undefined,
+    motherName: optional(values.motherName),
     phone: values.phone.trim(),
     nid: values.nid.trim(),
     dob: values.dob || undefined,
@@ -111,6 +113,7 @@ export function toMemberFormValues(member?: Member): CreateMemberInput {
     nameEn: member?.nameEn ?? "",
     guardianName: member?.guardianName ?? "",
     guardianRelation: member?.guardianRelation ?? "",
+    motherName: member?.motherName ?? "",
     phone: member?.phone ?? "",
     nid: member?.nid ?? "",
     dob: member?.dob ? toDhakaDateString(member.dob) : "",
@@ -141,7 +144,7 @@ export function toUpdateMemberPayload(values: CreateMemberInput, changed: Change
   return Object.fromEntries(entries);
 }
 
-const OPTIONAL_FIELDS = ["nameEn", "guardianName", "guardianRelation", "dob", "admissionFormNo"] as const;
+const OPTIONAL_FIELDS = ["nameEn", "guardianName", "guardianRelation", "motherName", "dob", "admissionFormNo"] as const;
 
 // The update API cannot remove a saved optional value (an empty name fails
 // "min 2", and there is no "unset"). Find fields the admin emptied.

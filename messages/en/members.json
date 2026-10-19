@@ -161,7 +161,7 @@
     "sameAsPresent": "Same as present address",
     "documents": {
       "title": "Photo and documents (optional)",
-      "hint": "Photo, both sides of the NID and the signature. They are saved together with the member — if saving fails, none of them is kept.",
+      "hint": "Photo, both sides of the NID and the signature, saved with the form. If an image can't be saved you are told, and no half-saved image is kept.",
       "choose": "Choose",
       "new": "New",
       "replacesSaved": "Replaces the saved image when you save.",
@@ -174,7 +174,8 @@
       "saving": "Images sent. Saving the member…",
       "nothingSaved": "Nothing was saved.",
       "confirmTitle": "{count, plural, one {Delete the saved image?} other {Delete # saved images?}}",
-      "confirmDescription": "Saving deletes these saved images permanently: {names}. They are deleted only after the member is saved."
+      "confirmDescription": "Saving deletes these saved images permanently: {names}. They are deleted only after the member is saved.",
+      "savedWithoutImages": "Member {memberNo} was registered, but the images could not be saved. Add them from the member's details — don't register the member again."
     }
   },
   "MemberStatusForm": {

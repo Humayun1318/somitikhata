@@ -246,8 +246,11 @@ The members list is the reference pattern:
 `memberApi.update` take `{ files, onUploadProgress }` and then post `multipart/form-data` (the JSON
 body in a `data` field, one file per slot field `photo`, `idFront`, `idBack`, `signature`);
 without files they post JSON as before. `UpdateMemberPayload.removeDocuments` empties slots. The
-backend uploads all images or none and deletes new uploads again if the save fails; old images are
-deleted only after the edit is saved. `GET /member` rows carry `nominees: [{ _id, name, relation,
+backend uploads all images or none and deletes new uploads again if the save that stores them
+fails; old images are deleted only after the edit is saved. On **add** the member is saved first
+and the images after it, so a create can succeed without its images: the form then shows
+`documents.savedWithoutImages` (the chosen slots are missing from the returned member) instead
+of the success toast. `GET /member` rows carry `nominees: [{ _id, name, relation,
 relationNote }]` for the list's Nominee column.
 The image `version` from the record is part of the query key. `useMyAvatar` reads
 `GET /user/me/avatar` when `useMe().data.avatar` is set; otherwise initials are shown.

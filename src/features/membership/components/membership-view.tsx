@@ -1,10 +1,12 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
-import { ArrowRight, BadgeCheck, Briefcase, CircleDashed, Landmark, UserRound, UsersRound } from "lucide-react";
+import { ArrowRight, BadgeCheck, Briefcase, CircleDashed, Images, Landmark, UserRound, UsersRound } from "lucide-react";
 
 import { ListError, ListLoading } from "@/components/shared/list-states";
-import { UserAvatar } from "@/components/shared/user-avatar";
+import { DocumentsGrid } from "@/features/documents/components/documents-grid";
+import { MemberPhotoAvatar } from "@/features/documents/components/member-photo-avatar";
+import { MEMBER_SELF_UPLOAD_KINDS } from "@/features/documents/types";
 import { MemberStatusBadge } from "@/features/members/components/member-status-badge";
 import { NomineeCard } from "@/features/nominees/components/nominee-card";
 import { useMyNominees } from "@/features/nominees/hooks/use-my-nominees";
@@ -21,6 +23,7 @@ import { InfoSection, type InfoRow } from "./info-section";
 // place for the login account and password.
 export function MembershipView() {
   const t = useTranslations("Membership");
+  const tDocuments = useTranslations("Documents");
   const format = useFormatter();
   const { data: member, error, isPending, isFetching, refetch } = useMyMembership();
   const nominees = useMyNominees();
@@ -110,7 +113,12 @@ export function MembershipView() {
       {member && (
         <section className="flex items-center gap-4 rounded-2xl border border-app-border bg-linear-to-br from-app-primary/10 via-app-surface to-app-surface p-5 motion-safe:animate-fade-in-up sm:p-6">
           <span className="rounded-full bg-app-surface ring-4 ring-app-surface">
-            <UserAvatar name={member.nameEn || member.nameBn} size="lg" />
+            <MemberPhotoAvatar
+              owner={{ type: "member", memberNo: member.memberNo }}
+              photo={member.documents?.photo}
+              name={member.nameEn || member.nameBn}
+              size="lg"
+            />
           </span>
           <div className="min-w-0 flex-1">
             <h2 className="truncate text-xl font-semibold text-app-text">{member.nameBn}</h2>
@@ -128,6 +136,15 @@ export function MembershipView() {
           <InfoSection id="membership-member" icon={UserRound} title={t("memberInfo")} hint={t("memberInfoHint")} rows={memberRows} />
           <InfoSection id="membership-society" icon={Landmark} title={t("societyInfo")} rows={societyRows} />
           <InfoSection id="membership-business" icon={Briefcase} title={t("businessInfo")} rows={businessRows} />
+          {/* Own photo: the member may change it. NID and signature: view only (office adds them). */}
+          <InfoSection id="membership-documents" icon={Images} title={tDocuments("sectionTitle")} hint={tDocuments("myHint")} rows={[]}>
+            <DocumentsGrid
+              owner={{ type: "member", memberNo: member.memberNo }}
+              documents={member.documents}
+              canUpload={(kind) => MEMBER_SELF_UPLOAD_KINDS.includes(kind)}
+              compact
+            />
+          </InfoSection>
           {/* GET /nominee/my-nominees: read only. Changes go through the society office. */}
           <InfoSection id="membership-nominee" icon={UsersRound} title={t("nominee.title")} hint={t("nominee.hint")} rows={[]}>
             {nominees.isPending && <div aria-busy="true" className="h-24 animate-pulse rounded-2xl bg-app-surface-muted" />}
@@ -138,7 +155,19 @@ export function MembershipView() {
             {nomineeList.length > 0 && (
               <div className="space-y-3">
                 {nomineeList.map((nominee, index) => (
-                  <NomineeCard key={nominee._id} nominee={nominee} index={index} />
+                  <NomineeCard
+                    key={nominee._id}
+                    nominee={nominee}
+                    index={index}
+                    images={
+                      <DocumentsGrid
+                        owner={{ type: "nominee", nomineeId: nominee._id }}
+                        documents={nominee.documents}
+                        canUpload={() => false}
+                        compact
+                      />
+                    }
+                  />
                 ))}
               </div>
             )}

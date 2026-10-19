@@ -1,0 +1,52 @@
+{
+  "Documents": {
+    "sectionTitle": "Photo and documents",
+    "memberHint": "The member's photo, both sides of the NID, and signature.",
+    "nomineeTitle": "Nominee photo and documents",
+    "myHint": "You can change your own photo. The samiti office adds or changes the NID and signature.",
+    "kinds": {
+      "member": {
+        "photo": "Photo",
+        "idFront": "NID (front)",
+        "idBack": "NID (back)",
+        "signature": "Signature"
+      },
+      "nominee": {
+        "photo": "Photo",
+        "idFront": "ID (front)",
+        "idBack": "ID (back)",
+        "signature": "Signature"
+      }
+    },
+    "empty": "Not added yet",
+    "loadError": "Couldn't show the image",
+    "retry": "Retry",
+    "upload": "Upload",
+    "replace": "Replace",
+    "remove": "Remove",
+    "view": "View {name} larger",
+    "uploadFor": "Upload {name}",
+    "replaceFor": "Replace {name}",
+    "removeFor": "Remove {name}",
+    "uploading": "Uploading…",
+    "uploadedAt": "Uploaded: {date}",
+    "rules": "JPG, PNG or WebP · up to 5 MB",
+    "uploadSuccess": "{name} saved",
+    "removeSuccess": "{name} removed",
+    "removeTitle": "Remove {name}?",
+    "removeDescription": "The image will be deleted permanently. You can upload a new one later.",
+    "removeSubmit": "Remove",
+    "removing": "Removing…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "errors": {
+      "type": "Only JPG, PNG or WebP images are allowed.",
+      "size": "The image must be 5 MB or smaller.",
+      "forbidden": "You are not allowed to change this image.",
+      "notConfigured": "Image storage is not set up on the server yet. Please tell the office.",
+      "network": "No internet connection. Please try again.",
+      "generic": "Couldn't save the image. Please try again.",
+      "removeGeneric": "Couldn't remove the image. Please try again."
+    }
+  }
+}

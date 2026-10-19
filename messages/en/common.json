@@ -69,7 +69,9 @@
     "runServiceCharge": "Charging the service charge…",
     "runDividend": "Paying the dividend…",
     "runAppropriation": "Appropriating the profit…",
-    "createDepreciation": "Saving depreciation…"
+    "createDepreciation": "Saving depreciation…",
+    "uploadDocument": "Uploading image…",
+    "deleteDocument": "Removing image…"
   },
   "Pagination": {
     "showing": "Showing {from, number}–{to, number} of {total, number}",

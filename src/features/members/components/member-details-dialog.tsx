@@ -1,12 +1,13 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
-import { Briefcase, History, MapPin, Pencil, RefreshCw, UserRound, type LucideIcon } from "lucide-react";
+import { Briefcase, History, Images, MapPin, Pencil, RefreshCw, UserRound, type LucideIcon } from "lucide-react";
 
-import { UserAvatar } from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
+import { DocumentsGrid } from "@/features/documents/components/documents-grid";
+import { MemberPhotoAvatar } from "@/features/documents/components/member-photo-avatar";
 import { MemberNomineesSection } from "@/features/nominees/components/member-nominees-section";
 import { MemberLoginSection } from "@/features/users/components/member-login-section";
 import { formatAddress } from "@/lib/address";
@@ -57,6 +58,8 @@ export function MemberDetailsDialog({ open, onClose, member, onEdit, onChangeSta
   const presentAddress = formatAddress(member.presentAddress) || empty;
   const permanentAddress = formatAddress(member.permanentAddress) || empty;
   const memberLabel = `${member.nameBn} (${member.memberNo})`;
+  const documentOwner = { type: "member", memberNo: member.memberNo } as const;
+  const tDocuments = useTranslations("Documents");
 
   const groups: DetailGroup[] = [
     {
@@ -136,7 +139,13 @@ export function MemberDetailsDialog({ open, onClose, member, onEdit, onChangeSta
       }
     >
       <div className="flex items-center gap-4 rounded-2xl bg-app-surface-muted/60 p-4">
-        <UserAvatar name={member.nameEn || member.nameBn} size="md" className="bg-app-surface" />
+        <MemberPhotoAvatar
+          owner={documentOwner}
+          photo={member.documents?.photo}
+          name={member.nameEn || member.nameBn}
+          size="md"
+          className="bg-app-surface"
+        />
         <div className="min-w-0 flex-1">
           <p className="truncate text-base font-semibold text-app-text">{member.nameBn}</p>
           {member.nameEn && <p className="truncate text-sm text-app-text-muted">{member.nameEn}</p>}
@@ -148,6 +157,23 @@ export function MemberDetailsDialog({ open, onClose, member, onEdit, onChangeSta
       {groups.map((group) => (
         <DetailsGroup key={group.key} group={group} empty={empty} />
       ))}
+
+      {/* Office: every slot can be uploaded, replaced and removed */}
+      <section aria-labelledby="member-details-documents" className="space-y-3">
+        <div className="flex items-center gap-2">
+          <Images aria-hidden="true" className="h-4 w-4 text-app-primary" />
+          <h3 id="member-details-documents" className="text-sm font-semibold text-app-text">
+            {tDocuments("sectionTitle")}
+          </h3>
+        </div>
+        <DocumentsGrid
+          owner={documentOwner}
+          documents={member.documents}
+          canUpload={() => true}
+          canRemove
+          hint={tDocuments("memberHint")}
+        />
+      </section>
 
       <MemberNomineesSection memberNo={member.memberNo} memberLabel={memberLabel} enabled={open} />
 

@@ -69,7 +69,9 @@
     "runServiceCharge": "সার্ভিস চার্জ কাটা হচ্ছে…",
     "runDividend": "লভ্যাংশ দেওয়া হচ্ছে…",
     "runAppropriation": "লাভ বণ্টন হচ্ছে…",
-    "createDepreciation": "অবচয় সংরক্ষণ হচ্ছে…"
+    "createDepreciation": "অবচয় সংরক্ষণ হচ্ছে…",
+    "uploadDocument": "ছবি আপলোড হচ্ছে…",
+    "deleteDocument": "ছবি মুছে ফেলা হচ্ছে…"
   },
   "Pagination": {
     "showing": "{total, number} জনের মধ্যে {from, number}–{to, number}",

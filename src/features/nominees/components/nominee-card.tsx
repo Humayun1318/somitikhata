@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Pencil, ShieldCheck, Trash2 } from "lucide-react";
 
@@ -19,12 +20,14 @@ type NomineeCardProps = {
   onDelete?: () => void;
   /** Why delete is turned off (the last nominee can't be deleted). */
   deleteDisabledReason?: string;
+  /** The nominee's photo / ID / signature (DocumentsGrid), under the details. */
+  images?: ReactNode;
 };
 
 type Row = { key: string; label: string; value: string; mono?: boolean };
 
 // One nominee as a compact card: who, relation, contact, ID, address, guardian.
-export function NomineeCard({ nominee, index, onEdit, onDelete, deleteDisabledReason }: NomineeCardProps) {
+export function NomineeCard({ nominee, index, onEdit, onDelete, deleteDisabledReason, images }: NomineeCardProps) {
   const t = useTranslations("Nominees");
   const format = useFormatter();
   const empty = "—";
@@ -125,6 +128,8 @@ export function NomineeCard({ nominee, index, onEdit, onDelete, deleteDisabledRe
           </div>
         </div>
       )}
+
+      {images && <div className="mt-3 border-t border-app-border pt-3">{images}</div>}
     </article>
   );
 }

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { IdCard, KeyRound, Mail, Phone, ShieldAlert, UserRound } from "lucide-react";
 
-import { UserAvatar } from "@/components/shared/user-avatar";
+import { CurrentUserAvatar } from "@/features/documents/components/current-user-avatar";
+import { MyPhotoControls } from "@/features/documents/components/my-photo-controls";
 import { Button } from "@/components/ui/button";
 import { useMe } from "@/features/auth/hooks/use-me";
 import { getRoleArea } from "@/features/auth/role-routes";
@@ -92,7 +93,7 @@ export function ProfileView() {
           <div className="-mt-10 flex flex-col gap-3 px-5 pb-5 sm:-mt-12 sm:flex-row sm:items-end sm:gap-5 sm:px-6 sm:pb-6 lg:flex-col lg:items-start lg:gap-3">
             {/* Solid backing so the tinted band doesn't show through the avatar. */}
             <span className="w-fit rounded-full bg-app-surface ring-4 ring-app-surface">
-              <UserAvatar name={name} size="lg" />
+              <CurrentUserAvatar size="lg" />
             </span>
             <div className="min-w-0 flex-1">
               <h2 className="truncate text-xl font-semibold text-app-text sm:text-2xl">{name}</h2>
@@ -124,6 +125,10 @@ export function ProfileView() {
                 )}
               </div>
             </div>
+          </div>
+          {/* Staff: own photo (the avatar). Member: a link to the Membership page. */}
+          <div className="border-t border-app-border px-5 py-4 sm:px-6">
+            <MyPhotoControls isStaff={isStaff} />
           </div>
         </section>
 

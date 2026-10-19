@@ -1,3 +1,4 @@
+import type { Documents } from "@/features/documents/types";
 import type { CreateNomineePayload } from "@/features/nominees/types";
 import type { Address } from "@/types/address";
 import type { PaginatedResult, PaginationMeta } from "@/types/api";
@@ -34,6 +35,8 @@ export type Member = {
   permanentAddress?: Address;
   /** Set by the transaction service once the one-time Share Deposit is recorded. */
   hasShareDeposit?: boolean;
+  /** Photo, NID both sides, signature (only filled slots). Set via /documents. */
+  documents?: Documents;
   createdAt?: string;
   updatedAt?: string;
   // The list endpoint fills these in (populate); other endpoints send only the id.

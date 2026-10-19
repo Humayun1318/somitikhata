@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { CircleAlert, UserPlus, UsersRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { DocumentsGrid } from "@/features/documents/components/documents-grid";
 
 import { useMemberNominees } from "../hooks/use-member-nominees";
 import { MAX_NOMINEES, MIN_NOMINEES, type Nominee } from "../types";
@@ -108,6 +109,15 @@ export function MemberNomineesSection({ memberNo, memberLabel, enabled = true }:
               onEdit={() => open("form", nominee)}
               onDelete={() => open("delete", nominee)}
               deleteDisabledReason={deleteDisabledReason}
+              images={
+                <DocumentsGrid
+                  owner={{ type: "nominee", nomineeId: nominee._id }}
+                  documents={nominee.documents}
+                  canUpload={() => true}
+                  canRemove
+                  compact
+                />
+              }
             />
           ))}
           {isLastOne && <p className="text-xs text-app-text-muted">{t("section.keepOneHint")}</p>}

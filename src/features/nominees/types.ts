@@ -1,3 +1,4 @@
+import type { Documents } from "@/features/documents/types";
 import type { Address } from "@/types/address";
 
 // Shapes from the backend nominee module (bottolisomobai-server, nominee.interface.ts).
@@ -45,6 +46,8 @@ export type Nominee = {
   idNumber?: string;
   address?: Address;
   guardian?: NomineeGuardian;
+  /** Photo, ID both sides, signature (only filled slots). Set via /documents. */
+  documents?: Documents;
   createdAt?: string;
   updatedAt?: string;
 };

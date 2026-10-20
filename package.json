@@ -1,7 +1,7 @@
 {
   "name": "somitikhata",
   "version": "1.0.0",
-  "description": "SomitiKhata — cooperative (somiti) management web app for BKS Lohagara.",
+  "description": "SomitiKhata — cooperative (somiti) management web app for LBKS Lohagara.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -129,6 +129,7 @@
     "wrongStatus": "This loan has moved on. Close and open it again.",
     "memberNotActive": "Loans are only for active members.",
     "noPending": "No installment is left to collect.",
-    "notFound": "Loan not found."
+    "notFound": "Loan not found.",
+    "installmentPaid": "Someone else just recorded this installment. Close the loan and open it again."
   }
 }

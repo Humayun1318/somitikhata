@@ -8,6 +8,7 @@ import { FormAlert } from "@/components/shared/form-alert";
 import { QueryState } from "@/components/shared/list-states";
 import { useToast } from "@/components/shared/toast/toast-provider";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
@@ -15,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 import { DHAKA_TIME_ZONE } from "@/lib/dhaka-date";
 import { fiscalYearRange } from "@/lib/fiscal-year";
-import { TAKA_INPUT_PATTERN } from "@/lib/money";
+import { formatPaisa, TAKA_INPUT_PATTERN, takaToPaisa } from "@/lib/money";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
 import {
@@ -59,6 +60,9 @@ export function YearEndRunDialog({ open, onClose, kind, fiscalYear }: YearEndRun
   const [previewAmount, setPreviewAmount] = useState<number | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  // The last step: after the tick and the Run button, one explicit confirm
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmError, setConfirmError] = useState<string | null>(null);
 
   const serviceCharge = useServiceChargePreview(fiscalYear, open && kind === "service_charge");
   const dividend = useDividendPreview(fiscalYear, open && kind === "dividend" ? previewAmount : null);
@@ -92,20 +96,29 @@ export function YearEndRunDialog({ open, onClose, kind, fiscalYear }: YearEndRun
     setPreviewAmount(Number(text));
   };
 
+  // The only path that posts the run: reached from the confirm dialog only
   const execute = async () => {
+    if (!canRun) return;
     setFormError(null);
+    setConfirmError(null);
     try {
       await run.mutateAsync({ kind, fiscalYear, distributableAmount: previewAmount ?? undefined });
+      setIsConfirmOpen(false);
       onClose();
       toast.success(t(`done.${kind}`, { fiscalYear }));
     } catch (error) {
-      setFormError(getYearEndError(error, errorOptions).formError ?? tErrors("generic"));
+      const message = getYearEndError(error, errorOptions).formError ?? tErrors("generic");
+      setConfirmError(message);
+      setFormError(message);
     }
   };
 
+  // Tick + Run (or Enter) only opens the confirm; nothing is posted yet
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (canRun) void runLocked(execute);
+    if (!canRun) return;
+    setConfirmError(null);
+    setIsConfirmOpen(true);
   };
 
   return (
@@ -230,6 +243,27 @@ export function YearEndRunDialog({ open, onClose, kind, fiscalYear }: YearEndRun
           </label>
         </div>
       )}
+
+      <ConfirmDialog
+        open={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(false)}
+        onConfirm={() => void runLocked(execute)}
+        title={t("confirmRun.title", { kind: tKind(kind), fiscalYear })}
+        description={t(`warning.${kind}`)}
+        cancelLabel={t("cancel")}
+        confirmLabel={t("confirmRun.submit")}
+        busyLabel={t("running")}
+        confirmIcon={Play}
+        isBusy={isBusy}
+        error={confirmError}
+      >
+        <p className="text-sm text-app-text-muted">{t("confirmRun.date", { lastDay })}</p>
+        {isDividend && previewAmount !== null && (
+          <p className="text-sm font-medium text-app-text">
+            {t("confirmRun.amount", { amount: formatPaisa(takaToPaisa(previewAmount), locale) })}
+          </p>
+        )}
+      </ConfirmDialog>
     </Dialog>
   );
 }

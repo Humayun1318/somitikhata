@@ -10,6 +10,9 @@ const KNOWN: { pattern: RegExp; key: string; money?: boolean; value?: string }[]
   { pattern: /exceeds this member's eligible loan limit \(৳([\d.,]+)\)/i, key: "overEligible", money: true, value: "amount" },
   { pattern: /eligible amount has dropped to ৳([\d.,]+)/i, key: "eligibleDropped", money: true, value: "amount" },
   { pattern: /Cannot (?:approve|reject|disburse|repay) a loan with status/i, key: "wrongStatus" },
+  // 409 when two people act on the same loan or installment at once
+  { pattern: /loan was just changed by someone else/i, key: "wrongStatus" },
+  { pattern: /installment was just paid by someone else/i, key: "installmentPaid" },
   { pattern: /Cannot process a loan for a \w+ member/i, key: "memberNotActive" },
   { pattern: /No pending installment/i, key: "noPending" },
   { pattern: /^Loan not found/i, key: "notFound" },

@@ -32,7 +32,10 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
         autoCapitalize="none"
         autoCorrect="off"
         spellCheck={false}
-        className={cn("min-h-11 pr-12", className)}
+        // Microsoft Edge adds its own "reveal password" eye inside a password
+        // field once a value is typed or pasted (it disappears again on blur),
+        // which showed up as a second eye next to ours. Ours is the one toggle.
+        className={cn("min-h-11 pr-12 [&::-ms-clear]:hidden [&::-ms-reveal]:hidden", className)}
         {...props}
       />
       <button
@@ -40,7 +43,7 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
         onClick={toggleVisibility}
         aria-label={toggleLabel}
         aria-pressed={isVisible}
-        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-lg text-app-text-muted transition-colors hover:text-app-text"
+        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-lg text-app-text-muted transition-colors hover:text-app-text focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-app-focus"
       >
         <ToggleIcon aria-hidden="true" className="h-5 w-5" />
       </button>

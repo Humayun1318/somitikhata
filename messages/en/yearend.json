@@ -166,7 +166,18 @@
         "dateFuture": "The date can't be in the future",
         "voucherLong": "At most 30 characters",
         "descriptionLong": "At most 200 characters"
+      },
+      "confirm": {
+        "title": "Record this depreciation?",
+        "body": "{head}: {amount}, dated {date}. It lowers the asset head and is an expense of the year.",
+        "submit": "Yes, record it"
       }
+    },
+    "confirmRun": {
+      "title": "Run {kind} for {fiscalYear}?",
+      "date": "Entries are dated {lastDay}.",
+      "amount": "Distributable amount: {amount}",
+      "submit": "Yes, run it"
     }
   },
   "YearEndErrors": {

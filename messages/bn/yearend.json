@@ -166,7 +166,18 @@
         "dateFuture": "তারিখ ভবিষ্যতের হতে পারবে না",
         "voucherLong": "সর্বোচ্চ ৩০ অক্ষর",
         "descriptionLong": "সর্বোচ্চ ২০০ অক্ষর"
+      },
+      "confirm": {
+        "title": "এই অবচয় লিখবেন?",
+        "body": "{head}: {amount}, তারিখ {date}। এতে সম্পদ খাতের মান কমবে আর এটা বছরের ব্যয় হিসেবে যাবে।",
+        "submit": "হ্যাঁ, লিখুন"
       }
+    },
+    "confirmRun": {
+      "title": "{fiscalYear}-এর {kind} চালাবেন?",
+      "date": "এন্ট্রির তারিখ হবে {lastDay}।",
+      "amount": "বণ্টনযোগ্য অংক: {amount}",
+      "submit": "হ্যাঁ, চালান"
     }
   },
   "YearEndErrors": {

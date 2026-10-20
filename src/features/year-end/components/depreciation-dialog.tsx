@@ -3,11 +3,12 @@
 import { useState, type FormEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocale, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 
 import { FormAlert } from "@/components/shared/form-alert";
-import { formatPaisa } from "@/lib/money";
+import { formatPaisa, takaToPaisa } from "@/lib/money";
 import { useToast } from "@/components/shared/toast/toast-provider";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Dialog } from "@/components/ui/dialog";
 import { DialogActions } from "@/components/ui/dialog-actions";
 import { FormField } from "@/components/ui/form-field";
@@ -15,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { SelectMenu } from "@/components/ui/select-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { useHeadBalances } from "@/features/collections/hooks/use-collection-queries";
-import { toDhakaDateString } from "@/lib/dhaka-date";
+import { DHAKA_TIME_ZONE, toDhakaDateString } from "@/lib/dhaka-date";
 import { fiscalYearRange } from "@/lib/fiscal-year";
 import { useSubmitLock } from "@/lib/use-submit-lock";
 
@@ -39,11 +40,15 @@ export function DepreciationDialog({ open, onClose, fiscalYear }: DepreciationDi
   const tKind = useTranslations("YearEnd.kinds");
   const tCollections = useTranslations("CollectionErrors");
   const locale = useLocale();
+  const format = useFormatter();
   const toast = useToast();
   const create = useCreateDepreciation();
   const runLocked = useSubmitLock();
   const heads = useHeadBalances();
   const [formError, setFormError] = useState<string | null>(null);
+  // Valid values wait here for the explicit confirm; only then is it posted
+  const [pending, setPending] = useState<DepreciationInput | null>(null);
+  const [confirmError, setConfirmError] = useState<string | null>(null);
 
   // The year's last day if it is over, otherwise today (never a future day).
   const today = toDhakaDateString();
@@ -69,20 +74,40 @@ export function DepreciationDialog({ open, onClose, fiscalYear }: DepreciationDi
 
   const save = async (values: DepreciationInput) => {
     setFormError(null);
+    setConfirmError(null);
     try {
       await create.mutateAsync(toDepreciationPayload(values));
+      setPending(null);
       onClose();
       toast.success(t("saved"));
     } catch (error) {
       const result = getYearEndError(error, { t: tErrors, tKind, tCollections, locale, fields: DEPRECIATION_FIELDS });
-      result.fieldErrors.forEach(({ field, message }, index) => {
-        setError(field as keyof DepreciationInput, { type: "server", message }, { shouldFocus: index === 0 });
-      });
+      if (result.fieldErrors.length > 0) {
+        // A field problem belongs to the form behind: close the confirm
+        setPending(null);
+        result.fieldErrors.forEach(({ field, message }, index) => {
+          setError(field as keyof DepreciationInput, { type: "server", message }, { shouldFocus: index === 0 });
+        });
+      } else {
+        setConfirmError(result.formError);
+      }
       setFormError(result.formError);
     }
   };
 
-  const onSubmit = (values: DepreciationInput) => runLocked(() => save(values));
+  // A valid form only opens the confirm; the confirm button posts it
+  const onSubmit = (values: DepreciationInput) => {
+    setConfirmError(null);
+    setPending(values);
+  };
+  const confirmSave = () => {
+    if (pending) void runLocked(() => save(pending));
+  };
+  const pendingHead = pending ? headOptions.find((option) => option.value === pending.headId)?.label.split(" · ")[0] : "";
+  const pendingAmount = pending ? formatPaisa(takaToPaisa(pending.amount), locale) : "";
+  const pendingDate = pending
+    ? format.dateTime(new Date(`${pending.transactionDate}T00:00:00+06:00`), { dateStyle: "long", timeZone: DHAKA_TIME_ZONE })
+    : "";
   const submitForm = (event: FormEvent<HTMLFormElement>) => handleSubmit(onSubmit)(event);
 
   return (
@@ -163,6 +188,20 @@ export function DepreciationDialog({ open, onClose, fiscalYear }: DepreciationDi
         <Textarea id="depreciation-note" {...register("description")} readOnly={isBusy} error={!!errors.description} rows={2} />
       </FormField>
       <p className="text-xs text-app-text-muted">{t("hint")}</p>
+
+      <ConfirmDialog
+        open={pending !== null}
+        onCancel={() => setPending(null)}
+        onConfirm={confirmSave}
+        title={t("confirm.title")}
+        description={t("confirm.body", { head: pendingHead ?? "", amount: pendingAmount, date: pendingDate })}
+        cancelLabel={tYearEnd("cancel")}
+        confirmLabel={t("confirm.submit")}
+        busyLabel={tYearEnd("saving")}
+        tone="primary"
+        isBusy={isBusy}
+        error={confirmError}
+      />
     </Dialog>
   );
 }
